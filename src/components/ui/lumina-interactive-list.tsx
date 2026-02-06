@@ -287,7 +287,19 @@ export function Component() {
             <main className="slider-wrapper" ref={containerRef}>
                 <canvas className="webgl-canvas"></canvas>
                 <span className="slide-number" id="slideNumber">01</span>
-                <a href="#projects" className="slide-view-projects">View projects</a>
+                <a
+                    href="#projects"
+                    className="slide-view-projects"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        const element = document.getElementById('projects');
+                        if (element) {
+                            element.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }}
+                >
+                    View projects
+                </a>
 
                 {/* Slide content removed */}
 
