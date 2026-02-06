@@ -33,12 +33,14 @@ const HERO_SLIDES = [
 export const Hero = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
 
+    const nextSlide = () => {
+        setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    };
+
     useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
-        }, 3000);
+        const interval = setInterval(nextSlide, 3000);
         return () => clearInterval(interval);
-    }, []);
+    }, [currentSlide]); // Reset interval when slide changes (auto or manual)
 
     return (
         <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black pt-20">
@@ -117,7 +119,10 @@ export const Hero = () => {
                     transition={{ delay: 1, duration: 1.5, type: "spring" }}
                     className="mt-20 w-full max-w-4xl perspective-1000"
                 >
-                    <div className="glass-apple rounded-3xl p-2 md:p-4 transform rotate-x-12 hover:rotate-x-0 transition-transform duration-1000 bg-[#1d1d1f]">
+                    <div
+                        onClick={nextSlide}
+                        className="glass-apple rounded-3xl p-2 md:p-4 transform rotate-x-12 hover:rotate-x-0 transition-transform duration-1000 bg-[#1d1d1f] cursor-pointer"
+                    >
                         <div className="aspect-[21/9] rounded-2xl bg-black/50 overflow-hidden relative">
                             <AnimatePresence mode="wait">
                                 <motion.div

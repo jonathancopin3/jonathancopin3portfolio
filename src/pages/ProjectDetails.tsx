@@ -327,10 +327,24 @@ export const ProjectDetails = () => {
 
                         <motion.img
                             key={selectedImageIndex}
-                            initial={{ scale: 0.9, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
+                            initial={{ scale: 0.9, opacity: 0, x: 0 }}
+                            animate={{ scale: 1, opacity: 1, x: 0 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            drag="x"
+                            dragConstraints={{ left: 0, right: 0 }}
+                            dragElastic={0.2}
+                            onDragEnd={(_, { offset }) => {
+                                const swipe = offset.x;
+                                if (swipe < -50) {
+                                    // Swipe Left -> Next Image
+                                    setSelectedImageIndex(prev => prev! < allImages.length - 1 ? prev! + 1 : 0);
+                                } else if (swipe > 50) {
+                                    // Swipe Right -> Prev Image
+                                    setSelectedImageIndex(prev => prev! > 0 ? prev! - 1 : allImages.length - 1);
+                                }
+                            }}
                             src={allImages[selectedImageIndex]}
-                            className="max-h-[85vh] max-w-[90vw] object-contain shadow-2xl rounded-lg"
+                            className="max-h-[85vh] max-w-[90vw] object-contain shadow-2xl rounded-lg cursor-grab active:cursor-grabbing"
                         />
                         <div className="absolute bottom-8 text-white/50 font-mono text-sm">
                             {selectedImageIndex + 1} / {allImages.length}

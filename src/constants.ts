@@ -193,7 +193,7 @@ Software used:
             // @ts-ignore
             heroUrl: "/Image all projet/IKEA/all.jpg",
             // @ts-ignore
-            videoUrl: "/Image all projet/IKEA/IKEA FINAL2.mp4",
+            videoUrl: "/Image all projet/IKEA/IKEA FINAL2_1.mp4",
             galleryLayout: "mixed",
             gallery: [
                 "/Image all projet/IKEA/lockers.jpg",
@@ -225,7 +225,7 @@ Software used:
             creationDate: "June 2025",
             thumbnailUrl: "/Image all projet/Visu_Champs/IMG_2169.png",
             // @ts-ignore
-            videoUrl: "/Image all projet/Visu_Champs/Rendu_final_Q2_VISU.mp4",
+            videoUrl: "/Image all projet/Visu_Champs/Rendu_final_Q2_VISU_4.mp4",
             galleryLayout: "landscape",
             gallery: [
                 "/Image all projet/Visu_Champs/IMG_2169.png"

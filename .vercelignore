@@ -1,0 +1,11 @@
+node_modules
+dist
+.git
+.vercel
+
+# Large video files (>100MB) - keeping very large files excluded to avoid bloat
+public/Image all projet/Visu_Champs/Rendu_final_Q2_VISU.mp4
+public/Image all projet/Visu_Champs/Rendu_final_Q2_VISU_1.mp4
+public/Image all projet/B2A2_Copine_J_VFX.mp4
+public/Image all projet/B2A2_Copine_J_VFX - Copie.mp4
+public/Image all projet/IKEA/IKEA FINAL2.mp4
