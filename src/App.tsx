@@ -4,6 +4,7 @@ import { LiquidGlassCursor } from './components/LiquidGlassCursor';
 import { Home } from './pages/Home';
 import { ProjectDetails } from './pages/ProjectDetails';
 import { ThemeProvider } from './context/ThemeContext';
+import { Analytics } from "@vercel/analytics/react"
 
 // Scroll to top on route change
 // Scroll to top or hash on route change
@@ -58,6 +59,7 @@ function App() {
       <ThemeProvider>
         <ScrollToAnchor />
         <AppContent />
+        <Analytics />
       </ThemeProvider>
     </BrowserRouter>
   );
