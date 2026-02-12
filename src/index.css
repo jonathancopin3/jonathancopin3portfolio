@@ -29,15 +29,24 @@ section {
 }
 
 body {
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  background-color: #000000 !important;
+  color: #ffffff !important;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  overflow-x: hidden;
   cursor: none;
   /* Hide default cursor globally */
+}
+
+/* Force dark background on all sections */
+section {
+  background-color: transparent !important;
+}
+
+/* Force dark mode globally */
+* {
+  color-scheme: dark !important;
 }
 
 /* Ensure links and buttons don't show pointer */

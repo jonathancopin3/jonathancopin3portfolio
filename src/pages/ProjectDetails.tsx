@@ -171,7 +171,7 @@ export const ProjectDetails = () => {
                                     <video
                                         src={vid}
                                         controls
-                                        autoPlay={idx === 0}
+                                        autoPlay
                                         loop
                                         muted
                                         playsInline
@@ -208,6 +208,7 @@ export const ProjectDetails = () => {
                                                 <video
                                                     src={vid}
                                                     controls
+                                                    autoPlay
                                                     loop
                                                     muted
                                                     playsInline
