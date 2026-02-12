@@ -47,7 +47,7 @@ function AppContent() {
   return (
     <main className="bg-black text-white min-h-screen transition-colors duration-300 relative">
       {/* Background Gradient Mesh */}
-      <div className="fixed inset-0 pointer-events-none z-[-1] opacity-30 dark:opacity-20">
+      <div className="fixed inset-0 pointer-events-none z-[-1] opacity-20">
         <div className="absolute top-[20%] left-[10%] w-[30vw] h-[30vw] bg-primary/20 rounded-full blur-[100px]" />
         <div className="absolute bottom-[20%] right-[10%] w-[25vw] h-[25vw] bg-secondary/20 rounded-full blur-[100px]" />
       </div>

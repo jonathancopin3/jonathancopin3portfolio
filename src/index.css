@@ -28,6 +28,11 @@ section {
   /* Handle navbar offset globally */
 }
 
+/* FORCE BLACK BACKGROUND EVERYWHERE */
+html {
+  background-color: #000000 !important;
+}
+
 body {
   background-color: #000000 !important;
   color: #ffffff !important;
