@@ -207,11 +207,13 @@ export const ProjectDetails = () => {
                                         <video
                                             ref={videoRef}
                                             src={vid}
+                                            poster={project.thumbnailUrl}
                                             controls
                                             autoPlay
                                             loop
                                             muted
                                             playsInline
+                                            preload="metadata"
                                             className="w-full h-full object-contain cursor-auto bg-black"
                                             style={{ cursor: 'auto' }}
                                             onPlay={() => {
@@ -219,6 +221,13 @@ export const ProjectDetails = () => {
                                                 setShowPlayButton(false);
                                             }}
                                             onPause={() => setIsPlaying(false)}
+                                            onError={(e) => {
+                                                console.error('Video error:', e);
+                                                setShowPlayButton(true);
+                                            }}
+                                            onLoadedMetadata={() => {
+                                                console.log('Video metadata loaded');
+                                            }}
                                         />
                                         {/* Manual Play Button for Mobile */}
                                         {showPlayButton && !isPlaying && (
