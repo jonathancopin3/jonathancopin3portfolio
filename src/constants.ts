@@ -1,8 +1,9 @@
+import type { Content } from './types';
 import { Linkedin, Instagram, Youtube } from 'lucide-react';
 import { BehanceIcon } from './components/icons/BehanceIcon';
 import { ArtStationIcon } from './components/icons/ArtStationIcon';
 
-export const content = {
+export const content: Content = {
     name: "Copine Jonathan",
     profession: "CGI Artist",
     tagline: "Crafting digital realities that breathe.",
@@ -65,7 +66,6 @@ Software used:
             tags: ["3ds Max 2025", "V-Ray 7", "After Effects"],
             creationDate: "December 2025",
             thumbnailUrl: "/Image all projet/Nomad/Comp - carre (00338).png",
-            // @ts-ignore
             videoUrl: "/Image all projet/Nomad/Comp - carre.mp4",
             gallery: [],
             category: "Design / Animation",
@@ -84,7 +84,6 @@ Software used:
             tags: ["Houdini", "Redshift", "After Effects"],
             creationDate: "December 2025",
             thumbnailUrl: "/Image all projet/Particles_Houdini_Colandmacarthur/IMG_2801.jpeg",
-            // @ts-ignore
             videoUrl: "/Image all projet/Particles_Houdini_Colandmacarthur/B3_A1_J_Copine_Particules_animation.mp4",
             gallery: [
                 "/Image all projet/Particles_Houdini_Colandmacarthur/IMG_2801.jpeg",
@@ -190,9 +189,7 @@ Software used:
             creationDate: "July 2025",
             thumbnailUrl: "/Image all projet/IKEA/camera1.jpg",
             thumbnailObjectPosition: "40% center",
-            // @ts-ignore
             heroUrl: "/Image all projet/IKEA/all.jpg",
-            // @ts-ignore
             videoUrl: "/Image all projet/IKEA/IKEA FINAL2_1.mp4",
             galleryLayout: "mixed",
             gallery: [
@@ -224,7 +221,6 @@ Software used:
             tags: ["Unity", "Blender", "Substance Painter"],
             creationDate: "June 2025",
             thumbnailUrl: "/Image all projet/Visu_Champs/IMG_2169.png",
-            // @ts-ignore
             videoUrl: "/Image all projet/Visu_Champs/Rendu_final_Q2_VISU_4.mp4",
             galleryLayout: "landscape",
             gallery: [
@@ -245,7 +241,6 @@ Software Used:
             tags: ["Blender", "After Effects"],
             creationDate: "June 2025",
             thumbnailUrl: "/Image all projet/Lamp PIX/Lampe_image.png",
-            // @ts-ignore
             videoUrl: "/Image all projet/Lamp PIX/Lampe_final_TFA.mp4",
             galleryLayout: "landscape",
             gallery: [
@@ -269,7 +264,6 @@ Software used:
             thumbnailUrl: "/Image all projet/Mecha_VFX/B2A2_Copine_J_Mecha.jpg",
             thumbnailObjectPosition: "center top",
             heroObjectPosition: "center top",
-            // @ts-ignore
             videoUrl: [
                 "/Image all projet/Mecha_VFX/robot_TFA.mp4",
                 "/Image all projet/Mecha_VFX/B2A2_Copine_J_Breakdown.mp4"
@@ -321,7 +315,6 @@ Software used:
             tags: ["Blender", "After Effects"],
             creationDate: "December 2024",
             thumbnailUrl: "/Image all projet/Retour vers le futur/Ai Ehance.png",
-            // @ts-ignore
             videoUrl: [
                 "/Image all projet/Retour vers le futur/rendu_final_final_vfx.mp4",
                 "/Image all projet/Retour vers le futur/break_down_final_VFX.mp4"
@@ -390,8 +383,8 @@ Software used:
     contact: {
         email: "jonathan.copin3@gmail.com",
         phone: "+3247403103",
-        emailJsServiceId: "YOUR_SERVICE_ID", // Placeholder
-        emailJsTemplateId: "YOUR_TEMPLATE_ID", // Placeholder
-        emailJsPublicKey: "YOUR_PUBLIC_KEY" // Placeholder
+        emailJsServiceId: "service_hy3ses8", // Placeholder
+        emailJsTemplateId: "template_mode1yp", // Placeholder
+        emailJsPublicKey: "ePyPbzLi4Z2nxxaPK" // Placeholder
     }
 }

@@ -3,12 +3,13 @@ import { useParams, Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { ChevronRight, X, ChevronLeft } from 'lucide-react';
 import { content } from '../constants';
+import type { Project } from '../types';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 
 export const ProjectDetails = () => {
     const { id } = useParams();
-    const project = content.projects.find(p => p.id === id) || content.projects[Number(id)];
+    const project = (content.projects.find(p => p.id === id) || content.projects[Number(id)]) as Project;
     const { scrollY } = useScroll();
     const heroScale = useTransform(scrollY, [0, 500], [1, 1.1]);
     const heroOpacity = useTransform(scrollY, [0, 500], [1, 0.5]);
@@ -18,7 +19,6 @@ export const ProjectDetails = () => {
     const prevProject = content.projects[currentIndex > 0 ? currentIndex - 1 : content.projects.length - 1];
     const nextProject = content.projects[currentIndex < content.projects.length - 1 ? currentIndex + 1 : 0];
 
-    // @ts-ignore
     const allImages = project ? [project.thumbnailUrl, ...(project.gallery || [])] : [];
 
     // Scroll to top on project change
@@ -28,7 +28,8 @@ export const ProjectDetails = () => {
 
     const suggestedProjects = useMemo(() => {
         const otherProjects = content.projects.filter(p => p.id !== id);
-        return [...otherProjects].sort(() => 0.5 - Math.random()).slice(0, 2);
+        // Return first 2 projects that aren't the current one
+        return otherProjects.slice(0, 2);
     }, [id]);
 
     // Keyboard Navigation
@@ -60,12 +61,10 @@ export const ProjectDetails = () => {
                     style={{ scale: heroScale, opacity: heroOpacity }}
                     className="absolute inset-0 z-0"
                 >
-                    {/* @ts-ignore */}
                     <img
                         src={project.heroUrl || project.thumbnailUrl}
                         alt={project.title}
                         className="w-full h-full object-cover"
-                        // @ts-ignore
                         style={{ objectPosition: project.heroObjectPosition || 'center' }}
                     />
                     <div className="absolute inset-0 bg-black/40" />
@@ -112,9 +111,7 @@ export const ProjectDetails = () => {
                     </div>
 
                     <div className="flex gap-4 items-center">
-                        {/* @ts-ignore */}
                         {project.liveUrl && (
-                            // @ts-ignore
                             <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="px-4 py-1.5 bg-primary rounded-full text-xs font-medium text-black hover:bg-primary-hover transition-colors">
                                 View Live
                             </a>
@@ -148,7 +145,6 @@ export const ProjectDetails = () => {
                                     <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 border-b border-white/10 pb-2">Creation Date</h3>
                                     <div className="flex flex-wrap gap-2">
                                         <span className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300">
-                                            {/* @ts-ignore */}
                                             {project.creationDate}
                                         </span>
                                     </div>
@@ -158,25 +154,19 @@ export const ProjectDetails = () => {
                             <div className="md:col-span-8">
                                 <h3 className="text-4xl font-display font-semibold mb-8 text-white">The Story</h3>
                                 <div className="prose prose-invert prose-lg text-gray-300 leading-relaxed max-w-none font-light">
-                                    {/* @ts-ignore */}
                                     <p className="whitespace-pre-line">{project.longDescription || project.description}</p>
                                 </div>
                             </div>
                         </div>
                     );
 
-                    // @ts-ignore
-                    const videos = Array.isArray(project.videoUrl) ? project.videoUrl : [project.videoUrl];
+                    const videos = (Array.isArray(project.videoUrl) ? project.videoUrl : [project.videoUrl]).filter(Boolean) as string[];
 
                     const VideoSection = (
                         <div className="space-y-8 mb-32">
-                            {/* @ts-ignore */}
-                            {videos.map((vid, idx) => vid && (
-                                <div key={idx} className={`w-full rounded-3xl overflow-hidden relative shadow-2xl border border-white/10 ${
-                                    // @ts-ignore
-                                    project.mediaAspect === 'square' ? 'aspect-square' :
-                                        // @ts-ignore
-                                        project.mediaAspect === '9/16' ? 'aspect-[9/16] max-w-md mx-auto' : 'aspect-video'
+                            {videos.map((vid, idx) => (
+                                <div key={idx} className={`w-full rounded-3xl overflow-hidden relative shadow-2xl border border-white/10 ${project.mediaAspect === 'square' ? 'aspect-square' :
+                                    project.mediaAspect === '9/16' ? 'aspect-[9/16] max-w-md mx-auto' : 'aspect-video'
                                     }`}>
                                     <video
                                         src={vid}
@@ -184,6 +174,7 @@ export const ProjectDetails = () => {
                                         autoPlay={idx === 0}
                                         loop
                                         muted
+                                        playsInline
                                         className="w-full h-full object-contain cursor-auto bg-black"
                                         style={{ cursor: 'auto' }}
                                     />
@@ -194,39 +185,32 @@ export const ProjectDetails = () => {
 
                     return (
                         <>
-                            {/* @ts-ignore */}
                             {project.mediaOrder === 'video-first' ? (
                                 <>
-                                    {/* @ts-ignore */}
                                     {project.videoUrl && VideoSection}
                                     {TextSection}
                                 </>
                             ) : (
                                 <>
                                     {TextSection}
-                                    {/* @ts-ignore */}
                                     {project.videoUrl && VideoSection}
                                 </>
                             )}
 
                             {/* More Videos Section (Rig/Modeling) */}
-                            {/* @ts-ignore */}
                             {project.moreVideos && (
                                 <div className="mb-32">
-                                    {/* @ts-ignore */}
                                     <h3 className="text-4xl font-display font-semibold mb-12 text-center">{project.moreVideos.title}</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                        {/* @ts-ignore */}
                                         {project.moreVideos.videos.map((vid, idx) => (
-                                            <div key={idx} className={`rounded-3xl overflow-hidden relative border border-white/10 ${
-                                                // @ts-ignore
-                                                idx === 0 && project.moreVideos.videos.length % 2 !== 0 ? 'md:col-span-2 aspect-video' : 'aspect-video'
+                                            <div key={idx} className={`rounded-3xl overflow-hidden relative border border-white/10 ${idx === 0 && project.moreVideos!.videos.length % 2 !== 0 ? 'md:col-span-2 aspect-video' : 'aspect-video'
                                                 }`}>
                                                 <video
                                                     src={vid}
                                                     controls
                                                     loop
                                                     muted
+                                                    playsInline
                                                     className="w-full h-full object-contain bg-black"
                                                 />
                                             </div>
@@ -240,7 +224,6 @@ export const ProjectDetails = () => {
 
                 {/* Gallery Grid (Bento) */}
                 <h3 className="text-4xl font-display font-semibold mb-12 text-center">Visual Exploration</h3>
-                {/* @ts-ignore */}
                 <div className={`grid grid-cols-1 md:grid-cols-2 mb-32 ${project.galleryLayout === 'architecture' ? 'gap-4' : 'gap-8'}`}>
                     {allImages.slice(1).map((img, i) => (
                         <motion.div
@@ -250,17 +233,13 @@ export const ProjectDetails = () => {
                             viewport={{ once: true, margin: "-50px" }}
                             transition={{ delay: i * 0.1 }}
                             onClick={() => setSelectedImageIndex(i + 1)}
-                            className={`rounded-3xl overflow-hidden cursor-pointer relative group ${
-                                // @ts-ignore
-                                project.galleryLayout === 'mixed'
-                                    ? (i % 3 === 0 ? 'md:col-span-2 aspect-[21/9]' : 'aspect-square')
-                                    : // @ts-ignore
-                                    project.galleryLayout === 'landscape'
-                                        ? 'md:col-span-2 aspect-video'
-                                        : // @ts-ignore
-                                        project.galleryLayout === 'architecture'
-                                            ? (i < 2 ? 'aspect-square' : 'md:col-span-2 aspect-video')
-                                            : 'aspect-square'
+                            className={`rounded-3xl overflow-hidden cursor-pointer relative group ${project.galleryLayout === 'mixed'
+                                ? (i % 3 === 0 ? 'md:col-span-2 aspect-[21/9]' : 'aspect-square')
+                                : project.galleryLayout === 'landscape'
+                                    ? 'md:col-span-2 aspect-video'
+                                    : project.galleryLayout === 'architecture'
+                                        ? (i < 2 ? 'aspect-square' : 'md:col-span-2 aspect-video')
+                                        : 'aspect-square'
                                 }`}
                         >
                             <img

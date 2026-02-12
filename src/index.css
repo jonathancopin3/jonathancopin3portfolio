@@ -20,6 +20,12 @@
   --font-size-mono: clamp(10px, 1.2vw, 12px);
   --spacing-sm: 0.75rem;
   --spacing-md: 1rem;
+  --spacing-md: 1rem;
+}
+
+section {
+  scroll-margin-top: 100px;
+  /* Handle navbar offset globally */
 }
 
 body {
@@ -29,7 +35,16 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  overflow-x: hidden;
   cursor: none;
+  /* Hide default cursor globally */
+}
+
+/* Ensure links and buttons don't show pointer */
+a,
+button,
+[role="button"] {
+  cursor: none !important;
 }
 
 /* Scrollbar */
@@ -260,5 +275,189 @@ body {
   .slide-content {
     padding: 1rem;
     width: 100%;
+  }
+}
+
+/* --- Hero Slider Styles (Consolidated from lumina-interactive-list.tsx) --- */
+
+/* Slide Content */
+.slide-content {
+  z-index: 2;
+  text-align: center;
+  pointer-events: none;
+  width: 100%;
+  padding: 2rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+
+.slide-title {
+  font-family: var(--font-display);
+  color: var(--color-text);
+  text-shadow: 0 4px 20px #00000080;
+  margin-bottom: 1rem;
+  font-size: clamp(3rem, 6vw, 6rem);
+  line-height: 1;
+}
+
+.slide-description {
+  font-family: var(--font-sans);
+  color: var(--color-text-muted);
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 1.25rem;
+}
+
+.slide-view-projects {
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+  z-index: 10;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 1px solid #fff3;
+  border-radius: 999px;
+  padding: .5rem 1rem;
+  font-size: .9rem;
+  text-decoration: none;
+  transition: all .3s;
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  cursor: none;
+}
+
+.slide-view-projects:hover {
+  color: #000;
+  background: #fff;
+  border-color: #fff;
+}
+
+/* Navigation */
+.slides-navigation {
+  z-index: 10;
+  gap: 2rem;
+  display: flex;
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translate(-50%);
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.slide-nav-item {
+  cursor: default;
+  pointer-events: none;
+  opacity: .5;
+  transition: opacity .3s;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  padding: 0.5rem 0;
+  height: 1.5rem;
+}
+
+.slide-nav-item.active {
+  opacity: 1;
+}
+
+.slide-progress-line {
+  background: #fff3;
+  width: clamp(40px, 8vw, 100px);
+  height: 2px;
+  position: relative;
+  overflow: hidden;
+  transition: width 0.3s ease;
+}
+
+.slide-nav-title {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: left;
+  font-size: .8rem;
+  display: block;
+}
+
+.slide-nav-item:not(.active):not(:hover) .slide-nav-title {
+  display: none;
+}
+
+/* Only show title on hover or active */
+.slide-progress-fill {
+  background: #fff;
+  width: 0%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Counters */
+.slide-number,
+.slide-total {
+  font-size: 1rem;
+  font-family: var(--font-mono);
+  z-index: 10;
+  color: var(--color-text-muted);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.slide-number {
+  left: 2rem;
+}
+
+.slide-total {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .slide-title {
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  .slide-description {
+    padding: 0 1rem;
+    font-size: 1rem;
+  }
+
+  .slides-navigation {
+    justify-content: center;
+    gap: .5rem;
+    width: 90%;
+    bottom: 6rem;
+  }
+
+  .slide-progress-line {
+    width: 40px;
+  }
+
+  .slide-nav-title {
+    display: none !important;
+  }
+
+  .slide-number {
+    font-size: .8rem;
+    top: auto;
+    bottom: 2rem;
+    left: 1rem;
+    transform: none;
+  }
+
+  .slide-view-projects {
+    padding: .4rem .8rem;
+    font-size: .8rem;
+    bottom: 2rem;
+    right: 1rem;
+  }
+
+  .slide-content {
+    width: 100%;
+    padding: 1rem;
   }
 }

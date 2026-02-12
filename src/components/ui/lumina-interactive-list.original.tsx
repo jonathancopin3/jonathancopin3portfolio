@@ -2,19 +2,8 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import gsap from 'gsap';
 
-const SLIDES_DATA = [
-    { title: "Premium Window Frame", description: "", media: "/Image all projet/Horman - Chassis/chassis_fenetre_sections_L_exploded_studio.png" },
-    { title: "Nomad Apple Watch Strap", description: "", media: "/Image all projet/Nomad/Nomad_picture_upscale.png" },
-    { title: "Premium Microphone", description: "", media: "/Image all projet/Mic/Mike_v2__03_argent.png" },
-    { title: "Devialet Mania", description: "", media: "/Image all projet/Devialet/Rendu_Devialet_Mania_1.jpeg" },
-    { title: "Technical Project : Component Modeling", description: "", media: "/Image all projet/Wilo/Wilo_boite_final.png" },
-    { title: "VFX Animation", description: "", media: "/Image all projet/Retour vers le futur/Ai Ehance.png" }
-];
-
 export function Component() {
     const containerRef = useRef<HTMLDivElement>(null);
-
-    const slides = SLIDES_DATA;
 
     useEffect(() => {
         // --- MAIN LOGIC ---
@@ -41,15 +30,25 @@ export function Component() {
             // --- GLOBAL STATE ---
             let currentSlideIndex = 0;
             let isTransitioning = false;
-            let shaderMaterial: THREE.ShaderMaterial, renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.OrthographicCamera;
-            let slideTextures: THREE.Texture[] = [];
+            let shaderMaterial: any, renderer: any, scene: any, camera: any;
+            let slideTextures: any[] = [];
             let texturesLoaded = false;
             let autoSlideTimer: any = null;
             let progressAnimation: any = null;
             let sliderEnabled = false;
 
             const SLIDE_DURATION = () => SLIDER_CONFIG.settings.autoSlideSpeed;
+            const PROGRESS_UPDATE_INTERVAL = 50;
             const TRANSITION_DURATION = () => SLIDER_CONFIG.settings.transitionDuration;
+
+            const slides = [
+                { title: "Premium Window Frame", description: "", media: "/Image all projet/Horman - Chassis/chassis_fenetre_sections_L_exploded_studio.png" },
+                { title: "Nomad Apple Watch Strap", description: "", media: "/Image all projet/Nomad/Nomad_picture_upscale.png" },
+                { title: "Premium Microphone", description: "", media: "/Image all projet/Mic/Mike_v2__03_argent.png" },
+                { title: "Devialet Mania", description: "", media: "/Image all projet/Devialet/Rendu_Devialet_Mania_1.jpeg" },
+                { title: "Technical Project : Component Modeling", description: "", media: "/Image all projet/Wilo/Wilo_boite_final.png" },
+                { title: "VFX Animation", description: "", media: "/Image all projet/Retour vers le futur/Ai Ehance.png" }
+            ];
 
             // --- SHADERS ---
             const vertexShader = `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`;
@@ -186,14 +185,16 @@ export function Component() {
                     item.dataset.slideIndex = String(i);
                     item.innerHTML = `<div class="slide-progress-line"><div class="slide-progress-fill"></div></div><div class="slide-nav-title">${slide.title}</div>`;
 
-                    // Interaction disabled via CSS
+                    // Click listener removed for display-only mode
+                    item.style.pointerEvents = "none";
+                    item.style.cursor = "default";
 
                     nav.appendChild(item);
                 });
             };
 
             const updateNavigationState = (idx: number) => document.querySelectorAll(".slide-nav-item").forEach((el, i) => el.classList.toggle("active", i === idx));
-
+            const updateSlideProgress = (idx: number, prog: number) => { const el = document.querySelectorAll(".slide-nav-item")[idx]?.querySelector(".slide-progress-fill") as HTMLElement; if (el) { el.style.width = `${prog}%`; el.style.opacity = '1'; } };
             const fadeSlideProgress = (idx: number) => { const el = document.querySelectorAll(".slide-nav-item")[idx]?.querySelector(".slide-progress-fill") as HTMLElement; if (el) { el.style.opacity = '0'; setTimeout(() => el.style.width = "0%", 300); } };
             const quickResetProgress = (idx: number) => { const el = document.querySelectorAll(".slide-nav-item")[idx]?.querySelector(".slide-progress-fill") as HTMLElement; if (el) { el.style.transition = "width 0.2s ease-out"; el.style.width = "0%"; setTimeout(() => el.style.transition = "width 0.1s ease, opacity 0.3s ease", 200); } };
             const updateCounter = (idx: number) => {
@@ -204,44 +205,25 @@ export function Component() {
             const startAutoSlideTimer = () => {
                 if (!texturesLoaded || !sliderEnabled) return;
                 stopAutoSlideTimer();
-
-                const el = document.querySelectorAll(".slide-nav-item")[currentSlideIndex]?.querySelector(".slide-progress-fill") as HTMLElement;
-                if (!el) return;
-
-                // Ensure visible and start from 0
-                gsap.set(el, { width: "0%", opacity: 1 });
-
-                progressAnimation = gsap.to(el, {
-                    width: "100%",
-                    duration: SLIDE_DURATION() / 1000,
-                    ease: "none",
-                    onComplete: () => {
+                let progress = 0;
+                const increment = (100 / SLIDE_DURATION()) * PROGRESS_UPDATE_INTERVAL;
+                progressAnimation = setInterval(() => {
+                    if (!sliderEnabled) { stopAutoSlideTimer(); return; }
+                    progress += increment;
+                    updateSlideProgress(currentSlideIndex, progress);
+                    if (progress >= 100) {
+                        clearInterval(progressAnimation); progressAnimation = null;
                         fadeSlideProgress(currentSlideIndex);
                         if (!isTransitioning) handleSlideChange();
                     }
-                });
+                }, PROGRESS_UPDATE_INTERVAL);
             };
-            const stopAutoSlideTimer = () => {
-                if (progressAnimation) {
-                    progressAnimation.kill();
-                    progressAnimation = null;
-                }
-                if (autoSlideTimer) {
-                    clearTimeout(autoSlideTimer);
-                    autoSlideTimer = null;
-                }
-            };
-            const safeStartTimer = (delay = 0) => {
-                stopAutoSlideTimer();
-                if (sliderEnabled && texturesLoaded) {
-                    if (delay > 0) autoSlideTimer = setTimeout(startAutoSlideTimer, delay);
-                    else startAutoSlideTimer();
-                }
-            };
+            const stopAutoSlideTimer = () => { if (progressAnimation) clearInterval(progressAnimation); if (autoSlideTimer) clearTimeout(autoSlideTimer); progressAnimation = null; autoSlideTimer = null; };
+            const safeStartTimer = (delay = 0) => { stopAutoSlideTimer(); if (sliderEnabled && texturesLoaded) { if (delay > 0) autoSlideTimer = setTimeout(startAutoSlideTimer, delay); else startAutoSlideTimer(); } };
 
-            const loadImageTexture = (src: string) => new Promise<THREE.Texture>((resolve, reject) => {
+            const loadImageTexture = (src: string) => new Promise<any>((resolve, reject) => {
                 const l = new THREE.TextureLoader();
-                l.load(src, (t: THREE.Texture) => { t.minFilter = t.magFilter = THREE.LinearFilter; t.userData = { size: new THREE.Vector2((t.image as HTMLImageElement).width, (t.image as HTMLImageElement).height) }; resolve(t); }, undefined, reject);
+                l.load(src, (t: any) => { t.minFilter = t.magFilter = THREE.LinearFilter; t.userData = { size: new THREE.Vector2(t.image.width, t.image.height) }; resolve(t); }, undefined, reject);
             });
 
             const initRenderer = async () => {
@@ -293,55 +275,6 @@ export function Component() {
             // Listeners
             document.addEventListener("visibilitychange", () => document.hidden ? stopAutoSlideTimer() : (!isTransitioning && safeStartTimer()));
             window.addEventListener("resize", () => { if (renderer) { renderer.setSize(window.innerWidth, window.innerHeight); shaderMaterial.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight); } });
-
-            // Touch / Swipe Logic
-            let touchStartX = 0;
-            let touchEndX = 0;
-
-            const handleTouchStart = (e: TouchEvent) => {
-                touchStartX = e.changedTouches[0].screenX;
-            };
-
-            const handleTouchEnd = (e: TouchEvent) => {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
-            };
-
-            const handleSwipe = () => {
-                if (isTransitioning || !sliderEnabled) return;
-                const limit = 50; // Min diff to trigger swipe
-                if (touchEndX < touchStartX - limit) {
-                    // Swipe Left -> Next
-                    navigateToSlide((currentSlideIndex + 1) % slides.length);
-                } else if (touchEndX > touchStartX + limit) {
-                    // Swipe Right -> Prev
-                    let prevIndex = currentSlideIndex - 1;
-                    if (prevIndex < 0) prevIndex = slides.length - 1;
-                    navigateToSlide(prevIndex);
-                }
-            };
-
-            const canvasEl = document.querySelector(".webgl-canvas");
-            if (canvasEl) {
-                // Touch
-                canvasEl.addEventListener('touchstart', handleTouchStart as any, { passive: true });
-                canvasEl.addEventListener('touchend', handleTouchEnd as any, { passive: true });
-
-                // Mouse (Desktop)
-                canvasEl.addEventListener('mousedown', (e: any) => {
-                    touchStartX = e.clientX;
-                });
-
-                canvasEl.addEventListener('mouseup', (e: any) => {
-                    touchEndX = e.clientX;
-                    handleSwipe();
-                });
-
-                // Optional: Cancel drag if mouse leaves window or unexpected interaction
-                canvasEl.addEventListener('mouseleave', () => {
-                    // Reset if needed, or interaction just cancels
-                });
-            }
         };
 
         initApplication();
@@ -351,13 +284,24 @@ export function Component() {
 
     return (
         <>
-
             <main className="slider-wrapper" ref={containerRef}>
                 <canvas className="webgl-canvas"></canvas>
                 <span className="slide-number" id="slideNumber">01</span>
-                <a href="#projects" className="slide-view-projects">View projects</a>
+                <a
+                    href="#projects"
+                    className="slide-view-projects"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        const element = document.getElementById('projects');
+                        if (element) {
+                            element.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }}
+                >
+                    View projects
+                </a>
 
-
+                {/* Slide content removed */}
 
                 <nav className="slides-navigation" id="slidesNav"></nav>
             </main>

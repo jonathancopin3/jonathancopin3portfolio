@@ -41,17 +41,13 @@ export const Experience = () => {
                                             {exp.role}
                                         </h3>
                                         <p className="text-gray-400 text-sm mb-4 font-medium">
-                                            {
-                                                // @ts-ignore
-                                                exp.companyUrl ? (
-                                                    // @ts-ignore
-                                                    <a href={exp.companyUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
-                                                        {exp.company}
-                                                    </a>
-                                                ) : (
-                                                    exp.company
-                                                )
-                                            }
+                                            {exp.companyUrl ? (
+                                                <a href={exp.companyUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                                                    {exp.company}
+                                                </a>
+                                            ) : (
+                                                exp.company
+                                            )}
                                         </p>
                                         <ul className="space-y-2">
                                             {exp.description.map((item, i) => (

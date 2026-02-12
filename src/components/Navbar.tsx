@@ -41,20 +41,7 @@ export const Navbar = () => {
         setIsMenuOpen(false);
     };
 
-    const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-        if (location.pathname === '/') {
-            e.preventDefault();
-            const element = document.querySelector(href);
-            if (element) {
-                const offset = 80; // height of navbar
-                const elementPosition = element.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - offset;
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: "smooth"
-                });
-            }
-        }
+    const handleNavClick = () => {
         setIsMenuOpen(false);
     };
 
@@ -87,7 +74,7 @@ export const Navbar = () => {
                             <a
                                 key={link.name}
                                 href={location.pathname === '/' ? link.href : `/${link.href}`}
-                                onClick={(e) => handleNavClick(e, link.href)}
+                                onClick={handleNavClick}
                                 className="text-xs font-medium text-white/80 hover:text-white transition-colors tracking-wide"
                             >
                                 {link.name}
@@ -124,7 +111,7 @@ export const Navbar = () => {
                                         initial={{ y: 20, opacity: 0 }}
                                         animate={{ y: 0, opacity: 1 }}
                                         transition={{ delay: i * 0.05 }}
-                                        onClick={(e) => handleNavClick(e, link.href)}
+                                        onClick={handleNavClick}
                                         className="text-2xl font-display font-medium text-white hover:text-primary transition-colors"
                                     >
                                         {link.name}

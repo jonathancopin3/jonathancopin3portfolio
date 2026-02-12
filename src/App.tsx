@@ -12,6 +12,14 @@ const ScrollToAnchor = () => {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
+    // Disable browser's default scroll restoration on initial load
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (hash) {
       const element = document.getElementById(hash.substring(1));
       if (element) {
