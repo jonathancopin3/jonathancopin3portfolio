@@ -82,7 +82,7 @@ Software used:
 - NanoBanana Pro`,
             tags: ["3ds Max 2025", "NanoBanana Pro"],
             creationDate: "December 2025",
-            thumbnailUrl: "/placeholder-truck.jpg", // Placeholder until user provides image
+            thumbnailUrl: "/Image all projet/John Cokerill/Rendu_finale_uspcale_finale.png",
             gallery: [],
             category: "Design",
             mediaAspect: "16/9"
