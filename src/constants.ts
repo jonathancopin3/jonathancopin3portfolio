@@ -66,7 +66,7 @@ Software used:
             tags: ["3ds Max 2025", "V-Ray 7", "After Effects"],
             creationDate: "December 2025",
             thumbnailUrl: "/Image all projet/Nomad/Comp - carre (00338).png",
-            videoUrl: "/Image all projet/Nomad/Comp - carre.mp4",
+            videoUrl: "/Image all projet/Nomad/Comp - carre_1.mp4",
             gallery: [],
             category: "Design / Animation",
             mediaAspect: "square"
