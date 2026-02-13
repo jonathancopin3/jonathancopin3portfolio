@@ -83,7 +83,9 @@ Software used:
             tags: ["3ds Max 2025", "NanoBanana Pro"],
             creationDate: "December 2025",
             thumbnailUrl: "/Image all projet/John Cokerill/Rendu_finale_uspcale_finale.png",
-            gallery: [],
+            gallery: [
+                "/Image all projet/John Cokerill/Rendu_finale_uspcale_finale.png"
+            ],
             category: "Design",
             mediaAspect: "16/9"
         },
