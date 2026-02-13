@@ -7,6 +7,7 @@ const SLIDES_DATA = [
     { title: "Nomad Apple Watch Strap", description: "", media: "/Image all projet/Nomad/Nomad_picture_upscale.png" },
     { title: "Premium Microphone", description: "", media: "/Image all projet/Mic/Mike_v2__03_argent.png" },
     { title: "Devialet Mania", description: "", media: "/Image all projet/Devialet/Rendu_Devialet_Mania_1.jpeg" },
+    { title: "Truck Simulator", description: "", media: "/Image all projet/John Cokerill/Rendu_finale_uspcale_finale.png" },
     { title: "Technical Project : Component Modeling", description: "", media: "/Image all projet/Wilo/Wilo_boite_final.png" },
     { title: "VFX Animation", description: "", media: "/Image all projet/Retour vers le futur/Ai Ehance.png" }
 ];
