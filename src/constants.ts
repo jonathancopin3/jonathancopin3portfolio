@@ -72,6 +72,22 @@ Software used:
             mediaAspect: "square"
         },
         {
+            id: "truck-simulator",
+            title: "Truck Simulator",
+            description: "Creation of a cinematic and realistic image of a truck simulator.",
+            longDescription: `Creation of a cinematic and realistic image of a truck simulator.
+
+Software used:
+- 3ds Max 2025
+- NanoBanana Pro`,
+            tags: ["3ds Max 2025", "NanoBanana Pro"],
+            creationDate: "December 2025",
+            thumbnailUrl: "/placeholder-truck.jpg", // Placeholder until user provides image
+            gallery: [],
+            category: "Design",
+            mediaAspect: "16/9"
+        },
+        {
             id: "sand-simulation",
             title: "Sand Simulation",
             description: "Creation of a visual experiment showcasing a luxury logo sculpted procedurally in sand.",
