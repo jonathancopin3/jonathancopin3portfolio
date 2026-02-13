@@ -87,7 +87,8 @@ Software used:
                 "/Image all projet/John Cokerill/Rendu_finale_uspcale_finale.png"
             ],
             category: "Design",
-            mediaAspect: "16/9"
+            mediaAspect: "16/9",
+            galleryLayout: "landscape"
         },
         {
             id: "sand-simulation",
