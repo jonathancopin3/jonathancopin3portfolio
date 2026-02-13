@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const TABS = [
     { id: 'all', label: 'All Projects', projects: [] },
     { id: 'highlights', label: 'Highlights', projects: ['premium-window-frame', 'nomad-apple-watch', 'devialet-mania', 'premium-microphone', 'vfx-animation'] },
-    { id: 'design', label: 'Design', projects: ['premium-window-frame', 'nomad-apple-watch', 'devialet-mania', 'premium-microphone', 'ikea-lockers'] },
+    { id: 'design', label: 'Design', projects: ['premium-window-frame', 'nomad-apple-watch', 'truck-simulator', 'devialet-mania', 'premium-microphone', 'ikea-lockers'] },
     { id: 'animation', label: 'Animation', projects: ['nomad-apple-watch', 'pixar-lamp', 'the-big-robots', 'vfx-animation'] }
 ];
 
