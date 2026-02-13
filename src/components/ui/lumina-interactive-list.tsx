@@ -45,8 +45,8 @@ export function Component() {
             let shaderMaterial: THREE.ShaderMaterial, renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.OrthographicCamera;
             let slideTextures: THREE.Texture[] = [];
             let texturesLoaded = false;
-            let autoSlideTimer: any = null;
-            let progressAnimation: any = null;
+            let autoSlideTimer: ReturnType<typeof setTimeout> | null = null;
+            let progressAnimation: gsap.core.Tween | null = null;
             let sliderEnabled = false;
 
             const SLIDE_DURATION = () => SLIDER_CONFIG.settings.autoSlideSpeed;
