@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { ChevronRight, X, ChevronLeft } from 'lucide-react';
@@ -6,93 +6,6 @@ import { content } from '../constants';
 import type { Project } from '../types';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
-
-// Extracted VideoPlayer component to fix React Hook rules
-const VideoPlayer = ({ src, poster, mediaAspect }: { src: string, poster?: string, mediaAspect?: string }) => {
-    const videoRef = useRef<HTMLVideoElement>(null);
-    const [showPlayButton, setShowPlayButton] = useState(false);
-    const [isPlaying, setIsPlaying] = useState(false);
-
-    // Try to autoplay, show button if it fails
-    useEffect(() => {
-        const video = videoRef.current;
-        if (!video) return;
-
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-            playPromise
-                .then(() => {
-                    setIsPlaying(true);
-                    setShowPlayButton(false);
-                })
-                .catch((error) => {
-                    // Autoplay blocked, show manual play button
-                    console.log("Autoplay prevented:", error);
-                    setShowPlayButton(true);
-                });
-        }
-    }, []);
-
-    const handlePlayClick = () => {
-        const video = videoRef.current;
-        if (video) {
-            video.play().then(() => {
-                setIsPlaying(true);
-                setShowPlayButton(false);
-            }).catch(e => console.error("Play failed:", e));
-        }
-    };
-
-    return (
-        <div
-            className={`w-full rounded-3xl overflow-hidden relative shadow-2xl border border-white/10 ${mediaAspect === 'square' ? 'aspect-square' :
-                mediaAspect === '9/16' ? 'aspect-[9/16] max-w-md mx-auto' : 'aspect-video'
-                }`}
-        >
-            <video
-                ref={videoRef}
-                src={src}
-                poster={poster}
-                controls
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="metadata"
-                className="w-full h-full object-contain cursor-auto bg-black"
-                style={{ cursor: 'auto' }}
-                onPlay={() => {
-                    setIsPlaying(true);
-                    setShowPlayButton(false);
-                }}
-                onPause={() => setIsPlaying(false)}
-                onError={(e) => {
-                    console.error('Video error:', e);
-                    setShowPlayButton(true);
-                }}
-            />
-            {/* Manual Play Button for Mobile */}
-            {showPlayButton && !isPlaying && (
-                <button
-                    onClick={handlePlayClick}
-                    className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity hover:bg-black/60 cursor-pointer z-10"
-                    style={{ cursor: 'pointer' }}
-                    aria-label="Play video"
-                >
-                    <div className="w-20 h-20 rounded-full bg-white/90 flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
-                        <svg
-                            className="w-10 h-10 text-black ml-1"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path d="M8 5v14l11-7z" />
-                        </svg>
-                    </div>
-                </button>
-            )}
-        </div>
-    );
-};
 
 export const ProjectDetails = () => {
     const { id } = useParams();
@@ -252,12 +165,7 @@ export const ProjectDetails = () => {
                     const VideoSection = (
                         <div className="space-y-8 mb-32">
                             {videos.map((vid, idx) => (
-                                <VideoPlayer
-                                    key={idx}
-                                    src={vid}
-                                    poster={project.thumbnailUrl}
-                                    mediaAspect={project.mediaAspect}
-                                />
+                                <VideoPlayer key={idx} vid={vid} project={project} />
                             ))}
                         </div>
                     );
@@ -411,6 +319,94 @@ export const ProjectDetails = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+        </div>
+    );
+};
+
+
+const VideoPlayer = ({ vid, project }: { vid: string, project: Project }) => {
+    const videoRef = React.useRef<HTMLVideoElement>(null);
+    const [showPlayButton, setShowPlayButton] = React.useState(false);
+    const [isPlaying, setIsPlaying] = React.useState(false);
+
+    // Try to autoplay, show button if it fails
+    React.useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+            playPromise
+                .then(() => {
+                    setIsPlaying(true);
+                    setShowPlayButton(false);
+                })
+                .catch(() => {
+                    // Autoplay blocked, show manual play button
+                    setShowPlayButton(true);
+                });
+        }
+    }, []);
+
+    const handlePlayClick = () => {
+        const video = videoRef.current;
+        if (video) {
+            video.play();
+            setIsPlaying(true);
+            setShowPlayButton(false);
+        }
+    };
+
+    return (
+        <div
+            className={`w-full rounded-3xl overflow-hidden relative shadow-2xl border border-white/10 ${project.mediaAspect === 'square' ? 'aspect-square' :
+                project.mediaAspect === '9/16' ? 'aspect-[9/16] max-w-md mx-auto' : 'aspect-video'
+                }`}
+        >
+            <video
+                ref={videoRef}
+                src={vid}
+                poster={project.thumbnailUrl}
+                controls
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                className="w-full h-full object-contain cursor-auto bg-black"
+                style={{ cursor: 'auto' }}
+                onPlay={() => {
+                    setIsPlaying(true);
+                    setShowPlayButton(false);
+                }}
+                onPause={() => setIsPlaying(false)}
+                onError={(e) => {
+                    console.error('Video error:', e);
+                    setShowPlayButton(true);
+                }}
+                onLoadedMetadata={() => {
+                    console.log('Video metadata loaded');
+                }}
+            />
+            {/* Manual Play Button for Mobile */}
+            {showPlayButton && !isPlaying && (
+                <button
+                    onClick={handlePlayClick}
+                    className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity hover:bg-black/60 cursor-pointer z-10"
+                    style={{ cursor: 'pointer' }}
+                    aria-label="Play video"
+                >
+                    <div className="w-20 h-20 rounded-full bg-white/90 flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+                        <svg
+                            className="w-10 h-10 text-black ml-1"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+                    </div>
+                </button>
+            )}
         </div>
     );
 };

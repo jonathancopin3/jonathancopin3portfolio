@@ -31,7 +31,7 @@ export interface Content {
     socials: {
         name: string;
         url: string;
-        icon: React.ComponentType<any>;
+        icon: React.ComponentType<unknown>;
     }[];
     skills: {
         name: string;

@@ -20,7 +20,7 @@ export function Component() {
     useEffect(() => {
         // --- MAIN LOGIC ---
         const initApplication = async () => {
-            const SLIDER_CONFIG: any = {
+            const SLIDER_CONFIG = {
                 settings: {
                     transitionDuration: 2.5, autoSlideSpeed: 2500, currentEffect: "glass", currentEffectPreset: "Default",
                     globalIntensity: 1.0, speedMultiplier: 1.0, distortionStrength: 1.0, colorEnhancement: 1.0,
@@ -43,7 +43,7 @@ export function Component() {
             let currentSlideIndex = 0;
             let isTransitioning = false;
             let shaderMaterial: THREE.ShaderMaterial, renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.OrthographicCamera;
-            let slideTextures: THREE.Texture[] = [];
+            const slideTextures: THREE.Texture[] = [];
             let texturesLoaded = false;
             let autoSlideTimer: ReturnType<typeof setTimeout> | null = null;
             let progressAnimation: gsap.core.Tween | null = null;
@@ -116,7 +116,7 @@ export function Component() {
         `;
 
             // --- CORE FUNCTIONS ---
-            const getEffectIndex = (n: string) => ({ glass: 0, frost: 1, ripple: 2, plasma: 3, timeshift: 4 } as any)[n] || 0;
+            const getEffectIndex = (n: string) => ({ glass: 0, frost: 1, ripple: 2, plasma: 3, timeshift: 4 } as Record<string, number>)[n] || 0;
 
             const updateShaderUniforms = () => {
                 if (!shaderMaterial) return;
@@ -130,7 +130,7 @@ export function Component() {
 
 
 
-            const updateContent = (_: number) => {
+            const updateContent = () => {
                 // Content removed as per user request
             };
 
@@ -325,16 +325,16 @@ export function Component() {
             const canvasEl = document.querySelector(".webgl-canvas");
             if (canvasEl) {
                 // Touch
-                canvasEl.addEventListener('touchstart', handleTouchStart as any, { passive: true });
-                canvasEl.addEventListener('touchend', handleTouchEnd as any, { passive: true });
+                canvasEl.addEventListener('touchstart', handleTouchStart as unknown as EventListener, { passive: true });
+                canvasEl.addEventListener('touchend', handleTouchEnd as unknown as EventListener, { passive: true });
 
                 // Mouse (Desktop)
-                canvasEl.addEventListener('mousedown', (e: any) => {
-                    touchStartX = e.clientX;
+                canvasEl.addEventListener('mousedown', (e: Event) => {
+                    touchStartX = (e as MouseEvent).clientX;
                 });
 
-                canvasEl.addEventListener('mouseup', (e: any) => {
-                    touchEndX = e.clientX;
+                canvasEl.addEventListener('mouseup', (e: Event) => {
+                    touchEndX = (e as MouseEvent).clientX;
                     handleSwipe();
                 });
 
@@ -348,7 +348,7 @@ export function Component() {
         initApplication();
 
         return () => { };
-    }, []);
+    }, [slides]);
 
     return (
         <>
