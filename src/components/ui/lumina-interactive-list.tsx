@@ -20,7 +20,7 @@ export function Component() {
     useEffect(() => {
         // --- MAIN LOGIC ---
         const initApplication = async () => {
-            const SLIDER_CONFIG = {
+            const SLIDER_CONFIG: any = {
                 settings: {
                     transitionDuration: 2.5, autoSlideSpeed: 2500, currentEffect: "glass", currentEffectPreset: "Default",
                     globalIntensity: 1.0, speedMultiplier: 1.0, distortionStrength: 1.0, colorEnhancement: 1.0,
@@ -150,7 +150,7 @@ export function Component() {
                 shaderMaterial.uniforms.uTexture1Size.value = currentTexture.userData.size;
                 shaderMaterial.uniforms.uTexture2Size.value = targetTexture.userData.size;
 
-                updateContent(targetIndex);
+                updateContent();
 
                 currentSlideIndex = targetIndex;
                 updateCounter(currentSlideIndex);

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { LiquidGlassCursor } from './components/LiquidGlassCursor';
 import { Home } from './pages/Home';
@@ -11,21 +11,39 @@ import { Analytics } from "@vercel/analytics/react"
 const ScrollToAnchor = () => {
   const { pathname, hash } = useLocation();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // Disable browser's default scroll restoration on initial load
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
+
+    // Force immediate scroll to top
     window.scrollTo(0, 0);
+
+    // Double check after a small delay to handle mobile browser oddities
+    const timeout = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   useEffect(() => {
-    if (hash) {
-      const element = document.getElementById(hash.substring(1));
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+    if (pathname === '/') {
+      // Allow hash scrolling
+      if (hash) {
+        const element = document.getElementById(hash.substring(1));
+        if (element) {
+          setTimeout(() => {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
+        }
+      } else {
+        // Force top if on homepage without hash
+        window.scrollTo(0, 0);
       }
     } else {
+      // For other routes, always top
       window.scrollTo(0, 0);
     }
   }, [pathname, hash]);
