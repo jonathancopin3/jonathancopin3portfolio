@@ -8,6 +8,26 @@ interface FlipbookProps {
 }
 
 export const Flipbook: React.FC<FlipbookProps> = ({ title, images, aspectRatio = 'A4' }) => {
+    // If it's a 2-page document (like Flyers), render them statically side-by-side
+    if (images.length === 2) {
+        return (
+            <div className="w-full py-16 flex flex-col items-center justify-center bg-white/[0.02] border border-white/5 rounded-[32px] my-12">
+                <div className="text-center mb-8 px-6">
+                    <h4 className="text-xl font-display font-medium text-white mb-2">{title}</h4>
+                    <p className="text-xs text-gray-400 font-mono">Front (left) / Back (right)</p>
+                </div>
+                <div className="w-full max-w-4xl px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+                        <img src={images[0]} alt="Flyer Front" className="w-full h-auto object-cover" />
+                    </div>
+                    <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+                        <img src={images[1]} alt="Flyer Back" className="w-full h-auto object-cover" />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     // Symmetrical page indexing: Page 0 is empty (left cover back), Page 1 is Cover (right cover)
     // We pad the images array to ensure cover page is right, and it ends correctly.
     const pages = React.useMemo(() => {
@@ -125,7 +145,7 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images, aspectRatio =
 
                 {/* Book Wrapper */}
                 <div 
-                    className={`relative w-full max-w-3xl ${bookAspect} flex perspective-[1500px] shadow-2xl rounded-lg overflow-visible`}
+                    className={`relative w-full ${isFullscreen ? 'max-w-5xl lg:max-w-6xl xl:max-w-7xl' : 'max-w-3xl'} ${bookAspect} flex perspective-[1500px] shadow-2xl rounded-lg overflow-visible`}
                     style={{ perspective: '2000px' }}
                 >
                     
