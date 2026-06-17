@@ -210,7 +210,6 @@ const ArtbookFullscreenPortal: React.FC<{
                     justifyContent: 'center',
                     overflow: 'hidden',
                     position: 'relative',
-                    borderRight: '2px solid #000',
                 }}>
                     {pages[leftPageIndex] ? (
                         <img
@@ -234,13 +233,7 @@ const ArtbookFullscreenPortal: React.FC<{
                             Jonathan Copine
                         </div>
                     )}
-                    {/* Spine gradient */}
-                    <div style={{
-                        position: 'absolute', right: 0, top: 0, bottom: 0,
-                        width: '32px',
-                        background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.5))',
-                        pointerEvents: 'none',
-                    }} />
+
                 </div>
 
                 {/* Right page */}
@@ -275,13 +268,7 @@ const ArtbookFullscreenPortal: React.FC<{
                             Jonathan Copine
                         </div>
                     )}
-                    {/* Spine gradient */}
-                    <div style={{
-                        position: 'absolute', left: 0, top: 0, bottom: 0,
-                        width: '32px',
-                        background: 'linear-gradient(to left, transparent, rgba(0,0,0,0.5))',
-                        pointerEvents: 'none',
-                    }} />
+
                 </div>
             </div>
 
@@ -566,10 +553,10 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images }) => {
                                         Jonathan Copine
                                     </div>
                                 )}
-                                <div className="absolute inset-y-0 right-0 w-6 bg-gradient-to-r from-transparent to-black/30 pointer-events-none" />
+
                             </div>
 
-                            <div className="w-0.5 bg-black/70 flex-shrink-0" />
+
 
                             <div className="flex-1 bg-[#1a1a1a] overflow-hidden relative">
                                 {pages[rightPageIndex] ? (
@@ -584,7 +571,7 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images }) => {
                                         Jonathan Copine
                                     </div>
                                 )}
-                                <div className="absolute inset-y-0 left-0 w-6 bg-gradient-to-l from-transparent to-black/30 pointer-events-none" />
+
                             </div>
                         </div>
                     </div>
