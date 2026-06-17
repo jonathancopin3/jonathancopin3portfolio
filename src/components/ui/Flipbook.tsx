@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { ChevronLeft, ChevronRight, Maximize2, Minimize2, Play, Pause } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize2, X, Play, Pause } from 'lucide-react';
 
 interface FlipbookProps {
     title: string;
@@ -8,420 +8,661 @@ interface FlipbookProps {
     aspectRatio?: 'A4' | 'square' | string;
 }
 
-export const Flipbook: React.FC<FlipbookProps> = ({ title, images, aspectRatio = 'A4' }) => {
-    // Symmetrical page indexing: Page 0 is empty (left cover back), Page 1 is Cover (right cover)
-    // We pad the images array to ensure cover page is right, and it ends correctly.
+// ─────────────────────────────────────────────
+// FULLSCREEN PORTAL OVERLAY for FLYER (2 images)
+// ─────────────────────────────────────────────
+const FlyerFullscreenPortal: React.FC<{
+    title: string;
+    images: string[];
+    onClose: () => void;
+}> = ({ title, images, onClose }) => {
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        const handleKey = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') onClose();
+        };
+        window.addEventListener('keydown', handleKey);
+        return () => {
+            document.body.style.overflow = '';
+            window.removeEventListener('keydown', handleKey);
+        };
+    }, [onClose]);
+
+    const overlay = (
+        <div
+            onClick={onClose}
+            style={{
+                position: 'fixed',
+                inset: 0,
+                zIndex: 99999,
+                background: 'rgba(0,0,0,0.97)',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100vw',
+                height: '100vh',
+                padding: '24px',
+                boxSizing: 'border-box',
+            }}
+        >
+            {/* Close button */}
+            <button
+                onClick={(e) => { e.stopPropagation(); onClose(); }}
+                style={{
+                    position: 'absolute',
+                    top: '24px',
+                    right: '24px',
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '50%',
+                    background: 'rgba(255,255,255,0.12)',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    color: 'white',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    zIndex: 10,
+                }}
+            >
+                <X size={22} />
+            </button>
+
+            {/* Title */}
+            <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+                <h4 style={{ color: 'white', fontSize: '18px', fontWeight: 600, margin: 0 }}>{title}</h4>
+                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '12px', margin: '4px 0 0' }}>
+                    Recto (gauche) / Verso (droite) — Appuyez sur Échap pour fermer
+                </p>
+            </div>
+
+            {/* Images side-by-side */}
+            <div
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: '16px',
+                    width: '100%',
+                    height: 'calc(100vh - 120px)',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxSizing: 'border-box',
+                }}
+            >
+                <img
+                    src={images[0]}
+                    alt="Recto"
+                    style={{
+                        maxHeight: '100%',
+                        maxWidth: '48%',
+                        objectFit: 'contain',
+                        borderRadius: '12px',
+                        boxShadow: '0 8px 48px rgba(0,0,0,0.8)',
+                    }}
+                />
+                <img
+                    src={images[1]}
+                    alt="Verso"
+                    style={{
+                        maxHeight: '100%',
+                        maxWidth: '48%',
+                        objectFit: 'contain',
+                        borderRadius: '12px',
+                        boxShadow: '0 8px 48px rgba(0,0,0,0.8)',
+                    }}
+                />
+            </div>
+        </div>
+    );
+
+    return createPortal(overlay, document.body);
+};
+
+// ─────────────────────────────────────────────
+// FULLSCREEN PORTAL OVERLAY for ARTBOOK (N images)
+// ─────────────────────────────────────────────
+const ArtbookFullscreenPortal: React.FC<{
+    title: string;
+    pages: string[]; // padded array with '' for empty half-pages
+    currentSpread: number;
+    totalSpreads: number;
+    onClose: () => void;
+    onNext: () => void;
+    onPrev: () => void;
+    onSetSpread: (n: number) => void;
+    isFlipping: 'next' | 'prev' | null;
+}> = ({ title, pages, currentSpread, totalSpreads, onClose, onNext, onPrev, onSetSpread, isFlipping }) => {
+    const leftPageIndex = currentSpread * 2;
+    const rightPageIndex = currentSpread * 2 + 1;
+
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        const handleKey = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') onClose();
+            if (e.key === 'ArrowRight') onNext();
+            if (e.key === 'ArrowLeft') onPrev();
+        };
+        window.addEventListener('keydown', handleKey);
+        return () => {
+            document.body.style.overflow = '';
+            window.removeEventListener('keydown', handleKey);
+        };
+    }, [onClose, onNext, onPrev]);
+
+    const pageLabel = currentSpread === 0
+        ? 'Couverture'
+        : currentSpread === totalSpreads - 1
+            ? 'Quatrième de couverture'
+            : `Pages ${leftPageIndex} – ${rightPageIndex}`;
+
+    const overlay = (
+        <div
+            style={{
+                position: 'fixed',
+                inset: 0,
+                zIndex: 99999,
+                background: '#0a0a0a',
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100vw',
+                height: '100vh',
+                boxSizing: 'border-box',
+                overflow: 'hidden',
+            }}
+        >
+            {/* Top bar */}
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '16px 24px',
+                borderBottom: '1px solid rgba(255,255,255,0.08)',
+                flexShrink: 0,
+            }}>
+                <div>
+                    <h4 style={{ color: 'white', fontSize: '16px', fontWeight: 600, margin: 0 }}>{title}</h4>
+                    <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', margin: '2px 0 0', fontFamily: 'monospace' }}>
+                        {pageLabel} · Flèches ← → pour naviguer · Échap pour fermer
+                    </p>
+                </div>
+                <button
+                    onClick={onClose}
+                    style={{
+                        width: '44px',
+                        height: '44px',
+                        borderRadius: '50%',
+                        background: 'rgba(255,255,255,0.1)',
+                        border: '1px solid rgba(255,255,255,0.15)',
+                        color: 'white',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                    }}
+                >
+                    <X size={20} />
+                </button>
+            </div>
+
+            {/* Book area — fills remaining height */}
+            <div style={{
+                flex: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '24px',
+                gap: '16px',
+                minHeight: 0,
+            }}>
+                {/* Prev arrow */}
+                <button
+                    onClick={onPrev}
+                    disabled={currentSpread === 0 || isFlipping !== null}
+                    style={{
+                        width: '48px',
+                        height: '48px',
+                        borderRadius: '50%',
+                        background: currentSpread === 0 ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.12)',
+                        border: '1px solid rgba(255,255,255,0.15)',
+                        color: currentSpread === 0 ? 'rgba(255,255,255,0.2)' : 'white',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: currentSpread === 0 ? 'not-allowed' : 'pointer',
+                        flexShrink: 0,
+                        transition: 'background 0.2s',
+                    }}
+                >
+                    <ChevronLeft size={24} />
+                </button>
+
+                {/* Double-page spread */}
+                <div style={{
+                    display: 'flex',
+                    height: '100%',
+                    maxHeight: '100%',
+                    flex: 1,
+                    boxShadow: '0 20px 80px rgba(0,0,0,0.8)',
+                    borderRadius: '4px',
+                    overflow: 'hidden',
+                    minWidth: 0,
+                }}>
+                    {/* Left page */}
+                    <div style={{
+                        flex: 1,
+                        background: '#1a1a1a',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        overflow: 'hidden',
+                        borderRight: '1px solid rgba(0,0,0,0.6)',
+                        position: 'relative',
+                    }}>
+                        {pages[leftPageIndex] ? (
+                            <img
+                                key={`left-${leftPageIndex}`}
+                                src={pages[leftPageIndex]}
+                                alt={`Page ${leftPageIndex}`}
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'contain',
+                                    display: 'block',
+                                }}
+                            />
+                        ) : (
+                            <div style={{
+                                width: '100%',
+                                height: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: 'rgba(255,255,255,0.1)',
+                                fontSize: '12px',
+                                fontFamily: 'monospace',
+                            }}>
+                                Jonathan Copine
+                            </div>
+                        )}
+                        {/* Spine shadow */}
+                        <div style={{
+                            position: 'absolute', right: 0, top: 0, bottom: 0,
+                            width: '24px',
+                            background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.3))',
+                            pointerEvents: 'none',
+                        }} />
+                    </div>
+
+                    {/* Spine line */}
+                    <div style={{ width: '2px', background: 'rgba(0,0,0,0.8)', flexShrink: 0 }} />
+
+                    {/* Right page */}
+                    <div style={{
+                        flex: 1,
+                        background: '#1a1a1a',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        overflow: 'hidden',
+                        position: 'relative',
+                    }}>
+                        {pages[rightPageIndex] ? (
+                            <img
+                                key={`right-${rightPageIndex}`}
+                                src={pages[rightPageIndex]}
+                                alt={`Page ${rightPageIndex}`}
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'contain',
+                                    display: 'block',
+                                }}
+                            />
+                        ) : (
+                            <div style={{
+                                width: '100%',
+                                height: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: 'rgba(255,255,255,0.1)',
+                                fontSize: '12px',
+                                fontFamily: 'monospace',
+                            }}>
+                                Jonathan Copine
+                            </div>
+                        )}
+                        {/* Spine shadow */}
+                        <div style={{
+                            position: 'absolute', left: 0, top: 0, bottom: 0,
+                            width: '24px',
+                            background: 'linear-gradient(to left, transparent, rgba(0,0,0,0.3))',
+                            pointerEvents: 'none',
+                        }} />
+                    </div>
+                </div>
+
+                {/* Next arrow */}
+                <button
+                    onClick={onNext}
+                    disabled={currentSpread === totalSpreads - 1 || isFlipping !== null}
+                    style={{
+                        width: '48px',
+                        height: '48px',
+                        borderRadius: '50%',
+                        background: currentSpread === totalSpreads - 1 ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.12)',
+                        border: '1px solid rgba(255,255,255,0.15)',
+                        color: currentSpread === totalSpreads - 1 ? 'rgba(255,255,255,0.2)' : 'white',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: currentSpread === totalSpreads - 1 ? 'not-allowed' : 'pointer',
+                        flexShrink: 0,
+                        transition: 'background 0.2s',
+                    }}
+                >
+                    <ChevronRight size={24} />
+                </button>
+            </div>
+
+            {/* Bottom progress bar */}
+            <div style={{
+                padding: '12px 24px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '12px',
+                borderTop: '1px solid rgba(255,255,255,0.06)',
+                flexShrink: 0,
+            }}>
+                <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', fontFamily: 'monospace' }}>Début</span>
+                <input
+                    type="range"
+                    min={0}
+                    max={totalSpreads - 1}
+                    value={currentSpread}
+                    onChange={(e) => {
+                        if (!isFlipping) onSetSpread(Number(e.target.value));
+                    }}
+                    style={{ width: '200px', accentColor: 'white', cursor: 'pointer' }}
+                />
+                <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', fontFamily: 'monospace' }}>Fin</span>
+                <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '11px', fontFamily: 'monospace', marginLeft: '12px' }}>
+                    {currentSpread + 1} / {totalSpreads}
+                </span>
+            </div>
+        </div>
+    );
+
+    return createPortal(overlay, document.body);
+};
+
+// ─────────────────────────────────────────────
+// MAIN FLIPBOOK COMPONENT
+// ─────────────────────────────────────────────
+export const Flipbook: React.FC<FlipbookProps> = ({ title, images }) => {
     const pages = React.useMemo(() => {
         const padded = ['', ...images];
-        if (padded.length % 2 !== 0) {
-            padded.push('');
-        }
+        if (padded.length % 2 !== 0) padded.push('');
         return padded;
     }, [images]);
 
-    const [currentSpread, setCurrentSpread] = useState(0); // 0 corresponds to cover (pages[0] & pages[1])
+    const [currentSpread, setCurrentSpread] = useState(0);
     const [isFlipping, setIsFlipping] = useState<'next' | 'prev' | null>(null);
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
-    
-    const containerRef = useRef<HTMLDivElement>(null);
+
     const totalSpreads = Math.ceil(pages.length / 2);
 
-    // Auto-play / Presentation mode timer
-    useEffect(() => {
-        let interval: ReturnType<typeof setInterval>;
-        if (isPlaying) {
-            interval = setInterval(() => {
-                if (currentSpread < totalSpreads - 1) {
-                    handleNext();
-                } else {
-                    setIsPlaying(false);
-                }
-            }, 3000);
-        }
-        return () => clearInterval(interval);
-    }, [isPlaying, currentSpread, totalSpreads]);
-
-    // Handle Escape key to exit fullscreen
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape' && isFullscreen) {
-                setIsFullscreen(false);
-            }
-        };
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [isFullscreen]);
-
-    // Prevent body scrolling when fullscreen is active
-    useEffect(() => {
-        if (isFullscreen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = '';
-        }
-        return () => {
-            document.body.style.overflow = '';
-        };
-    }, [isFullscreen]);
-
-    const toggleFullscreen = () => {
-        setIsFullscreen(!isFullscreen);
-    };
-
-    const handleNext = () => {
+    const handleNext = useCallback(() => {
         if (isFlipping || currentSpread >= totalSpreads - 1) return;
         setIsFlipping('next');
         setTimeout(() => {
             setCurrentSpread(prev => prev + 1);
             setIsFlipping(null);
-        }, 600); // matches CSS transition duration (600ms)
-    };
+        }, 400);
+    }, [isFlipping, currentSpread, totalSpreads]);
 
-    const handlePrev = () => {
+    const handlePrev = useCallback(() => {
         if (isFlipping || currentSpread <= 0) return;
         setIsFlipping('prev');
         setTimeout(() => {
             setCurrentSpread(prev => prev - 1);
             setIsFlipping(null);
-        }, 600);
-    };
+        }, 400);
+    }, [isFlipping, currentSpread]);
 
-    // --- CASE 1: 2-PAGE DOCUMENT (FLYERS) SIDE-BY-SIDE static view ---
-    if (images.length === 2) {
-        const flyerContent = (
-            <div 
-                ref={containerRef}
-                className={`select-none relative ${
-                    isFullscreen 
-                        ? 'fixed inset-0 z-[100] bg-black/98 w-screen h-screen py-10 px-6 flex flex-col items-center justify-center' 
-                        : 'w-full py-16 flex flex-col items-center justify-center relative bg-white/[0.02] border border-white/5 rounded-[32px] my-12'
-                }`}
-            >
-                {isFullscreen && (
-                    <button
-                        onClick={() => setIsFullscreen(false)}
-                        className="absolute top-8 right-8 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all cursor-pointer z-[110] shadow-lg"
-                        title="Exit Full-screen"
-                    >
-                        <Minimize2 size={24} />
-                    </button>
-                )}
+    // Auto-play
+    useEffect(() => {
+        if (!isPlaying) return;
+        const id = setInterval(() => {
+            if (currentSpread < totalSpreads - 1) {
+                handleNext();
+            } else {
+                setIsPlaying(false);
+            }
+        }, 3000);
+        return () => clearInterval(id);
+    }, [isPlaying, currentSpread, totalSpreads, handleNext]);
 
-                <div className="text-center mb-8 px-6">
-                    <h4 className="text-xl font-display font-medium text-white mb-2">{title}</h4>
-                    <p className="text-xs text-gray-400 font-mono">Front (left) / Back (right)</p>
-                </div>
-                
-                <div 
-                    className={`w-full ${isFullscreen ? 'max-w-5xl lg:max-w-6xl xl:max-w-7xl max-h-[80vh] overflow-y-auto' : 'max-w-4xl'} px-8 grid grid-cols-1 md:grid-cols-2 gap-8`}
-                >
-                    <div 
-                        onClick={() => setIsFullscreen(!isFullscreen)}
-                        className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl cursor-pointer hover:border-white/20 hover:scale-[1.01] transition-all duration-300"
-                    >
-                        <img src={images[0]} alt="Flyer Front" className="w-full h-auto object-cover" />
-                    </div>
-                    <div 
-                        onClick={() => setIsFullscreen(!isFullscreen)}
-                        className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl cursor-pointer hover:border-white/20 hover:scale-[1.01] transition-all duration-300"
-                    >
-                        <img src={images[1]} alt="Flyer Back" className="w-full h-auto object-cover" />
-                    </div>
-                </div>
+    // Keyboard navigation when NOT in fullscreen (fullscreen handles its own keys)
+    useEffect(() => {
+        if (isFullscreen) return;
+        const handleKey = (e: KeyboardEvent) => {
+            if (e.key === 'ArrowRight') handleNext();
+            if (e.key === 'ArrowLeft') handlePrev();
+        };
+        window.addEventListener('keydown', handleKey);
+        return () => window.removeEventListener('keydown', handleKey);
+    }, [isFullscreen, handleNext, handlePrev]);
 
-                {/* Bottom Controls Bar for Flyer */}
-                <div className="flex flex-wrap items-center justify-center gap-6 mt-10 px-6">
-                    <button
-                        onClick={toggleFullscreen}
-                        className="p-2.5 rounded-full bg-white/5 hover:bg-white/10 text-white/80 hover:text-white border border-white/10 cursor-pointer transition-colors"
-                        title={isFullscreen ? 'Exit Full-screen' : 'Enter Full-screen'}
-                    >
-                        {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
-                    </button>
-                </div>
-            </div>
-        );
-
-        if (isFullscreen) {
-            return createPortal(flyerContent, document.body);
-        }
-        return flyerContent;
-    }
-
-    // --- CASE 2: MULTI-PAGE FLIPBOOK ---
     const leftPageIndex = currentSpread * 2;
     const rightPageIndex = currentSpread * 2 + 1;
-    const bookAspect = aspectRatio === 'A4' ? 'aspect-[1.414/1]' : 'aspect-[2/1]';
 
-    const flipbookContent = (
-        <div 
-            ref={containerRef}
-            className={`select-none relative ${
-                isFullscreen 
-                    ? 'fixed inset-0 z-[100] bg-black/98 w-screen h-screen py-10 px-6 flex flex-col items-center justify-center' 
-                    : 'w-full py-16 flex flex-col items-center justify-center relative bg-white/[0.02] border border-white/5 rounded-[32px] my-12'
-            }`}
-        >
-            {isFullscreen && (
-                <button
-                    onClick={() => setIsFullscreen(false)}
-                    className="absolute top-8 right-8 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all cursor-pointer z-[110] shadow-lg"
-                    title="Exit Full-screen"
-                >
-                    <Minimize2 size={24} />
-                </button>
-            )}
+    // ── FLYER (2 images) ──────────────────────────────────────────────────
+    if (images.length === 2) {
+        return (
+            <>
+                {/* Inline Flyer view */}
+                <div className="w-full py-12 flex flex-col items-center bg-white/[0.02] border border-white/5 rounded-[32px] my-8 select-none">
+                    <div className="text-center mb-8 px-6">
+                        <h4 className="text-xl font-display font-medium text-white mb-1">{title}</h4>
+                        <p className="text-xs text-gray-500 font-mono">Recto / Verso</p>
+                    </div>
 
-            {/* Header / Info */}
-            <div className="text-center mb-8 px-6">
-                <h4 className="text-xl font-display font-medium text-white mb-2">{title}</h4>
-                <p className="text-xs text-gray-400 font-mono">
-                    {currentSpread === 0 
-                        ? 'Cover Page' 
-                        : currentSpread === totalSpreads - 1 
-                            ? 'Back Cover' 
-                            : `Pages ${leftPageIndex} - ${rightPageIndex} / ${images.length}`
-                    }
+                    <div className="w-full max-w-4xl px-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div
+                            className="rounded-2xl overflow-hidden border border-white/10 shadow-xl cursor-pointer hover:border-white/25 transition-all duration-300"
+                            onClick={() => setIsFullscreen(true)}
+                        >
+                            <img src={images[0]} alt="Recto" className="w-full h-auto object-contain block" />
+                        </div>
+                        <div
+                            className="rounded-2xl overflow-hidden border border-white/10 shadow-xl cursor-pointer hover:border-white/25 transition-all duration-300"
+                            onClick={() => setIsFullscreen(true)}
+                        >
+                            <img src={images[1]} alt="Verso" className="w-full h-auto object-contain block" />
+                        </div>
+                    </div>
+
+                    <div className="mt-8 flex items-center justify-center gap-4">
+                        <button
+                            onClick={() => setIsFullscreen(true)}
+                            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/8 hover:bg-white/15 text-white/80 hover:text-white border border-white/10 cursor-pointer transition-all text-sm"
+                            title="Voir en plein écran"
+                        >
+                            <Maximize2 size={15} />
+                            Plein écran
+                        </button>
+                    </div>
+                </div>
+
+                {/* Fullscreen Portal */}
+                {isFullscreen && (
+                    <FlyerFullscreenPortal
+                        title={title}
+                        images={images}
+                        onClose={() => setIsFullscreen(false)}
+                    />
+                )}
+            </>
+        );
+    }
+
+    // ── ARTBOOK (N images) ────────────────────────────────────────────────
+    const pageLabel = currentSpread === 0
+        ? 'Couverture'
+        : currentSpread === totalSpreads - 1
+            ? 'Quatrième de couverture'
+            : `Pages ${leftPageIndex} – ${rightPageIndex}`;
+
+    return (
+        <>
+            {/* Inline Artbook view */}
+            <div className="w-full py-12 flex flex-col items-center bg-white/[0.02] border border-white/5 rounded-[32px] my-8 select-none">
+                {/* Header */}
+                <div className="text-center mb-6 px-6">
+                    <h4 className="text-xl font-display font-medium text-white mb-1">{title}</h4>
+                    <p className="text-xs text-gray-500 font-mono">{pageLabel}</p>
+                </div>
+
+                {/* Book + arrows */}
+                <div className="w-full max-w-4xl px-4 flex items-center justify-center gap-3">
+                    {/* Prev */}
+                    <button
+                        onClick={handlePrev}
+                        disabled={currentSpread === 0 || isFlipping !== null}
+                        className={`p-3 rounded-full border transition-all flex-shrink-0 ${
+                            currentSpread === 0
+                                ? 'border-white/5 text-white/20 cursor-not-allowed'
+                                : 'border-white/15 text-white/70 hover:bg-white/8 hover:text-white cursor-pointer'
+                        }`}
+                        aria-label="Page précédente"
+                    >
+                        <ChevronLeft size={22} />
+                    </button>
+
+                    {/* Double-page spread */}
+                    <div
+                        className="flex-1 aspect-[2/1] rounded-lg overflow-hidden shadow-2xl cursor-pointer"
+                        onClick={() => setIsFullscreen(true)}
+                        title="Cliquez pour ouvrir en plein écran"
+                        style={{ minWidth: 0 }}
+                    >
+                        <div className="w-full h-full flex">
+                            {/* Left page */}
+                            <div className="flex-1 bg-[#1a1a1a] overflow-hidden relative border-r border-black/60">
+                                {pages[leftPageIndex] ? (
+                                    <img
+                                        key={`il-${leftPageIndex}`}
+                                        src={pages[leftPageIndex]}
+                                        alt={`Page ${leftPageIndex}`}
+                                        className="w-full h-full object-contain block"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center text-[10px] text-white/10 font-mono">
+                                        Jonathan Copine
+                                    </div>
+                                )}
+                                <div className="absolute inset-y-0 right-0 w-6 bg-gradient-to-r from-transparent to-black/30 pointer-events-none" />
+                            </div>
+
+                            {/* Spine */}
+                            <div className="w-0.5 bg-black/70 flex-shrink-0" />
+
+                            {/* Right page */}
+                            <div className="flex-1 bg-[#1a1a1a] overflow-hidden relative">
+                                {pages[rightPageIndex] ? (
+                                    <img
+                                        key={`ir-${rightPageIndex}`}
+                                        src={pages[rightPageIndex]}
+                                        alt={`Page ${rightPageIndex}`}
+                                        className="w-full h-full object-contain block"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center text-[10px] text-white/10 font-mono">
+                                        Jonathan Copine
+                                    </div>
+                                )}
+                                <div className="absolute inset-y-0 left-0 w-6 bg-gradient-to-l from-transparent to-black/30 pointer-events-none" />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Next */}
+                    <button
+                        onClick={handleNext}
+                        disabled={currentSpread === totalSpreads - 1 || isFlipping !== null}
+                        className={`p-3 rounded-full border transition-all flex-shrink-0 ${
+                            currentSpread === totalSpreads - 1
+                                ? 'border-white/5 text-white/20 cursor-not-allowed'
+                                : 'border-white/15 text-white/70 hover:bg-white/8 hover:text-white cursor-pointer'
+                        }`}
+                        aria-label="Page suivante"
+                    >
+                        <ChevronRight size={22} />
+                    </button>
+                </div>
+
+                {/* Controls */}
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-4 px-6">
+                    {/* Auto-play */}
+                    <button
+                        onClick={() => setIsPlaying(p => !p)}
+                        className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/10 cursor-pointer transition-colors"
+                        title={isPlaying ? 'Pause' : 'Lecture automatique'}
+                    >
+                        {isPlaying ? <Pause size={15} /> : <Play size={15} />}
+                    </button>
+
+                    {/* Progress slider */}
+                    <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-mono text-gray-600">Début</span>
+                        <input
+                            type="range"
+                            min={0}
+                            max={totalSpreads - 1}
+                            value={currentSpread}
+                            onChange={(e) => {
+                                if (!isFlipping) setCurrentSpread(Number(e.target.value));
+                            }}
+                            className="w-32 md:w-40 accent-white cursor-pointer"
+                        />
+                        <span className="text-[10px] font-mono text-gray-600">Fin</span>
+                    </div>
+
+                    {/* Fullscreen button */}
+                    <button
+                        onClick={() => setIsFullscreen(true)}
+                        className="flex items-center gap-2 px-5 py-2 rounded-full bg-white/8 hover:bg-white/15 text-white/80 hover:text-white border border-white/10 cursor-pointer transition-all text-sm"
+                        title="Ouvrir en plein écran"
+                    >
+                        <Maximize2 size={14} />
+                        Plein écran
+                    </button>
+                </div>
+
+                <p className="mt-3 text-[10px] text-gray-600 font-mono">
+                    Cliquez sur le livre ou sur « Plein écran » · Flèches ← → pour naviguer
                 </p>
             </div>
 
-            {/* Desktop Flipbook (preserve-3d) */}
-            <div className="w-full max-w-4xl px-8 flex items-center justify-center">
-                
-                {/* Previous Button */}
-                <button
-                    onClick={handlePrev}
-                    disabled={currentSpread === 0 || isFlipping !== null}
-                    className={`p-3 mr-4 rounded-full border transition-all ${
-                        currentSpread === 0 
-                            ? 'border-white/5 text-white/20 cursor-not-allowed' 
-                            : 'border-white/10 text-white/70 hover:bg-white/5 hover:text-white cursor-pointer'
-                    }`}
-                    aria-label="Previous Page"
-                >
-                    <ChevronLeft size={20} />
-                </button>
-
-                {/* Book Wrapper */}
-                <div 
-                    className={`relative w-full ${isFullscreen ? 'max-w-5xl lg:max-w-6xl xl:max-w-7xl max-h-[70vh]' : 'max-w-3xl'} ${bookAspect} flex perspective-[1500px] shadow-2xl rounded-lg overflow-visible`}
-                    style={{ perspective: '2000px' }}
-                >
-                    
-                    {/* Left Static Page */}
-                    <div 
-                        className={`w-1/2 h-full bg-[#1e1e1e] relative overflow-hidden rounded-l-lg border-r border-black/40`}
-                        style={{ transformOrigin: 'right center' }}
-                    >
-                        {pages[leftPageIndex] ? (
-                            <img 
-                                src={pages[leftPageIndex]} 
-                                alt={`Page ${leftPageIndex}`}
-                                className="w-full h-full object-cover"
-                            />
-                        ) : (
-                            <div className="w-full h-full bg-black/40 flex items-center justify-center text-xs text-white/20">
-                               Jonathan Copine
-                            </div>
-                        )}
-                        {/* Shadow Gradient near the Spine */}
-                        <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-r from-transparent to-black/35 pointer-events-none" />
-                    </div>
-
-                    {/* Right Static Page */}
-                    <div 
-                        className={`w-1/2 h-full bg-[#1e1e1e] relative overflow-hidden rounded-r-lg`}
-                        style={{ transformOrigin: 'left center' }}
-                    >
-                        {pages[rightPageIndex] ? (
-                            <img 
-                                src={pages[rightPageIndex]} 
-                                alt={`Page ${rightPageIndex}`}
-                                className="w-full h-full object-cover"
-                            />
-                        ) : (
-                            <div className="w-full h-full bg-black/40 flex items-center justify-center text-xs text-white/20">
-                               Jonathan Copine
-                            </div>
-                        )}
-                        {/* Shadow Gradient near the Spine */}
-                        <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-l from-transparent to-black/35 pointer-events-none" />
-                    </div>
-
-                    {/* 3D Flipping Page Layer */}
-                    {isFlipping === 'next' && (
-                        <div 
-                            className="absolute right-0 top-0 w-1/2 h-full rounded-r-lg overflow-visible pointer-events-none"
-                            style={{
-                                transformStyle: 'preserve-3d',
-                                transformOrigin: 'left center',
-                                animation: 'flipBookNext 0.6s ease-in-out forwards',
-                                zIndex: 10
-                            }}
-                        >
-                            {/* Front Side of Flipping Page (Current Right Page) */}
-                            <div 
-                                className="absolute inset-0 bg-[#1e1e1e] overflow-hidden rounded-r-lg"
-                                style={{ backfaceVisibility: 'hidden' }}
-                            >
-                                <img 
-                                    src={pages[rightPageIndex]} 
-                                    alt="Flipping Front"
-                                    className="w-full h-full object-cover"
-                                />
-                                <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-l from-transparent to-black/35 pointer-events-none" />
-                                <div className="absolute inset-0 bg-black/10 animation-fade-out" />
-                            </div>
-
-                            {/* Back Side of Flipping Page (Next Left Page) */}
-                            <div 
-                                className="absolute inset-0 bg-[#1e1e1e] overflow-hidden rounded-l-lg"
-                                style={{ 
-                                    backfaceVisibility: 'hidden',
-                                    transform: 'rotateY(180deg)'
-                                }}
-                            >
-                                <img 
-                                    src={pages[leftPageIndex + 2]} 
-                                    alt="Flipping Back"
-                                    className="w-full h-full object-cover"
-                                />
-                                <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-r from-transparent to-black/35 pointer-events-none" />
-                            </div>
-                        </div>
-                    )}
-
-                    {isFlipping === 'prev' && (
-                        <div 
-                            className="absolute left-0 top-0 w-1/2 h-full rounded-l-lg overflow-visible pointer-events-none"
-                            style={{
-                                transformStyle: 'preserve-3d',
-                                transformOrigin: 'right center',
-                                animation: 'flipBookPrev 0.6s ease-in-out forwards',
-                                zIndex: 10
-                            }}
-                        >
-                            {/* Front Side of Flipping Page (Current Left Page) */}
-                            <div 
-                                className="absolute inset-0 bg-[#1e1e1e] overflow-hidden rounded-l-lg"
-                                style={{ 
-                                    backfaceVisibility: 'hidden',
-                                    transform: 'rotateY(0deg)'
-                                }}
-                            >
-                                <img 
-                                    src={pages[leftPageIndex]} 
-                                    alt="Flipping Front"
-                                    className="w-full h-full object-cover"
-                                />
-                                <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-r from-transparent to-black/35 pointer-events-none" />
-                            </div>
-
-                            {/* Back Side of Flipping Page (Prev Right Page) */}
-                            <div 
-                                className="absolute inset-0 bg-[#1e1e1e] overflow-hidden rounded-r-lg"
-                                style={{ 
-                                    backfaceVisibility: 'hidden',
-                                    transform: 'rotateY(-180deg)'
-                                }}
-                            >
-                                <img 
-                                    src={pages[rightPageIndex - 2]} 
-                                    alt="Flipping Back"
-                                    className="w-full h-full object-cover"
-                                />
-                                <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-l from-transparent to-black/35 pointer-events-none" />
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Book spine line overlay */}
-                    <div className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-[1px] bg-black/60 shadow-lg pointer-events-none z-20" />
-                </div>
-
-                {/* Next Button */}
-                <button
-                    onClick={handleNext}
-                    disabled={currentSpread === totalSpreads - 1 || isFlipping !== null}
-                    className={`p-3 ml-4 rounded-full border transition-all ${
-                        currentSpread === totalSpreads - 1 
-                            ? 'border-white/5 text-white/20 cursor-not-allowed' 
-                            : 'border-white/10 text-white/70 hover:bg-white/5 hover:text-white cursor-pointer'
-                    }`}
-                    aria-label="Next Page"
-                >
-                    <ChevronRight size={20} />
-                </button>
-
-            </div>
-
-            {/* Custom 3D animations defined via scoped CSS style tag */}
-            <style>{`
-                @keyframes flipBookNext {
-                    0% {
-                        transform: rotateY(0deg);
-                    }
-                    100% {
-                        transform: rotateY(-180deg);
-                    }
-                }
-                @keyframes flipBookPrev {
-                    0% {
-                        transform: rotateY(0deg);
-                    }
-                    100% {
-                        transform: rotateY(180deg);
-                    }
-                }
-            `}</style>
-
-            {/* Bottom Controls Bar */}
-            <div className="flex flex-wrap items-center justify-center gap-6 mt-10 px-6">
-                
-                {/* Autoplay Play/Pause */}
-                <button
-                    onClick={() => setIsPlaying(!isPlaying)}
-                    className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/80 hover:text-white border border-white/10 cursor-pointer transition-colors"
-                    title={isPlaying ? 'Pause Auto-Play' : 'Start Auto-Play'}
-                >
-                    {isPlaying ? <Pause size={16} /> : <Play size={16} />}
-                </button>
-
-                {/* Page Indicator Slider */}
-                <div className="flex items-center gap-3">
-                    <span className="text-[10px] font-mono text-gray-500">Cover</span>
-                    <input 
-                        type="range"
-                        min="0"
-                        max={totalSpreads - 1}
-                        value={currentSpread}
-                        onChange={(e) => {
-                            if (isFlipping) return;
-                            setCurrentSpread(Number(e.target.value));
-                        }}
-                        disabled={isFlipping !== null}
-                        className="w-32 md:w-48 accent-white h-[3px] bg-white/10 rounded-lg appearance-none cursor-pointer"
-                    />
-                    <span className="text-[10px] font-mono text-gray-500">
-                        End
-                    </span>
-                </div>
-
-                {/* Full-screen Toggle */}
-                <button
-                    onClick={toggleFullscreen}
-                    className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/80 hover:text-white border border-white/10 cursor-pointer transition-colors"
-                    title={isFullscreen ? 'Exit Full-screen' : 'Enter Full-screen'}
-                >
-                    {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
-                </button>
-            </div>
-        </div>
+            {/* Fullscreen Portal — rendered separately to document.body */}
+            {isFullscreen && (
+                <ArtbookFullscreenPortal
+                    title={title}
+                    pages={pages}
+                    currentSpread={currentSpread}
+                    totalSpreads={totalSpreads}
+                    onClose={() => setIsFullscreen(false)}
+                    onNext={handleNext}
+                    onPrev={handlePrev}
+                    onSetSpread={(n) => { if (!isFlipping) setCurrentSpread(n); }}
+                    isFlipping={isFlipping}
+                />
+            )}
+        </>
     );
-
-    if (isFullscreen) {
-        return createPortal(flipbookContent, document.body);
-    }
-    return flipbookContent;
 };
