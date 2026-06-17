@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { ChevronLeft, ChevronRight, Maximize2, Minimize2, Play, Pause } from 'lucide-react';
 
 interface FlipbookProps {
@@ -8,26 +9,6 @@ interface FlipbookProps {
 }
 
 export const Flipbook: React.FC<FlipbookProps> = ({ title, images, aspectRatio = 'A4' }) => {
-    // If it's a 2-page document (like Flyers), render them statically side-by-side
-    if (images.length === 2) {
-        return (
-            <div className="w-full py-16 flex flex-col items-center justify-center bg-white/[0.02] border border-white/5 rounded-[32px] my-12">
-                <div className="text-center mb-8 px-6">
-                    <h4 className="text-xl font-display font-medium text-white mb-2">{title}</h4>
-                    <p className="text-xs text-gray-400 font-mono">Front (left) / Back (right)</p>
-                </div>
-                <div className="w-full max-w-4xl px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-                        <img src={images[0]} alt="Flyer Front" className="w-full h-auto object-cover" />
-                    </div>
-                    <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-                        <img src={images[1]} alt="Flyer Back" className="w-full h-auto object-cover" />
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
     // Symmetrical page indexing: Page 0 is empty (left cover back), Page 1 is Cover (right cover)
     // We pad the images array to ensure cover page is right, and it ends correctly.
     const pages = React.useMemo(() => {
@@ -106,14 +87,74 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images, aspectRatio =
         }, 600);
     };
 
-    // Calculate current visible page indexes
+    // --- CASE 1: 2-PAGE DOCUMENT (FLYERS) SIDE-BY-SIDE static view ---
+    if (images.length === 2) {
+        const flyerContent = (
+            <div 
+                ref={containerRef}
+                className={`select-none relative ${
+                    isFullscreen 
+                        ? 'fixed inset-0 z-[100] bg-black/98 w-screen h-screen py-10 px-6 flex flex-col items-center justify-center' 
+                        : 'w-full py-16 flex flex-col items-center justify-center relative bg-white/[0.02] border border-white/5 rounded-[32px] my-12'
+                }`}
+            >
+                {isFullscreen && (
+                    <button
+                        onClick={() => setIsFullscreen(false)}
+                        className="absolute top-8 right-8 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all cursor-pointer z-[110] shadow-lg"
+                        title="Exit Full-screen"
+                    >
+                        <Minimize2 size={24} />
+                    </button>
+                )}
+
+                <div className="text-center mb-8 px-6">
+                    <h4 className="text-xl font-display font-medium text-white mb-2">{title}</h4>
+                    <p className="text-xs text-gray-400 font-mono">Front (left) / Back (right)</p>
+                </div>
+                
+                <div 
+                    className={`w-full ${isFullscreen ? 'max-w-5xl lg:max-w-6xl xl:max-w-7xl max-h-[80vh] overflow-y-auto' : 'max-w-4xl'} px-8 grid grid-cols-1 md:grid-cols-2 gap-8`}
+                >
+                    <div 
+                        onClick={() => setIsFullscreen(!isFullscreen)}
+                        className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl cursor-pointer hover:border-white/20 hover:scale-[1.01] transition-all duration-300"
+                    >
+                        <img src={images[0]} alt="Flyer Front" className="w-full h-auto object-cover" />
+                    </div>
+                    <div 
+                        onClick={() => setIsFullscreen(!isFullscreen)}
+                        className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl cursor-pointer hover:border-white/20 hover:scale-[1.01] transition-all duration-300"
+                    >
+                        <img src={images[1]} alt="Flyer Back" className="w-full h-auto object-cover" />
+                    </div>
+                </div>
+
+                {/* Bottom Controls Bar for Flyer */}
+                <div className="flex flex-wrap items-center justify-center gap-6 mt-10 px-6">
+                    <button
+                        onClick={toggleFullscreen}
+                        className="p-2.5 rounded-full bg-white/5 hover:bg-white/10 text-white/80 hover:text-white border border-white/10 cursor-pointer transition-colors"
+                        title={isFullscreen ? 'Exit Full-screen' : 'Enter Full-screen'}
+                    >
+                        {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+                    </button>
+                </div>
+            </div>
+        );
+
+        if (isFullscreen) {
+            return createPortal(flyerContent, document.body);
+        }
+        return flyerContent;
+    }
+
+    // --- CASE 2: MULTI-PAGE FLIPBOOK ---
     const leftPageIndex = currentSpread * 2;
     const rightPageIndex = currentSpread * 2 + 1;
-
-    // Define dimensions based on Aspect Ratio
     const bookAspect = aspectRatio === 'A4' ? 'aspect-[1.414/1]' : 'aspect-[2/1]';
 
-    return (
+    const flipbookContent = (
         <div 
             ref={containerRef}
             className={`select-none relative ${
@@ -131,6 +172,7 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images, aspectRatio =
                     <Minimize2 size={24} />
                 </button>
             )}
+
             {/* Header / Info */}
             <div className="text-center mb-8 px-6">
                 <h4 className="text-xl font-display font-medium text-white mb-2">{title}</h4>
@@ -377,4 +419,9 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images, aspectRatio =
             </div>
         </div>
     );
+
+    if (isFullscreen) {
+        return createPortal(flipbookContent, document.body);
+    }
+    return flipbookContent;
 };
