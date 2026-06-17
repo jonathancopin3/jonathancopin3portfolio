@@ -61,24 +61,31 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images, aspectRatio =
         return () => clearInterval(interval);
     }, [isPlaying, currentSpread, totalSpreads]);
 
-    // Handle full-screen events
+    // Handle Escape key to exit fullscreen
     useEffect(() => {
-        const handleFullscreenChange = () => {
-            setIsFullscreen(!!document.fullscreenElement);
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && isFullscreen) {
+                setIsFullscreen(false);
+            }
         };
-        document.addEventListener('fullscreenchange', handleFullscreenChange);
-        return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
-    }, []);
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isFullscreen]);
+
+    // Prevent body scrolling when fullscreen is active
+    useEffect(() => {
+        if (isFullscreen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isFullscreen]);
 
     const toggleFullscreen = () => {
-        if (!containerRef.current) return;
-        if (!document.fullscreenElement) {
-            containerRef.current.requestFullscreen().catch((err) => {
-                console.error('Error entering fullscreen:', err);
-            });
-        } else {
-            document.exitFullscreen();
-        }
+        setIsFullscreen(!isFullscreen);
     };
 
     const handleNext = () => {
@@ -109,10 +116,21 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images, aspectRatio =
     return (
         <div 
             ref={containerRef}
-            className={`w-full py-16 flex flex-col items-center justify-center relative select-none ${
-                isFullscreen ? 'bg-black/95 h-screen py-6 px-4' : 'bg-white/[0.02] border border-white/5 rounded-[32px] my-12'
+            className={`select-none relative ${
+                isFullscreen 
+                    ? 'fixed inset-0 z-[100] bg-black/98 w-screen h-screen py-10 px-6 flex flex-col items-center justify-center' 
+                    : 'w-full py-16 flex flex-col items-center justify-center relative bg-white/[0.02] border border-white/5 rounded-[32px] my-12'
             }`}
         >
+            {isFullscreen && (
+                <button
+                    onClick={() => setIsFullscreen(false)}
+                    className="absolute top-8 right-8 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all cursor-pointer z-[110] shadow-lg"
+                    title="Exit Full-screen"
+                >
+                    <Minimize2 size={24} />
+                </button>
+            )}
             {/* Header / Info */}
             <div className="text-center mb-8 px-6">
                 <h4 className="text-xl font-display font-medium text-white mb-2">{title}</h4>
@@ -145,7 +163,7 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images, aspectRatio =
 
                 {/* Book Wrapper */}
                 <div 
-                    className={`relative w-full ${isFullscreen ? 'max-w-5xl lg:max-w-6xl xl:max-w-7xl' : 'max-w-3xl'} ${bookAspect} flex perspective-[1500px] shadow-2xl rounded-lg overflow-visible`}
+                    className={`relative w-full ${isFullscreen ? 'max-w-5xl lg:max-w-6xl xl:max-w-7xl max-h-[70vh]' : 'max-w-3xl'} ${bookAspect} flex perspective-[1500px] shadow-2xl rounded-lg overflow-visible`}
                     style={{ perspective: '2000px' }}
                 >
                     
