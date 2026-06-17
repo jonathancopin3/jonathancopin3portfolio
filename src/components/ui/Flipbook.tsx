@@ -30,94 +30,115 @@ const FlyerFullscreenPortal: React.FC<{
 
     const overlay = (
         <div
-            onClick={onClose}
             style={{
                 position: 'fixed',
                 inset: 0,
                 zIndex: 99999,
-                background: 'rgba(0,0,0,0.97)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
+                background: '#000',
                 width: '100vw',
                 height: '100vh',
-                padding: '24px',
-                boxSizing: 'border-box',
-                // Force cursor visible — overrides global "cursor: none !important"
+                overflow: 'hidden',
                 cursor: 'default',
             }}
         >
-            {/* Close button */}
+            {/* ── IMAGES: fill entire viewport, no gap ── */}
+            <div style={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+            }}>
+                {/* Recto */}
+                <div style={{
+                    flex: 1,
+                    background: '#111',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                }}>
+                    <img
+                        src={images[0]}
+                        alt="Recto"
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'contain',
+                            display: 'block',
+                        }}
+                    />
+                </div>
+
+                {/* Verso */}
+                <div style={{
+                    flex: 1,
+                    background: '#111',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                }}>
+                    <img
+                        src={images[1]}
+                        alt="Verso"
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'contain',
+                            display: 'block',
+                        }}
+                    />
+                </div>
+            </div>
+
+            {/* ── OVERLAY: top-left info pill ── */}
+            <div style={{
+                position: 'absolute',
+                top: '18px',
+                left: '18px',
+                background: 'rgba(0,0,0,0.6)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '999px',
+                padding: '6px 14px',
+                color: 'rgba(255,255,255,0.75)',
+                fontSize: '12px',
+                fontFamily: 'monospace',
+                pointerEvents: 'none',
+                userSelect: 'none',
+                zIndex: 20,
+            }}>
+                {title} · Recto (gauche) / Verso (droite) · Échap pour fermer
+            </div>
+
+            {/* ── OVERLAY: top-right close button ── */}
             <button
-                onClick={(e) => { e.stopPropagation(); onClose(); }}
+                onClick={onClose}
+                title="Fermer (Échap)"
                 style={{
                     position: 'absolute',
-                    top: '24px',
-                    right: '24px',
-                    width: '48px',
-                    height: '48px',
+                    top: '14px',
+                    right: '14px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '44px',
+                    height: '44px',
                     borderRadius: '50%',
-                    background: 'rgba(255,255,255,0.12)',
-                    border: '1px solid rgba(255,255,255,0.2)',
+                    border: '1px solid rgba(255,255,255,0.18)',
+                    background: 'rgba(0,0,0,0.6)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
                     color: 'white',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
                     cursor: 'pointer',
-                    zIndex: 10,
+                    zIndex: 20,
                 }}
             >
-                <X size={22} />
+                <X size={20} />
             </button>
-
-            {/* Title */}
-            <div style={{ textAlign: 'center', marginBottom: '16px', pointerEvents: 'none' }}>
-                <h4 style={{ color: 'white', fontSize: '18px', fontWeight: 600, margin: 0 }}>{title}</h4>
-                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '12px', margin: '4px 0 0' }}>
-                    Recto (gauche) / Verso (droite) — Appuyez sur Échap pour fermer
-                </p>
-            </div>
-
-            {/* Images side-by-side */}
-            <div
-                onClick={(e) => e.stopPropagation()}
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    gap: '16px',
-                    width: '100%',
-                    height: 'calc(100vh - 120px)',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxSizing: 'border-box',
-                }}
-            >
-                <img
-                    src={images[0]}
-                    alt="Recto"
-                    style={{
-                        maxHeight: '100%',
-                        maxWidth: '48%',
-                        objectFit: 'contain',
-                        borderRadius: '12px',
-                        boxShadow: '0 8px 48px rgba(0,0,0,0.8)',
-                    }}
-                />
-                <img
-                    src={images[1]}
-                    alt="Verso"
-                    style={{
-                        maxHeight: '100%',
-                        maxWidth: '48%',
-                        objectFit: 'contain',
-                        borderRadius: '12px',
-                        boxShadow: '0 8px 48px rgba(0,0,0,0.8)',
-                    }}
-                />
-            </div>
         </div>
     );
+
 
     return createPortal(overlay, document.body);
 };
