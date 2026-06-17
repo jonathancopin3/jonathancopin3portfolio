@@ -28,6 +28,32 @@ export const content: Content = {
     ],
     projects: [
         {
+            id: "tfe-liminal",
+            title: "TFE - Liminal",
+            description: "Graduation project (TFE) exploring liminal spaces and atmospheric renders.",
+            longDescription: `Graduation project (TFE) - Liminal.
+A 3D study exploring the atmospheric quality and emotional impact of liminal spaces, utilizing contrast, light, and composition.
+
+Software used:
+- Blender
+- After Effects
+- DaVinci
+- Houdini
+- Reaper`,
+            tags: ["Blender", "After Effects", "DaVinci", "Houdini", "Reaper"],
+            creationDate: "June 2026",
+            thumbnailUrl: "/Image all projet/TFE/B3A1_Liminal_Image_01.jpg",
+            videoUrl: "/Image all projet/TFE/B3A1_Liminal.mp4",
+            mediaOrder: "video-first",
+            gallery: [
+                "/Image all projet/TFE/B3A1_Liminal_Image_02.jpg",
+                "/Image all projet/TFE/B3A1_Liminal_Image_03.jpg"
+            ],
+            category: "TFE / CGI",
+            mediaAspect: "16/9",
+            galleryLayout: "landscape"
+        },
+        {
             id: "premium-window-frame",
             title: "Premium window frame",
             description: "Creation of a realistic premium window frame visualization.",

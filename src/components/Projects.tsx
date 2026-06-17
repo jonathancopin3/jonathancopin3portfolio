@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 
 const TABS = [
     { id: 'all', label: 'All Projects', projects: [] },
-    { id: 'highlights', label: 'Highlights', projects: ['premium-window-frame', 'nomad-apple-watch', 'devialet-mania', 'premium-microphone', 'vfx-animation'] },
+    { id: 'highlights', label: 'Highlights', projects: ['tfe-liminal', 'premium-window-frame', 'nomad-apple-watch', 'devialet-mania', 'premium-microphone', 'vfx-animation'] },
+    { id: 'tfe', label: 'TFE', projects: ['tfe-liminal'] },
     { id: 'design', label: 'Design', projects: ['premium-window-frame', 'nomad-apple-watch', 'truck-simulator', 'devialet-mania', 'premium-microphone', 'ikea-lockers'] },
     { id: 'animation', label: 'Animation', projects: ['nomad-apple-watch', 'pixar-lamp', 'the-big-robots', 'vfx-animation'] }
 ];

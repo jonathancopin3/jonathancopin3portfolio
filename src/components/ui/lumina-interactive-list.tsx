@@ -49,6 +49,24 @@ export function Component() {
             let progressAnimation: gsap.core.Tween | null = null;
             let sliderEnabled = false;
 
+            let renderRequested = false;
+            const render = () => {
+                if (!renderer || !texturesLoaded) {
+                    renderRequested = false;
+                    return;
+                }
+                renderer.render(scene, camera);
+                renderRequested = false;
+            };
+
+            const triggerRender = () => {
+                if (!texturesLoaded) return;
+                if (!renderRequested) {
+                    renderRequested = true;
+                    requestAnimationFrame(render);
+                }
+            };
+
             const SLIDE_DURATION = () => SLIDER_CONFIG.settings.autoSlideSpeed;
             const TRANSITION_DURATION = () => SLIDER_CONFIG.settings.transitionDuration;
 
@@ -156,17 +174,20 @@ export function Component() {
                 updateCounter(currentSlideIndex);
                 updateNavigationState(currentSlideIndex);
 
+                triggerRender();
                 gsap.fromTo(shaderMaterial.uniforms.uProgress,
                     { value: 0 },
                     {
                         value: 1,
                         duration: TRANSITION_DURATION(),
                         ease: "power2.inOut",
+                        onUpdate: triggerRender,
                         onComplete: () => {
                             shaderMaterial.uniforms.uProgress.value = 0;
                             shaderMaterial.uniforms.uTexture1.value = targetTexture;
                             shaderMaterial.uniforms.uTexture1Size.value = targetTexture.userData.size;
                             isTransitioning = false;
+                            triggerRender();
                             safeStartTimer(100);
                         }
                     }
@@ -281,8 +302,7 @@ export function Component() {
                     safeStartTimer(500);
                 }
 
-                const render = () => { requestAnimationFrame(render); renderer.render(scene, camera); };
-                render();
+                triggerRender();
             };
 
             createSlidesNavigation(); updateCounter(0);
@@ -293,7 +313,7 @@ export function Component() {
 
             // Listeners
             document.addEventListener("visibilitychange", () => document.hidden ? stopAutoSlideTimer() : (!isTransitioning && safeStartTimer()));
-            window.addEventListener("resize", () => { if (renderer) { renderer.setSize(window.innerWidth, window.innerHeight); shaderMaterial.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight); } });
+            window.addEventListener("resize", () => { if (renderer && shaderMaterial) { renderer.setSize(window.innerWidth, window.innerHeight); shaderMaterial.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight); triggerRender(); } });
 
             // Touch / Swipe Logic
             let touchStartX = 0;
