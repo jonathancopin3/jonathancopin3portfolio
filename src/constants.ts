@@ -51,7 +51,51 @@ Software used:
             ],
             category: "TFE / CGI",
             mediaAspect: "16/9",
-            galleryLayout: "landscape"
+            galleryLayout: "landscape",
+            flipbooks: [
+                {
+                    title: "TFE Flyers",
+                    images: [
+                        "/Image all projet/TFE/Flyers_FINALE_1.png",
+                        "/Image all projet/TFE/Flyers_FINALE_2.png"
+                    ],
+                    aspectRatio: "A4"
+                },
+                {
+                    title: "TFE Artbook",
+                    images: [
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0001.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0002.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0003.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0004.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0005.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0006.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0007.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0008.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0009.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0010.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0011.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0012.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0013.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0014.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0015.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0016.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0017.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0018.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0019.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0020.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0021.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0022.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0023.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0024.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0025.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0026.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0027.jpg",
+                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0028.jpg"
+                    ],
+                    aspectRatio: "A4"
+                }
+            ]
         },
         {
             id: "premium-window-frame",

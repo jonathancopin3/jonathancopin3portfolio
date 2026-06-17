@@ -20,6 +20,11 @@ export interface Project {
         title: string;
         videos: string[];
     };
+    flipbooks?: {
+        title: string;
+        images: string[];
+        aspectRatio?: string;
+    }[];
 }
 
 export interface Content {

@@ -6,6 +6,7 @@ import { content } from '../constants';
 import type { Project } from '../types';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
+import { Flipbook } from '../components/ui/Flipbook';
 
 export const ProjectDetails = () => {
     const { id } = useParams();
@@ -239,6 +240,26 @@ export const ProjectDetails = () => {
                         </motion.div>
                     ))}
                 </div>
+
+                {/* Flipbooks Section */}
+                {project.flipbooks && project.flipbooks.length > 0 && (
+                    <div className="my-32 border-t border-white/10 pt-24">
+                        <h2 className="text-4xl font-display font-semibold mb-6 text-center">Interactive Booklets</h2>
+                        <p className="text-sm text-gray-400 text-center max-w-xl mx-auto mb-16 font-light">
+                            Explore the printed design of this project. Turn the pages interactively to read the artbook and flyers.
+                        </p>
+                        <div className="space-y-16">
+                            {project.flipbooks.map((fb, idx) => (
+                                <Flipbook 
+                                    key={idx} 
+                                    title={fb.title} 
+                                    images={fb.images} 
+                                    aspectRatio={fb.aspectRatio} 
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                 {/* You May Also Like Section */}
                 <div className="border-t border-white/10 pt-24">
