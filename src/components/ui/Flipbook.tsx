@@ -216,11 +216,12 @@ const ArtbookFullscreenPortal: React.FC<{
                 cursor: 'default',
             }}
         >
-            {/* ── BOOK: fills entire viewport, NO padding ── */}
+            {/* ── BOOK: fills entire viewport, NO padding, pages glued ── */}
             <div style={{
                 position: 'absolute',
                 inset: 0,
                 display: 'flex',
+                gap: 0,
             }}>
                 {/* Left page */}
                 <div style={{
@@ -228,7 +229,7 @@ const ArtbookFullscreenPortal: React.FC<{
                     background: '#111',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
+                    justifyContent: 'flex-end',
                     overflow: 'hidden',
                     position: 'relative',
                 }}>
@@ -240,7 +241,8 @@ const ArtbookFullscreenPortal: React.FC<{
                             style={{
                                 width: '100%',
                                 height: '100%',
-                                objectFit: 'contain',
+                                objectFit: 'cover',
+                                objectPosition: 'right center',
                                 display: 'block',
                             }}
                         />
@@ -254,7 +256,6 @@ const ArtbookFullscreenPortal: React.FC<{
                             Jonathan Copine
                         </div>
                     )}
-
                 </div>
 
                 {/* Right page */}
@@ -263,7 +264,7 @@ const ArtbookFullscreenPortal: React.FC<{
                     background: '#111',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
+                    justifyContent: 'flex-start',
                     overflow: 'hidden',
                     position: 'relative',
                 }}>
@@ -275,7 +276,8 @@ const ArtbookFullscreenPortal: React.FC<{
                             style={{
                                 width: '100%',
                                 height: '100%',
-                                objectFit: 'contain',
+                                objectFit: 'cover',
+                                objectPosition: 'left center',
                                 display: 'block',
                             }}
                         />
@@ -289,7 +291,6 @@ const ArtbookFullscreenPortal: React.FC<{
                             Jonathan Copine
                         </div>
                     )}
-
                 </div>
             </div>
 
@@ -560,24 +561,22 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images }) => {
                         title="Cliquez pour ouvrir en plein écran"
                         style={{ minWidth: 0 }}
                     >
-                        <div className="w-full h-full flex">
-                            <div className="flex-1 bg-[#1a1a1a] overflow-hidden relative border-r border-black/60">
+                        <div className="w-full h-full flex" style={{ gap: 0 }}>
+                            <div className="flex-1 bg-[#1a1a1a] overflow-hidden relative" style={{ borderRight: 'none' }}>
                                 {pages[leftPageIndex] ? (
                                     <img
                                         key={`il-${leftPageIndex}`}
                                         src={pages[leftPageIndex]}
                                         alt={`Page ${leftPageIndex}`}
-                                        className="w-full h-full object-contain block"
+                                        className="w-full h-full object-cover block"
+                                        style={{ objectPosition: 'right center' }}
                                     />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center text-[10px] text-white/10 font-mono">
                                         Jonathan Copine
                                     </div>
                                 )}
-
                             </div>
-
-
 
                             <div className="flex-1 bg-[#1a1a1a] overflow-hidden relative">
                                 {pages[rightPageIndex] ? (
@@ -585,14 +584,14 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images }) => {
                                         key={`ir-${rightPageIndex}`}
                                         src={pages[rightPageIndex]}
                                         alt={`Page ${rightPageIndex}`}
-                                        className="w-full h-full object-contain block"
+                                        className="w-full h-full object-cover block"
+                                        style={{ objectPosition: 'left center' }}
                                     />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center text-[10px] text-white/10 font-mono">
                                         Jonathan Copine
                                     </div>
                                 )}
-
                             </div>
                         </div>
                     </div>

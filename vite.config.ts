@@ -7,5 +7,6 @@ export default defineConfig({
   server: {
     host: true, // Listen on all local IPs
     port: 5173,
+    open: true, // Ouvre automatiquement le navigateur au démarrage
   },
 });

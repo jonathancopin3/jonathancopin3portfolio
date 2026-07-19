@@ -345,13 +345,24 @@ export const ProjectDetails = () => {
 };
 
 
+// Helper: extract YouTube video ID from a URL
+const getYouTubeId = (url: string): string | null => {
+    const match = url.match(
+        /(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([\w-]{11})/
+    );
+    return match ? match[1] : null;
+};
+
 const VideoPlayer = ({ vid, project }: { vid: string, project: Project }) => {
     const videoRef = React.useRef<HTMLVideoElement>(null);
     const [showPlayButton, setShowPlayButton] = React.useState(false);
     const [isPlaying, setIsPlaying] = React.useState(false);
 
-    // Try to autoplay, show button if it fails
+    const youtubeId = getYouTubeId(vid);
+
+    // Try to autoplay for local videos, show button if it fails
     React.useEffect(() => {
+        if (youtubeId) return; // YouTube iframes handle their own playback
         const video = videoRef.current;
         if (!video) return;
 
@@ -363,11 +374,10 @@ const VideoPlayer = ({ vid, project }: { vid: string, project: Project }) => {
                     setShowPlayButton(false);
                 })
                 .catch(() => {
-                    // Autoplay blocked, show manual play button
                     setShowPlayButton(true);
                 });
         }
-    }, []);
+    }, [youtubeId]);
 
     const handlePlayClick = () => {
         const video = videoRef.current;
@@ -378,12 +388,29 @@ const VideoPlayer = ({ vid, project }: { vid: string, project: Project }) => {
         }
     };
 
+    const containerClass = `w-full rounded-3xl overflow-hidden relative shadow-2xl border border-white/10 ${
+        project.mediaAspect === 'square' ? 'aspect-square' :
+        project.mediaAspect === '9/16' ? 'aspect-[9/16] max-w-md mx-auto' : 'aspect-video'
+    }`;
+
+    // --- YouTube embed ---
+    if (youtubeId) {
+        return (
+            <div className={containerClass}>
+                <iframe
+                    src={`https://www.youtube.com/embed/${youtubeId}?rel=0&modestbranding=1`}
+                    title="YouTube video player"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="w-full h-full border-0"
+                />
+            </div>
+        );
+    }
+
+    // --- Local / hosted video ---
     return (
-        <div
-            className={`w-full rounded-3xl overflow-hidden relative shadow-2xl border border-white/10 ${project.mediaAspect === 'square' ? 'aspect-square' :
-                project.mediaAspect === '9/16' ? 'aspect-[9/16] max-w-md mx-auto' : 'aspect-video'
-                }`}
-        >
+        <div className={containerClass}>
             <video
                 ref={videoRef}
                 src={vid}

@@ -43,7 +43,10 @@ Software used:
             tags: ["Blender", "After Effects", "DaVinci", "Houdini", "Reaper"],
             creationDate: "June 2026",
             thumbnailUrl: "/Image all projet/TFE/B3A1_Liminal_Image_01.jpg",
-            videoUrl: "/Image all projet/TFE/B3A1_Liminal.mp4",
+            videoUrl: [
+                "https://www.youtube.com/watch?v=YGxlCEHRFa8",
+                "https://www.youtube.com/watch?v=2tWuplo4tPA"
+            ],
             mediaOrder: "video-first",
             gallery: [
                 "/Image all projet/TFE/B3A1_Liminal_Image_02.jpg",

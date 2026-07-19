@@ -5,6 +5,10 @@ import { content } from '../constants';
 
 const HERO_SLIDES = [
     {
+        image: "/Image all projet/TFE/Liminal_jpeg.png",
+        title: "tfe_liminal"
+    },
+    {
         image: "/Image all projet/Horman - Chassis/chassis_fenetre_sections_L_exploded_studio.png",
         title: "Prenium Window Frame"
     },
