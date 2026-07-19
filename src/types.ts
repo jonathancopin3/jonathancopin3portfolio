@@ -25,6 +25,12 @@ export interface Project {
         images: string[];
         aspectRatio?: string;
     }[];
+    photoGrid?: string[];
+    beforeAfter?: {
+        before: string;
+        after: string;
+        title?: string;
+    };
 }
 
 export interface Content {

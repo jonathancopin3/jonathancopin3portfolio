@@ -49,12 +49,31 @@ Software used:
             ],
             mediaOrder: "video-first",
             gallery: [
+                "/Image all projet/TFE/Photos/Liminalbjdkq_1.1.1.png",
+                "/Image all projet/TFE/Photos/Still 2026-06-09 163931F_1.1.1S.png",
+                "/Image all projet/TFE/Photos/V_finale_compo_1.6.6.png",
+                "/Image all projet/TFE/S_compo_finale_1.4.16.png",
+                "/Image all projet/TFE/Photos/Plan_large_siege_1.5.1.png",
+                "/Image all projet/TFE/Photos/M_bras_finale_comp_1.3.11.png",
+                "/Image all projet/TFE/Photos/A_finale_comp__details_1.10.3.png",
+                "/Image all projet/TFE/Photos/Compteurs_1.11.2.png",
+                "/Image all projet/TFE/Photos/Tableau de bort_1.15.1.png",
+                "/Image all projet/TFE/Photos/RenderPONTVUTOP_1.3.1.png",
+                "/Image all projet/TFE/Photos/Plan_cailloux_1.3.14.png",
+                "/Image all projet/TFE/Photos/rocher_2.2.1.png",
+                "/Image all projet/TFE/Photos/V_clay.png",
                 "/Image all projet/TFE/B3A1_Liminal_Image_02.jpg",
-                "/Image all projet/TFE/B3A1_Liminal_Image_03.jpg"
+                "/Image all projet/TFE/B3A1_Liminal_Image_03.jpg",
+                "/Image all projet/TFE/A_finale_comp_1.10.5.png"
             ],
             category: "TFE / CGI",
             mediaAspect: "16/9",
             galleryLayout: "landscape",
+            beforeAfter: {
+                before: "/Image all projet/TFE/Photos/V_clay.png",
+                after: "/Image all projet/TFE/Photos/V_finale_compo_1.6.6.png",
+                title: "Clay Render vs Composite Render"
+            },
             flipbooks: [
                 {
                     title: "TFE Flyers",
@@ -139,7 +158,7 @@ Software used:
             tags: ["3ds Max 2025", "V-Ray 7", "After Effects"],
             creationDate: "December 2025",
             thumbnailUrl: "/Image all projet/Nomad/Comp - carre (00338).png",
-            videoUrl: "/Image all projet/Nomad/Comp - carre_1.mp4",
+            videoUrl: "https://youtube.com/shorts/31aSaPl9fog",
             gallery: [],
             category: "Design / Animation",
             mediaAspect: "square"
@@ -176,7 +195,7 @@ Software used:
             tags: ["Houdini", "Redshift", "After Effects"],
             creationDate: "December 2025",
             thumbnailUrl: "/Image all projet/Particles_Houdini_Colandmacarthur/IMG_2801.jpeg",
-            videoUrl: "/Image all projet/Particles_Houdini_Colandmacarthur/B3_A1_J_Copine_Particules_animation.mp4",
+            videoUrl: "https://youtube.com/shorts/d2lZHC32Jyw",
             gallery: [
                 "/Image all projet/Particles_Houdini_Colandmacarthur/IMG_2801.jpeg",
                 "/Image all projet/Particles_Houdini_Colandmacarthur/IMG_2802.jpeg",
@@ -333,7 +352,7 @@ Software Used:
             tags: ["Blender", "After Effects"],
             creationDate: "June 2025",
             thumbnailUrl: "/Image all projet/Lamp PIX/Lampe_image.png",
-            videoUrl: "/Image all projet/Lamp PIX/Lampe_final_TFA.mp4",
+            videoUrl: "https://youtu.be/OyZ-2446xy8",
             galleryLayout: "landscape",
             gallery: [
                 "/Image all projet/Lamp PIX/Lampe_image.png"
@@ -408,8 +427,8 @@ Software used:
             creationDate: "December 2024",
             thumbnailUrl: "/Image all projet/Retour vers le futur/Ai Ehance.png",
             videoUrl: [
-                "/Image all projet/Retour vers le futur/rendu_final_final_vfx.mp4",
-                "/Image all projet/Retour vers le futur/break_down_final_VFX.mp4"
+                "https://youtu.be/smwLxu6IsNE",
+                "https://youtu.be/SR6lfI_yM84"
             ],
             gallery: [
                 "/Image all projet/Retour vers le futur/Ai Ehance.png"

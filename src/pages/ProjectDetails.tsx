@@ -7,6 +7,96 @@ import type { Project } from '../types';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { Flipbook } from '../components/ui/Flipbook';
+import { useRef } from 'react';
+
+const BeforeAfterSlider = ({ before, after, title }: { before: string; after: string; title?: string }) => {
+    const [sliderPosition, setSliderPosition] = useState(50);
+    const [isDragging, setIsDragging] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    const handleMove = (clientX: number) => {
+        if (!containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        const x = clientX - rect.left;
+        const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+        setSliderPosition(percentage);
+    };
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!isDragging) return;
+        handleMove(e.clientX);
+    };
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        if (!isDragging) return;
+        if (e.touches.length > 0) {
+            handleMove(e.touches[0].clientX);
+        }
+    };
+
+    useEffect(() => {
+        const handleMouseUp = () => setIsDragging(false);
+        if (isDragging) {
+            window.addEventListener('mouseup', handleMouseUp);
+            window.addEventListener('touchend', handleMouseUp);
+        }
+        return () => {
+            window.removeEventListener('mouseup', handleMouseUp);
+            window.removeEventListener('touchend', handleMouseUp);
+        };
+    }, [isDragging]);
+
+    return (
+        <div className="w-full max-w-4xl mx-auto my-8 px-4">
+            {title && <h4 className="text-xl font-display font-medium mb-6 text-center text-white/80">{title}</h4>}
+            <div 
+                ref={containerRef}
+                className="relative w-full rounded-3xl overflow-hidden select-none cursor-ew-resize border border-white/10"
+                onMouseDown={() => setIsDragging(true)}
+                onTouchStart={() => setIsDragging(true)}
+                onMouseMove={handleMouseMove}
+                onTouchMove={handleTouchMove}
+            >
+                {/* After Image (Determines container height dynamically based on real aspect ratio) */}
+                <img 
+                    src={after} 
+                    alt="After" 
+                    className="w-full h-auto block pointer-events-none"
+                />
+                <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-semibold text-white/90 z-10 border border-white/10">
+                    Composite
+                </div>
+
+                {/* Before Image (Overlay with clip path) */}
+                <div 
+                    className="absolute inset-0 pointer-events-none overflow-hidden"
+                    style={{ clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)` }}
+                >
+                    <img 
+                        src={before} 
+                        alt="Before" 
+                        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                    />
+                </div>
+                <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-semibold text-white/90 z-10 border border-white/10">
+                    Clay
+                </div>
+
+                {/* Slider Line & Handle */}
+                <div 
+                    className="absolute top-0 bottom-0 w-[2px] bg-white cursor-ew-resize z-20 flex items-center justify-center"
+                    style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
+                >
+                    <div className="w-10 h-10 rounded-full bg-white text-black shadow-2xl flex items-center justify-center border border-white/20 pointer-events-none transform -translate-x-[1px]">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 9l-4 3 4 3m8-6l4 3-4 3" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 export const ProjectDetails = () => {
     const { id } = useParams();
@@ -20,7 +110,7 @@ export const ProjectDetails = () => {
     const prevProject = content.projects[currentIndex > 0 ? currentIndex - 1 : content.projects.length - 1];
     const nextProject = content.projects[currentIndex < content.projects.length - 1 ? currentIndex + 1 : 0];
 
-    const allImages = project ? [project.thumbnailUrl, ...(project.gallery || [])] : [];
+    const allImages = project ? [project.thumbnailUrl, ...(project.gallery || []), ...(project.photoGrid || [])] : [];
 
     // Scroll to top on project change
     useEffect(() => {
@@ -211,37 +301,61 @@ export const ProjectDetails = () => {
                     );
                 })()}
 
-                {/* Gallery Grid (Bento) */}
-                <h3 className="text-4xl font-display font-semibold mb-12 text-center">Visual Exploration</h3>
-                <div className={`grid grid-cols-1 md:grid-cols-2 mb-32 ${project.galleryLayout === 'architecture' ? 'gap-4' : 'gap-8'}`}>
-                    {allImages.slice(1).map((img, i) => (
+
+                {/* Gallery Grid */}
+                {allImages.slice(1).length > 0 && (
+                    <div className="mb-32">
+                        <h3 className="text-4xl font-display font-semibold mb-12 text-center">Visual Exploration</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {allImages.slice(1).map((img, i) => (
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, margin: '-40px' }}
+                                    transition={{ delay: (i % 4) * 0.07 }}
+                                    onClick={() => setSelectedImageIndex(i + 1)}
+                                    className="rounded-2xl overflow-hidden cursor-pointer relative group"
+                                >
+                                    <img
+                                        src={img}
+                                        alt={`Gallery ${i + 1}`}
+                                        className="w-full h-auto object-cover block transition-transform duration-700 group-hover:scale-105"
+                                    />
+                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-500" />
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+
+
+                {/* Breakdown - Before / After Section */}
+                {project.beforeAfter && (
+                    <div className="mb-32 border-t border-white/10 pt-24">
                         <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 30 }}
+                            initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-50px" }}
-                            transition={{ delay: i * 0.1 }}
-                            onClick={() => setSelectedImageIndex(i + 1)}
-                            className={`rounded-3xl overflow-hidden cursor-pointer relative group ${project.galleryLayout === 'mixed'
-                                ? (i % 3 === 0 ? 'md:col-span-2 aspect-[21/9]' : 'aspect-square')
-                                : project.galleryLayout === 'landscape'
-                                    ? 'md:col-span-2 aspect-video'
-                                    : project.galleryLayout === 'architecture'
-                                        ? (i < 2 ? 'aspect-square' : 'md:col-span-2 aspect-video')
-                                        : 'aspect-square'
-                                }`}
+                            viewport={{ once: true }}
+                            className="text-center mb-12"
                         >
-                            <img
-                                src={img}
-                                alt={`Gallery ${i}`}
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                            />
-                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
+                            <h3 className="text-4xl font-display font-semibold mb-4 text-white">Breakdown - TFE</h3>
+                            <p className="text-sm text-gray-400 font-light max-w-xl mx-auto">
+                                Glissez le curseur pour comparer le rendu brut 3D (Clay) avec le rendu final composité (Composite).
+                            </p>
                         </motion.div>
-                    ))}
-                </div>
+                        <BeforeAfterSlider 
+                            before={project.beforeAfter.before} 
+                            after={project.beforeAfter.after} 
+                            title={project.beforeAfter.title} 
+                        />
+                    </div>
+                )}
+
 
                 {/* Flipbooks Section */}
+
                 {project.flipbooks && project.flipbooks.length > 0 && (
                     <div className="my-32 border-t border-white/10 pt-24">
                         <h2 className="text-4xl font-display font-semibold mb-6 text-center">Interactive Booklets</h2>
