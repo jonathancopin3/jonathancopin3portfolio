@@ -8,6 +8,7 @@ import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { Flipbook } from '../components/ui/Flipbook';
 import { useRef } from 'react';
+import { LockedModal } from '../components/LockedModal';
 
 const BeforeAfterSlider = ({ before, after, title }: { before: string; after: string; title?: string }) => {
     const [sliderPosition, setSliderPosition] = useState(50);
@@ -111,10 +112,13 @@ export const ProjectDetails = () => {
     const nextProject = content.projects[currentIndex < content.projects.length - 1 ? currentIndex + 1 : 0];
 
     const allImages = project ? [project.thumbnailUrl, ...(project.gallery || []), ...(project.photoGrid || [])] : [];
+    const [isUnlocked, setIsUnlocked] = useState(false);
+    const isProtected = project?.id === 'nomad-apple-watch';
 
-    // Scroll to top on project change
+    // Scroll to top on project change and lock protected projects
     useEffect(() => {
         window.scrollTo(0, 0);
+        setIsUnlocked(false);
     }, [id]);
 
     const suggestedProjects = useMemo(() => {
@@ -141,6 +145,16 @@ export const ProjectDetails = () => {
     }, [selectedImageIndex, allImages.length]);
 
     if (!project) return <div>Project not found</div>;
+
+    if (isProtected && !isUnlocked) {
+        return (
+            <div className="bg-black text-white min-h-screen font-sans">
+                <Navbar />
+                <LockedModal onUnlock={() => setIsUnlocked(true)} />
+                <Footer />
+            </div>
+        );
+    }
 
     return (
         <div className="bg-black text-white min-h-screen font-sans selection:bg-primary/30">

@@ -1,10 +1,12 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import { LiquidGlassCursor } from './components/LiquidGlassCursor';
 import { Home } from './pages/Home';
 import { ProjectDetails } from './pages/ProjectDetails';
 import { ThemeProvider } from './context/ThemeContext';
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
+import { Preloader } from './components/Preloader';
 
 // Scroll to top on route change
 // Scroll to top or hash on route change
@@ -12,26 +14,16 @@ const ScrollToAnchor = () => {
   const { pathname, hash } = useLocation();
 
   useLayoutEffect(() => {
-    // Disable browser's default scroll restoration on initial load
+    // Disable browser's default scroll restoration
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
-
-    // Force immediate scroll to top
-    window.scrollTo(0, 0);
-
-    // Double check after a small delay to handle mobile browser oddities
-    const timeout = setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-
-    return () => clearTimeout(timeout);
   }, []);
 
   useEffect(() => {
     if (pathname === '/') {
-      // Allow hash scrolling
       if (hash) {
+        // Prioritize anchor hash if present
         const element = document.getElementById(hash.substring(1));
         if (element) {
           setTimeout(() => {
@@ -39,11 +31,26 @@ const ScrollToAnchor = () => {
           }, 100);
         }
       } else {
-        // Force top if on homepage without hash
-        window.scrollTo(0, 0);
+        // Restore scroll position
+        const savedScroll = sessionStorage.getItem('homepageScrollY');
+        if (savedScroll !== null) {
+          const y = parseInt(savedScroll, 10);
+          setTimeout(() => {
+            window.scrollTo({ top: y, behavior: 'instant' as any });
+          }, 50);
+        } else {
+          window.scrollTo(0, 0);
+        }
       }
+
+      // Track scroll position on homepage
+      const handleScroll = () => {
+        sessionStorage.setItem('homepageScrollY', window.scrollY.toString());
+      };
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
     } else {
-      // For other routes, always top
+      // For other pages (like ProjectDetails), always start at top
       window.scrollTo(0, 0);
     }
   }, [pathname, hash]);
@@ -52,8 +59,9 @@ const ScrollToAnchor = () => {
 }
 
 function AppContent() {
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Remove preloader
+  // Remove original HTML preloader if it exists
   useEffect(() => {
     const preloader = document.getElementById('preloader');
     if (preloader) {
@@ -63,19 +71,25 @@ function AppContent() {
   }, []);
 
   return (
-    <main className="bg-black text-white min-h-screen transition-colors duration-300 relative">
-      {/* Background Gradient Mesh */}
-      <div className="fixed inset-0 pointer-events-none z-[-1] opacity-20">
-        <div className="absolute top-[20%] left-[10%] w-[30vw] h-[30vw] bg-primary/20 rounded-full blur-[100px]" />
-        <div className="absolute bottom-[20%] right-[10%] w-[25vw] h-[25vw] bg-secondary/20 rounded-full blur-[100px]" />
-      </div>
+    <>
+      <AnimatePresence mode="wait">
+        {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
+      </AnimatePresence>
+      
+      <main className="bg-black text-white min-h-screen transition-colors duration-300 relative">
+        {/* Background Gradient Mesh */}
+        <div className="fixed inset-0 pointer-events-none z-[-1] opacity-20">
+          <div className="absolute top-[20%] left-[10%] w-[30vw] h-[30vw] bg-primary/20 rounded-full blur-[100px]" />
+          <div className="absolute bottom-[20%] right-[10%] w-[25vw] h-[25vw] bg-secondary/20 rounded-full blur-[100px]" />
+        </div>
 
-      <LiquidGlassCursor />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/project/:id" element={<ProjectDetails />} />
-      </Routes>
-    </main>
+        <LiquidGlassCursor />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/project/:id" element={<ProjectDetails />} />
+        </Routes>
+      </main>
+    </>
   );
 }
 
