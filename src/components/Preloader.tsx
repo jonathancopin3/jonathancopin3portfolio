@@ -8,7 +8,7 @@ export const Preloader = ({ onComplete }: { onComplete: () => void }) => {
   useEffect(() => {
     // Collect all important images to preload before revealing the site
     const imagesToPreload = [
-      "/Image all projet/Logo/Logo.png",
+      "/Images_Projets/Logo/Logo.png",
       content.photoUrl,
       ...content.projects.slice(0, 3).map(p => p.thumbnailUrl).filter(Boolean),
       ...content.projects.slice(0, 3).map(p => p.heroUrl).filter(Boolean)
@@ -70,7 +70,7 @@ export const Preloader = ({ onComplete }: { onComplete: () => void }) => {
           className="relative w-28 h-28 md:w-40 md:h-40 mb-12"
         >
           <img 
-            src="/Image all projet/Logo/Logo.png" 
+            src="/Images_Projets/Logo/Logo.png" 
             alt="Jonathan Copine Logo" 
             className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
           />
