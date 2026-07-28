@@ -14,7 +14,7 @@ interface MultiLayerSliderProps {
 const CompositingProcess = ({ layers, isFullscreen = false }: { layers: Layer[], isFullscreen?: boolean }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(true);
-    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+    const intervalRef = useRef<number | null>(null);
     const intervalDuration = 900;
 
     useEffect(() => {
@@ -33,12 +33,12 @@ const CompositingProcess = ({ layers, isFullscreen = false }: { layers: Layer[],
     }, [layers.length]);
 
     useEffect(() => {
-        if (intervalRef.current) clearInterval(intervalRef.current);
+        if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
         if (isPlaying) {
-            intervalRef.current = setInterval(nextStep, intervalDuration);
+            intervalRef.current = window.setInterval(nextStep, intervalDuration);
         }
         return () => {
-            if (intervalRef.current) clearInterval(intervalRef.current);
+            if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
         };
     }, [isPlaying, nextStep]);
 

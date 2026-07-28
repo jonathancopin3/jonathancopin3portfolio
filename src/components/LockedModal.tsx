@@ -1,4 +1,5 @@
-import React, { useState, useRef, KeyboardEvent } from 'react';
+import { useState, useRef } from 'react';
+import type { KeyboardEvent } from 'react';
 import { motion } from 'framer-motion';
 
 interface LockedModalProps {
@@ -11,7 +12,7 @@ export const LockedModal: React.FC<LockedModalProps> = ({ onUnlock }) => {
     const [shake, setShake] = useState(false);
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-    const checkCode = (code: string, currentDigits: string[]) => {
+    const checkCode = (code: string) => {
         if (code === '5454') {
             setError(false);
             onUnlock();
@@ -40,7 +41,7 @@ export const LockedModal: React.FC<LockedModalProps> = ({ onUnlock }) => {
 
         if (index === 3 && value) {
             const fullCode = [...newDigits.slice(0, 3), value].join('');
-            checkCode(fullCode, newDigits);
+            checkCode(fullCode);
         }
     };
 
@@ -52,7 +53,7 @@ export const LockedModal: React.FC<LockedModalProps> = ({ onUnlock }) => {
 
     const handleSubmit = () => {
         const code = digits.join('');
-        if (code.length === 4) checkCode(code, digits);
+        if (code.length === 4) checkCode(code);
     };
 
     return (
