@@ -32,8 +32,6 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boole
   }
 }
 
-console.log("Mounting App...");
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ErrorBoundary>

@@ -1,0 +1,417 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.content = void 0;
+var lucide_react_1 = require("lucide-react");
+var BehanceIcon_1 = require("./components/icons/BehanceIcon");
+var ArtStationIcon_1 = require("./components/icons/ArtStationIcon");
+exports.content = {
+    name: "Copine Jonathan",
+    profession: "CGI Artist",
+    tagline: "Crafting digital realities that breathe.",
+    about: "I am a junior CGI artist passionate about 3D and high-end product visualization. Highly self-taught and detail-oriented, I constantly challenge myself to improve and refine my work. I specialize in premium product renders, with a strong focus on lighting, materials, and visual quality. Curious and persistent, I actively explore new tools and workflows, including AI-driven technologies, which I see as an essential part of modern CGI production.",
+    photoUrl: "/Portrait_2.png",
+    socials: [
+        { name: "Instagram", url: "https://www.instagram.com/jonathan_copin3/", icon: lucide_react_1.Instagram },
+        { name: "LinkedIn", url: "https://www.linkedin.com/in/jonathan-copine-aa4626351/", icon: lucide_react_1.Linkedin },
+        { name: "Behance", url: "https://www.behance.net/jonathancopine1", icon: BehanceIcon_1.BehanceIcon },
+        { name: "YouTube", url: "https://www.youtube.com/@JonathanCopine", icon: lucide_react_1.Youtube },
+        { name: "ArtStation", url: "https://www.artstation.com/jonathan_copin3", icon: ArtStationIcon_1.ArtStationIcon },
+    ],
+    skills: [
+        { name: "AI", level: 80 },
+        { name: "Blender", level: 70 },
+        { name: "After Effects", level: 70 },
+        { name: "3ds Max", level: 60 },
+        { name: "Photoshop", level: 60 },
+        { name: "Substance Painter", level: 50 },
+        { name: "Unity", level: 50 },
+        { name: "Houdini", level: 30 }
+    ],
+    projects: [
+        {
+            id: "tfe-liminal",
+            title: "TFE - Liminal",
+            description: "Graduation project (TFE) exploring liminal spaces and atmospheric renders.",
+            longDescription: "Graduation project (TFE) - Liminal.\nA 3D study exploring the atmospheric quality and emotional impact of liminal spaces, utilizing contrast, light, and composition.\n\nSoftware used:\n- Blender\n- After Effects\n- DaVinci\n- Houdini\n- Reaper",
+            tags: ["Blender", "After Effects", "DaVinci", "Houdini", "Reaper"],
+            creationDate: "June 2026",
+            thumbnailUrl: "/Images_Projets/TFE/Photos/magnific_pocLioXehw.png",
+            heroUrl: "/Images_Projets/TFE/Photos/magnific_pocLioXehw.png",
+            videoUrl: [
+                "https://www.youtube.com/watch?v=YGxlCEHRFa8",
+                "https://www.youtube.com/watch?v=2tWuplo4tPA"
+            ],
+            mediaOrder: "video-first",
+            gallery: [
+                "/Images_Projets/TFE/Photos/Liminalbjdkq_1.1.1.png",
+                "/Images_Projets/TFE/Photos/Still 2026-06-09 163931F_1.1.1S.png",
+                "/Images_Projets/TFE/Photos/V_finale_compo_1.6.6.png",
+                "/Images_Projets/TFE/S_compo_finale_1.4.16.png",
+                "/Images_Projets/TFE/Photos/M_bras_finale_comp_1.3.11.png",
+                "/Images_Projets/TFE/Photos/A_finale_comp__details_1.10.3.png",
+                "/Images_Projets/TFE/Photos/Compteurs_1.11.2.png",
+                "/Images_Projets/TFE/Photos/Tableau de bort_1.15.1.png",
+                "/Images_Projets/TFE/Photos/RenderPONTVUTOP_1.3.1.png",
+                "/Images_Projets/TFE/Photos/Plan_cailloux_1.3.14.png",
+                "/Images_Projets/TFE/Photos/rocher_2.2.1.png",
+                "/Images_Projets/TFE/B3A1_Liminal_Image_02.jpg",
+                "/Images_Projets/TFE/A_finale_comp_1.10.5.png"
+            ],
+            category: "TFE / CGI",
+            mediaAspect: "16/9",
+            galleryLayout: "landscape",
+            beforeAfters: [
+                { before: "/Images_Projets/TFE/Photos/V_clay.png", after: "/Images_Projets/TFE/Photos/V_finale_compo_1.6.6.png", title: "Clay vs Composite" },
+                { before: "/Images_Projets/TFE/Photos/A_clay.png", after: "/Images_Projets/TFE/Photos/A_finale_comp_1.10.5.png", title: "Clay vs Composite" },
+                { before: "/Images_Projets/TFE/Photos/S_clay.png", after: "/Images_Projets/TFE/Photos/S_compo_finale_1.4.16.png", title: "Clay vs Composite" }
+            ],
+            flipbooks: [
+                {
+                    title: "TFE Flyers",
+                    images: [
+                        "/Images_Projets/TFE/Flyers_FINALE_1.png",
+                        "/Images_Projets/TFE/Flyers_FINALE_2.png"
+                    ],
+                    aspectRatio: "A4"
+                },
+                {
+                    title: "TFE Artbook",
+                    images: [
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0001.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0002.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0003.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0004.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0005.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0006.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0007.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0008.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0009.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0010.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0011.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0012.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0013.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0014.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0015.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0016.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0017.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0018.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0019.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0020.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0021.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0022.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0023.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0024.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0025.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0026.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0027.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0028.jpg"
+                    ],
+                    aspectRatio: "A4"
+                }
+            ]
+        },
+        {
+            id: "premium-window-frame",
+            title: "Premium window frame",
+            description: "Creation of a realistic premium window frame visualization.",
+            longDescription: "Creation of a realistic premium window frame visualization.\n\nSoftware used:\n- 3ds Max 2025\n- NanoBanana Pro\n- After Effects\n- Figma",
+            tags: ["3ds Max", "NanoBanana Pro", "ArchViz"],
+            creationDate: "January 2026",
+            thumbnailUrl: "/projects/premium-window-frame/chassis_fenetre_sections_L_exploded_studio.png",
+            gallery: [
+                "/projects/premium-window-frame/chassis_fenetre_aluminium_coupe_angle_studio_dark_comp.png",
+                "/projects/premium-window-frame/chassis_fenetre_aluminium_coupe_angle_studio_drak_comp.png",
+                "/projects/premium-window-frame/chassis_fenetre_aluminium_coupe_angle_studio.png",
+                "/projects/premium-window-frame/chassis_fenetre_aluminium_detail_coupe_verre_dark_comp_1.png",
+                "/projects/premium-window-frame/chassis_fenetre_aluminium_detail_coupe_verre.png",
+                "/projects/premium-window-frame/chassis_fenetre_comparatif_pvc_aluminium_angle_dark_comp.png",
+                "/projects/premium-window-frame/chassis_fenetre_comparatif_pvc_aluminium_angle.png",
+                "/projects/premium-window-frame/chassis_fenetre_sections_L_exploded_studio.png"
+            ],
+            category: "Design"
+        },
+        {
+            id: "nomad-apple-watch",
+            title: "Nomad Apple Watch Strap",
+            description: "Creation of a realistic 3D animation of an Apple Watch strap.",
+            longDescription: "Creation of a realistic 3D animation of an Apple Watch strap.\n\nSoftware used:\n- 3ds Max 2025\n- V-Ray 7\n- After Effects",
+            tags: ["3ds Max 2025", "V-Ray 7", "After Effects"],
+            creationDate: "December 2025",
+            thumbnailUrl: "/Images_Projets/Nomad/Comp - carre (00338).png",
+            videoUrl: "https://youtube.com/shorts/31aSaPl9fog",
+            protected: true,
+            gallery: [],
+            category: "Design / Animation",
+            mediaAspect: "square"
+        },
+        {
+            id: "truck-simulator",
+            title: "Truck Simulator",
+            description: "Creation of a cinematic and realistic image of a truck simulator.",
+            longDescription: "Creation of a cinematic and realistic image of a truck simulator.\n\nSoftware used:\n- 3ds Max 2025\n- NanoBanana Pro",
+            tags: ["3ds Max 2025", "NanoBanana Pro"],
+            creationDate: "December 2025",
+            thumbnailUrl: "/Images_Projets/John_Cokerill/Rendu_finale_uspcale_finale.png",
+            gallery: [
+                "/Images_Projets/John_Cokerill/Rendu_finale_uspcale_finale.png"
+            ],
+            category: "Design",
+            mediaAspect: "16/9",
+            galleryLayout: "landscape"
+        },
+        {
+            id: "sand-simulation",
+            title: "Sand Simulation",
+            description: "Creation of a visual experiment showcasing a luxury logo sculpted procedurally in sand.",
+            longDescription: "Creation of a visual experiment showcasing a luxury logo sculpted procedurally in sand.\n\nSoftware used:\n\u2013 Houdini\n\u2013 Redshift\n\u2013 After Effects",
+            tags: ["Houdini", "Redshift", "After Effects"],
+            creationDate: "December 2025",
+            thumbnailUrl: "/Images_Projets/Particles_Houdini_Colandmacarthur/IMG_2801.jpeg",
+            videoUrl: "https://youtube.com/shorts/d2lZHC32Jyw",
+            gallery: [
+                "/Images_Projets/Particles_Houdini_Colandmacarthur/IMG_2801.jpeg",
+                "/Images_Projets/Particles_Houdini_Colandmacarthur/IMG_2802.jpeg",
+                "/Images_Projets/Particles_Houdini_Colandmacarthur/IMG_2803.jpeg",
+                "/Images_Projets/Particles_Houdini_Colandmacarthur/IMG_2804.jpeg"
+            ],
+            category: "Design",
+            mediaAspect: "9/16"
+        },
+        {
+            id: "wilo-component-modeling",
+            title: "Technical Project: Component Modeling",
+            description: "Detailed technical modeling and rendering of complex circulator pump components.",
+            longDescription: "Creation of a realistic 3D packshot of a technical product :\n\nSoftware used:\n\n- 3ds Max 2025\n- V-Ray 7\n- Nano Banana Pro by Gemini 3",
+            tags: ["3ds Max 2025", "V-Ray 7", "Nano Banana Pro"],
+            creationDate: "November 2025",
+            thumbnailUrl: "/Images_Projets/Wilo/Wilo_boite_final.png",
+            gallery: [
+                "/Images_Projets/Wilo/Gemini_Generated_Image_tm9rbmtm9rbmtm9r.png",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_2b6om52b6om52b6o.png",
+                "/Images_Projets/Wilo/Element_2.RGB_color.0000.png",
+                "/Images_Projets/Wilo/Element_2.RGB_color.00001.png",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_2lqkws2lqkws2lqk.png",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_d03hved03hved03h.png",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_t82g6kt82g6kt82g.png",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_7tz7ek7tz7ek7tz7.png",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_igf50gigf50gigf5.png",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_u5md3hu5md3hu5md.png",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_5cs5ho5cs5ho5cs5.png",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_o6gp5io6gp5io6gp.png",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_dmi2hvdmi2hvdmi2.png",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_lpyfx1lpyfx1lpyf.png",
+                "/Images_Projets/Wilo/1_1.png",
+                "/Images_Projets/Wilo/2_1.png",
+                "/Images_Projets/Wilo/3_1.png",
+                "/Images_Projets/Wilo/4_1.png"
+            ],
+            category: "Design"
+        },
+        {
+            id: "devialet-mania",
+            title: "Devialet Mania",
+            description: "Creation of a realistic 3D packshot of a technical product.",
+            longDescription: "Creation of a realistic 3D packshot of a technical product\n\nSoftware used:\n\n- 3ds Max 2026\n- V-Ray 7",
+            tags: ["3ds Max 2026", "V-Ray 7"],
+            creationDate: "September 2025",
+            thumbnailUrl: "/Images_Projets/Devialet/Rendu_Devialet_Mania_1.jpeg",
+            gallery: [
+                "/Images_Projets/Devialet/Rendu_Devialet_Mania_1.jpeg",
+                "/Images_Projets/Devialet/Rendu_Devialet_Mania_2.jpeg",
+                "/Images_Projets/Devialet/Rendu_Devialet_Mania_3.jpeg",
+                "/Images_Projets/Devialet/Rendu_Devialet_Mania_4.jpeg"
+            ],
+            category: "Design"
+        },
+        {
+            id: "premium-microphone",
+            title: "Premium Microphone",
+            description: "Creation of a realistic 3D packshot of a technical product.",
+            longDescription: "Creation of a realistic 3D packshot of a technical product :\n\nSoftware used:\n\n- 3ds Max 2025\n- V-Ray 7\n- Post-production : After Effect\n\nComparison : Post-Production render vs Raw render",
+            tags: ["3ds Max 2025", "V-Ray 7", "After Effects"],
+            creationDate: "September 2025",
+            thumbnailUrl: "/Images_Projets/Mic/Mike_v1__02 (0-00-01-11).png",
+            gallery: [
+                "/Images_Projets/Mic/Mike_v1__02 (0-00-01-11).png",
+                "/Images_Projets/Mic/Mike_v2__03_argent.png",
+                "/Images_Projets/Mic/Mike_close_up_argent_1.png",
+                "/Images_Projets/Mic/Mike_close_up.png"
+            ],
+            category: "Design"
+        },
+        {
+            id: "ikea-lockers",
+            title: "IKEA Lockers",
+            description: "Creation of a realistic 3D packshot of a technical product.",
+            longDescription: "Creation of a realistic 3D packshot of a technical product :\n\nSoftware used:\n\n- 3ds Max 2026\n- V-Ray 7",
+            tags: ["3ds Max 2026", "V-Ray 7"],
+            creationDate: "July 2025",
+            thumbnailUrl: "/Images_Projets/IKEA/camera1.jpg",
+            thumbnailObjectPosition: "40% center",
+            heroUrl: "/Images_Projets/IKEA/all.jpg",
+            videoUrl: "https://youtu.be/vno5Iq12l7E",
+            galleryLayout: "mixed",
+            photoGrid: [
+                "/Images_Projets/IKEA/all.jpg",
+                "/Images_Projets/IKEA/Flag1.jpg",
+                "/Images_Projets/IKEA/lockers.jpg",
+                "/Images_Projets/IKEA/camionette.jpg",
+                "/Images_Projets/IKEA/roulette.jpg",
+                "/Images_Projets/IKEA/screen.jpg",
+                "/Images_Projets/IKEA/lock.jpg",
+                "/Images_Projets/IKEA/lockers1.jpg",
+                "/Images_Projets/IKEA/camera.jpg",
+                "/Images_Projets/IKEA/Flag2.jpg"
+            ],
+            gallery: [],
+            category: "Design"
+        },
+        {
+            id: "passage-between-worlds",
+            title: "Passage between worlds",
+            description: "Creation of Two Environments + Portal.",
+            longDescription: "Creation of Two Environments + Portal\n            \nSoftware used:\n\n- Unity (environment + lights, real-time)\n- Bridge, Megascan (Import)\n- Blender (Modeling)\n- Substance Painter (Textures)",
+            tags: ["Unity", "Blender", "Substance Painter"],
+            creationDate: "June 2025",
+            thumbnailUrl: "/Images_Projets/Visu_Champs/IMG_2169.png",
+            videoUrl: "/Images_Projets/Visu_Champs/Rendu_final_Q2_VISU_4.mp4",
+            galleryLayout: "landscape",
+            gallery: [
+                "/Images_Projets/Visu_Champs/IMG_2169.png"
+            ],
+            category: "Environment"
+        },
+        {
+            id: "pixar-lamp",
+            title: "Pixar Lamp",
+            description: "Pixar Lamp Integration.",
+            longDescription: "Pixar Lamp Integration\n\nSoftware Used:\n\n- After Effects (Motion Tracking, FX)\n- Blender (Rigging, Animation, Rendering)",
+            tags: ["Blender", "After Effects"],
+            creationDate: "June 2025",
+            thumbnailUrl: "/Images_Projets/Lamp_PIX/Lampe_image.png",
+            videoUrl: "https://youtu.be/OyZ-2446xy8",
+            galleryLayout: "landscape",
+            gallery: [
+                "/Images_Projets/Lamp_PIX/Lampe_image.png"
+            ],
+            category: "Animation / VFX"
+        },
+        {
+            id: "the-big-robots",
+            title: "The big robots",
+            description: "Giant Robot Integration.",
+            longDescription: "Giant Robot Integration\n\nSoftware used:\n\n- After Effects (Motion Tracking, FX)\n- Blender (Rigging, Animation, Rendering)\n- Reapper (SFX, Sound Design)",
+            tags: ["Blender", "After Effects", "Reaper"],
+            creationDate: "June 2025",
+            thumbnailUrl: "/Images_Projets/Mecha_VFX/B2A2_Copine_J_Mecha.jpg",
+            thumbnailObjectPosition: "center top",
+            heroObjectPosition: "center top",
+            videoUrl: [
+                "https://youtu.be/osA_DOZgpCc",
+                "https://youtu.be/5Mjzo-s9jwY"
+            ],
+            moreVideos: {
+                title: "Rig / Modeling",
+                videos: [
+                    "https://youtu.be/eERS8d7Y2ac",
+                    "https://youtu.be/iNzPuvzwZOo"
+                ]
+            },
+            gallery: [
+                "/Images_Projets/Mecha_VFX/B2A2_Copine_J_Mecha.jpg"
+            ],
+            category: "Animation / VFX"
+        },
+        {
+            id: "architecture",
+            title: "Architecture",
+            description: "3D rendering of Ballarat Community Health Primary Facility.",
+            longDescription: "3D rendering of Ballarat Community Health Primary Facility\n\nSoftware used:\n\n- Blender (Modeling)\n- Substance Painter (Textures)",
+            tags: ["Blender", "Substance Painter"],
+            creationDate: "December 2024",
+            thumbnailUrl: "/Images_Projets/Archi/rendu_archi_final1.jpg",
+            galleryLayout: "architecture",
+            gallery: [
+                "/Images_Projets/Archi/B2-A2_Copine_J_Archi_2024.jpg",
+                "/Images_Projets/Archi/B2-A2_Copine_J_Archi_Clay_Wire_2024.jpg",
+                "/Images_Projets/Archi/B2-A2_Copine_J_Archi_Comparatif_2024.jpg"
+            ],
+            category: "ArchViz"
+        },
+        {
+            id: "vfx-animation",
+            title: "VFX Animation",
+            description: "3D VFX Animation. Animation of a car in the Back to the Future theme.",
+            longDescription: "3D VFX Animation. Animation of a car in the Back to the Future theme.\n\nSoftware used:\n\n- Blender (Modeling + Car Animation)\n- After Effect (Composition)",
+            tags: ["Blender", "After Effects"],
+            creationDate: "December 2024",
+            thumbnailUrl: "/Images_Projets/Retour_vers_le_futur/Ai Ehance.png",
+            videoUrl: [
+                "https://youtu.be/smwLxu6IsNE",
+                "https://youtu.be/SR6lfI_yM84"
+            ],
+            gallery: [
+                "/Images_Projets/Retour_vers_le_futur/Ai Ehance.png"
+            ],
+            category: "Animation / VFX"
+        },
+        {
+            id: "environment-cabane",
+            title: "Environment",
+            description: "Creation of a 3D environment.",
+            longDescription: "Creation of a 3D environment\n\nSoftware used:\n\n- Unity (environment + lights)\n- Bridge, Megascan (Import)",
+            tags: ["Unity", "Megascan"],
+            creationDate: "December 2024",
+            thumbnailUrl: "/Images_Projets/Enviro_Cabane/B2A2_Copine_J_Envi.jpg",
+            galleryLayout: "landscape",
+            gallery: [
+                "/Images_Projets/Enviro_Cabane/B2A2_Copine_J_Envi.jpg"
+            ],
+            category: "Environment"
+        }
+    ],
+    experience: [
+        {
+            role: "INTERNSHIP",
+            company: "Miysis – Juprelle, Belgium",
+            period: "November 2025 – February 2026",
+            description: [
+                "Design Department"
+            ],
+            companyUrl: "https://www.miysis.be/fr/"
+        },
+        {
+            role: "BACHELOR'S DEGREE",
+            company: "Haute École Albert Jacquard – Computer Graphics Campus",
+            period: "2023 – 2026",
+            description: [
+                "Specialization: Visual Effects (VFX)",
+                "Graduated with High Honors (Grande Distinction) in June 2026"
+            ]
+        },
+        {
+            role: "STUDENT EMPLOYMENT",
+            company: "Gamma, Carrefour & Delhaize (Bastogne & Pommerloch)",
+            period: "2019 – 2025",
+            description: [
+                "Cashier",
+                "Shelf Stocker / Shelf Replenishment Assistant"
+            ]
+        },
+        {
+            role: "SECONDARY EDUCATION",
+            company: "Notre-Dame Seminary of Bastogne",
+            period: "2017 – 2023",
+            description: [
+                "Focus: Economics, English (First Language), and Technology"
+            ]
+        }
+    ],
+    contact: {
+        email: "jonathan.copin3@gmail.com",
+        phone: "+3247403103",
+        emailJsServiceId: "service_hy3ses8",
+        emailJsTemplateId: "template_mode1yp",
+        emailJsPublicKey: "ePyPbzLi4Z2nxxaPK"
+    }
+};

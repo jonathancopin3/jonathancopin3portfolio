@@ -42,78 +42,76 @@ Software used:
 - Reaper`,
             tags: ["Blender", "After Effects", "DaVinci", "Houdini", "Reaper"],
             creationDate: "June 2026",
-            thumbnailUrl: "/Image all projet/TFE/B3A1_Liminal_Image_01.jpg",
+            thumbnailUrl: "/Images_Projets/TFE/Photos/magnific_pocLioXehw.jpg",
+            heroUrl: "/Images_Projets/TFE/Photos/magnific_pocLioXehw.jpg",
             videoUrl: [
                 "https://www.youtube.com/watch?v=YGxlCEHRFa8",
                 "https://www.youtube.com/watch?v=2tWuplo4tPA"
             ],
             mediaOrder: "video-first",
             gallery: [
-                "/Image all projet/TFE/Photos/Liminalbjdkq_1.1.1.png",
-                "/Image all projet/TFE/Photos/Still 2026-06-09 163931F_1.1.1S.png",
-                "/Image all projet/TFE/Photos/V_finale_compo_1.6.6.png",
-                "/Image all projet/TFE/S_compo_finale_1.4.16.png",
-                "/Image all projet/TFE/Photos/Plan_large_siege_1.5.1.png",
-                "/Image all projet/TFE/Photos/M_bras_finale_comp_1.3.11.png",
-                "/Image all projet/TFE/Photos/A_finale_comp__details_1.10.3.png",
-                "/Image all projet/TFE/Photos/Compteurs_1.11.2.png",
-                "/Image all projet/TFE/Photos/Tableau de bort_1.15.1.png",
-                "/Image all projet/TFE/Photos/RenderPONTVUTOP_1.3.1.png",
-                "/Image all projet/TFE/Photos/Plan_cailloux_1.3.14.png",
-                "/Image all projet/TFE/Photos/rocher_2.2.1.png",
-                "/Image all projet/TFE/Photos/V_clay.png",
-                "/Image all projet/TFE/B3A1_Liminal_Image_02.jpg",
-                "/Image all projet/TFE/B3A1_Liminal_Image_03.jpg",
-                "/Image all projet/TFE/A_finale_comp_1.10.5.png"
+                "/Images_Projets/TFE/Photos/Liminalbjdkq_1.1.1.png",
+                "/Images_Projets/TFE/Photos/Still 2026-06-09 163931F_1.1.1S.png",
+                "/Images_Projets/TFE/Photos/V_finale_compo_1.6.6.jpg",
+                "/Images_Projets/TFE/S_compo_finale_1.4.16.jpg",
+                "/Images_Projets/TFE/Photos/M_bras_finale_comp_1.3.11.jpg",
+                "/Images_Projets/TFE/Photos/A_finale_comp__details_1.10.3.jpg",
+                "/Images_Projets/TFE/Photos/Compteurs_1.11.2.jpg",
+                "/Images_Projets/TFE/Photos/Tableau de bort_1.15.1.jpg",
+                "/Images_Projets/TFE/Photos/RenderPONTVUTOP_1.3.1.jpg",
+                "/Images_Projets/TFE/Photos/Plan_cailloux_1.3.14.jpg",
+                "/Images_Projets/TFE/Photos/rocher_2.2.1.jpg",
+                "/Images_Projets/TFE/B3A1_Liminal_Image_02.jpg",
+                "/Images_Projets/TFE/A_finale_comp_1.10.5.jpg"
             ],
             category: "TFE / CGI",
             mediaAspect: "16/9",
             galleryLayout: "landscape",
-            beforeAfter: {
-                before: "/Image all projet/TFE/Photos/V_clay.png",
-                after: "/Image all projet/TFE/Photos/V_finale_compo_1.6.6.png",
-                title: "Clay Render vs Composite Render"
-            },
+            beforeAfters: [
+                { before: "/Images_Projets/TFE/Photos/V_clay.jpg", after: "/Images_Projets/TFE/Photos/V_finale_compo_1.6.6.jpg", title: "Clay vs Composite" },
+                { before: "/Images_Projets/TFE/Photos/A_clay.jpg", after: "/Images_Projets/TFE/Photos/A_finale_comp_1.10.5.jpg", title: "Clay vs Composite" },
+                { before: "/Images_Projets/TFE/Photos/S_clay.jpg", after: "/Images_Projets/TFE/Photos/S_compo_finale_1.4.16.jpg", title: "Clay vs Composite" }
+            ],
             flipbooks: [
                 {
                     title: "TFE Flyers",
                     images: [
-                        "/Image all projet/TFE/Flyers_FINALE_1.png",
-                        "/Image all projet/TFE/Flyers_FINALE_2.png"
+                        "/Images_Projets/TFE/Flyers_FINALE_1.jpg",
+                        "/Images_Projets/TFE/Flyers_FINALE_2.png"
                     ],
                     aspectRatio: "A4"
                 },
                 {
                     title: "TFE Artbook",
                     images: [
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0001.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0002.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0003.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0004.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0005.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0006.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0007.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0008.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0009.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0010.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0011.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0012.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0013.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0014.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0015.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0016.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0017.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0018.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0019.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0020.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0021.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0022.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0023.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0024.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0025.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0026.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0027.jpg",
-                        "/Image all projet/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0028.jpg"
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0001.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0002.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0003.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0004.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0005.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0006.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0007.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0008.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0009.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0010.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0011.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0012.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0013.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0014.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0015.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0016.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0017.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0018.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0019.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0020.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0021.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0022.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0023.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0024.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0025.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0026.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0027.jpg",
+                        "/Images_Projets/TFE/ARTBOOK/B3A1_Liminal_Artbook_page-0028.jpg"
                     ],
                     aspectRatio: "A4"
                 }
@@ -132,16 +130,16 @@ Software used:
 - Figma`,
             tags: ["3ds Max", "NanoBanana Pro", "ArchViz"],
             creationDate: "January 2026",
-            thumbnailUrl: "/projects/premium-window-frame/chassis_fenetre_sections_L_exploded_studio.png",
+            thumbnailUrl: "/projects/premium-window-frame/chassis_fenetre_sections_L_exploded_studio.jpg",
             gallery: [
-                "/projects/premium-window-frame/chassis_fenetre_aluminium_coupe_angle_studio_dark_comp.png",
-                "/projects/premium-window-frame/chassis_fenetre_aluminium_coupe_angle_studio_drak_comp.png",
-                "/projects/premium-window-frame/chassis_fenetre_aluminium_coupe_angle_studio.png",
-                "/projects/premium-window-frame/chassis_fenetre_aluminium_detail_coupe_verre_dark_comp_1.png",
-                "/projects/premium-window-frame/chassis_fenetre_aluminium_detail_coupe_verre.png",
-                "/projects/premium-window-frame/chassis_fenetre_comparatif_pvc_aluminium_angle_dark_comp.png",
-                "/projects/premium-window-frame/chassis_fenetre_comparatif_pvc_aluminium_angle.png",
-                "/projects/premium-window-frame/chassis_fenetre_sections_L_exploded_studio.png"
+                "/projects/premium-window-frame/chassis_fenetre_aluminium_coupe_angle_studio_dark_comp.jpg",
+                "/projects/premium-window-frame/chassis_fenetre_aluminium_coupe_angle_studio_drak_comp.jpg",
+                "/projects/premium-window-frame/chassis_fenetre_aluminium_coupe_angle_studio.jpg",
+                "/projects/premium-window-frame/chassis_fenetre_aluminium_detail_coupe_verre_dark_comp_1.jpg",
+                "/projects/premium-window-frame/chassis_fenetre_aluminium_detail_coupe_verre.jpg",
+                "/projects/premium-window-frame/chassis_fenetre_sections_L_exploded_studio.jpg",
+                "/projects/premium-window-frame/chassis_fenetre_comparatif_pvc_aluminium_angle_dark_comp.jpg",
+                "/projects/premium-window-frame/chassis_fenetre_comparatif_pvc_aluminium_angle.jpg"
             ],
             category: "Design"
         },
@@ -157,8 +155,9 @@ Software used:
 - After Effects`,
             tags: ["3ds Max 2025", "V-Ray 7", "After Effects"],
             creationDate: "December 2025",
-            thumbnailUrl: "/Image all projet/Nomad/Comp - carre (00338).png",
+            thumbnailUrl: "/Images_Projets/Nomad/Comp - carre (00338).jpg",
             videoUrl: "https://youtube.com/shorts/31aSaPl9fog",
+            protected: true,
             gallery: [],
             category: "Design / Animation",
             mediaAspect: "square"
@@ -174,9 +173,9 @@ Software used:
 - NanoBanana Pro`,
             tags: ["3ds Max 2025", "NanoBanana Pro"],
             creationDate: "December 2025",
-            thumbnailUrl: "/Image all projet/John Cokerill/Rendu_finale_uspcale_finale.png",
+            thumbnailUrl: "/Images_Projets/John_Cokerill/Rendu_finale_uspcale_finale.jpg",
             gallery: [
-                "/Image all projet/John Cokerill/Rendu_finale_uspcale_finale.png"
+                "/Images_Projets/John_Cokerill/Rendu_finale_uspcale_finale.jpg"
             ],
             category: "Design",
             mediaAspect: "16/9",
@@ -194,13 +193,13 @@ Software used:
 – After Effects`,
             tags: ["Houdini", "Redshift", "After Effects"],
             creationDate: "December 2025",
-            thumbnailUrl: "/Image all projet/Particles_Houdini_Colandmacarthur/IMG_2801.jpeg",
+            thumbnailUrl: "/Images_Projets/Particles_Houdini_Colandmacarthur/IMG_2801.jpeg",
             videoUrl: "https://youtube.com/shorts/d2lZHC32Jyw",
             gallery: [
-                "/Image all projet/Particles_Houdini_Colandmacarthur/IMG_2801.jpeg",
-                "/Image all projet/Particles_Houdini_Colandmacarthur/IMG_2802.jpeg",
-                "/Image all projet/Particles_Houdini_Colandmacarthur/IMG_2803.jpeg",
-                "/Image all projet/Particles_Houdini_Colandmacarthur/IMG_2804.jpeg"
+                "/Images_Projets/Particles_Houdini_Colandmacarthur/IMG_2801.jpeg",
+                "/Images_Projets/Particles_Houdini_Colandmacarthur/IMG_2802.jpeg",
+                "/Images_Projets/Particles_Houdini_Colandmacarthur/IMG_2803.jpeg",
+                "/Images_Projets/Particles_Houdini_Colandmacarthur/IMG_2804.jpeg"
             ],
             category: "Design",
             mediaAspect: "9/16"
@@ -218,26 +217,26 @@ Software used:
 - Nano Banana Pro by Gemini 3`,
             tags: ["3ds Max 2025", "V-Ray 7", "Nano Banana Pro"],
             creationDate: "November 2025",
-            thumbnailUrl: "/Image all projet/Wilo/Wilo_boite_final.png",
+            thumbnailUrl: "/Images_Projets/Wilo/Wilo_boite_final.jpg",
             gallery: [
-                "/Image all projet/Wilo/Gemini_Generated_Image_tm9rbmtm9rbmtm9r.png",
-                "/Image all projet/Wilo/Gemini_Generated_Image_2b6om52b6om52b6o.png",
-                "/Image all projet/Wilo/Element_2.RGB_color.0000.png",
-                "/Image all projet/Wilo/Element_2.RGB_color.00001.png",
-                "/Image all projet/Wilo/Gemini_Generated_Image_2lqkws2lqkws2lqk.png",
-                "/Image all projet/Wilo/Gemini_Generated_Image_d03hved03hved03h.png",
-                "/Image all projet/Wilo/Gemini_Generated_Image_t82g6kt82g6kt82g.png",
-                "/Image all projet/Wilo/Gemini_Generated_Image_7tz7ek7tz7ek7tz7.png",
-                "/Image all projet/Wilo/Gemini_Generated_Image_igf50gigf50gigf5.png",
-                "/Image all projet/Wilo/Gemini_Generated_Image_u5md3hu5md3hu5md.png",
-                "/Image all projet/Wilo/Gemini_Generated_Image_5cs5ho5cs5ho5cs5.png",
-                "/Image all projet/Wilo/Gemini_Generated_Image_o6gp5io6gp5io6gp.png",
-                "/Image all projet/Wilo/Gemini_Generated_Image_dmi2hvdmi2hvdmi2.png",
-                "/Image all projet/Wilo/Gemini_Generated_Image_lpyfx1lpyfx1lpyf.png",
-                "/Image all projet/Wilo/1_1.png",
-                "/Image all projet/Wilo/2_1.png",
-                "/Image all projet/Wilo/3_1.png",
-                "/Image all projet/Wilo/4_1.png"
+                "/Images_Projets/Wilo/Gemini_Generated_Image_tm9rbmtm9rbmtm9r.jpg",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_2b6om52b6om52b6o.jpg",
+                "/Images_Projets/Wilo/Element_2.RGB_color.0000.jpg",
+                "/Images_Projets/Wilo/Element_2.RGB_color.00001.jpg",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_2lqkws2lqkws2lqk.png",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_d03hved03hved03h.png",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_t82g6kt82g6kt82g.jpg",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_7tz7ek7tz7ek7tz7.jpg",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_igf50gigf50gigf5.jpg",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_u5md3hu5md3hu5md.jpg",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_5cs5ho5cs5ho5cs5.jpg",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_o6gp5io6gp5io6gp.jpg",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_dmi2hvdmi2hvdmi2.png",
+                "/Images_Projets/Wilo/Gemini_Generated_Image_lpyfx1lpyfx1lpyf.jpg",
+                "/Images_Projets/Wilo/1_1.jpg",
+                "/Images_Projets/Wilo/2_1.jpg",
+                "/Images_Projets/Wilo/3_1.jpg",
+                "/Images_Projets/Wilo/4_1.jpg"
             ],
             category: "Design"
         },
@@ -253,12 +252,12 @@ Software used:
 - V-Ray 7`,
             tags: ["3ds Max 2026", "V-Ray 7"],
             creationDate: "September 2025",
-            thumbnailUrl: "/Image all projet/Devialet/Rendu_Devialet_Mania_1.jpeg",
+            thumbnailUrl: "/Images_Projets/Devialet/Rendu_Devialet_Mania_1.jpeg",
             gallery: [
-                "/Image all projet/Devialet/Rendu_Devialet_Mania_1.jpeg",
-                "/Image all projet/Devialet/Rendu_Devialet_Mania_2.jpeg",
-                "/Image all projet/Devialet/Rendu_Devialet_Mania_3.jpeg",
-                "/Image all projet/Devialet/Rendu_Devialet_Mania_4.jpeg"
+                "/Images_Projets/Devialet/Rendu_Devialet_Mania_1.jpeg",
+                "/Images_Projets/Devialet/Rendu_Devialet_Mania_2.jpeg",
+                "/Images_Projets/Devialet/Rendu_Devialet_Mania_3.jpeg",
+                "/Images_Projets/Devialet/Rendu_Devialet_Mania_4.jpeg"
             ],
             category: "Design"
         },
@@ -277,12 +276,12 @@ Software used:
 Comparison : Post-Production render vs Raw render`,
             tags: ["3ds Max 2025", "V-Ray 7", "After Effects"],
             creationDate: "September 2025",
-            thumbnailUrl: "/Image all projet/Mic/Mike_v1__02 (0-00-01-11).png",
+            thumbnailUrl: "/Images_Projets/Mic/Mike_v1__02 (0-00-01-11).jpg",
             gallery: [
-                "/Image all projet/Mic/Mike_v1__02 (0-00-01-11).png",
-                "/Image all projet/Mic/Mike_v2__03_argent.png",
-                "/Image all projet/Mic/Mike_close_up_argent_1.png",
-                "/Image all projet/Mic/Mike_close_up.png"
+                "/Images_Projets/Mic/Mike_v1__02 (0-00-01-11).jpg",
+                "/Images_Projets/Mic/Mike_v2__03_argent.jpg",
+                "/Images_Projets/Mic/Mike_close_up_argent_1.jpg",
+                "/Images_Projets/Mic/Mike_close_up.jpg"
             ],
             category: "Design"
         },
@@ -298,23 +297,24 @@ Software used:
 - V-Ray 7`,
             tags: ["3ds Max 2026", "V-Ray 7"],
             creationDate: "July 2025",
-            thumbnailUrl: "/Image all projet/IKEA/camera1.jpg",
+            thumbnailUrl: "/Images_Projets/IKEA/camera1.jpg",
             thumbnailObjectPosition: "40% center",
-            heroUrl: "/Image all projet/IKEA/all.jpg",
-            videoUrl: "/Image all projet/IKEA/IKEA FINAL2_1.mp4",
+            heroUrl: "/Images_Projets/IKEA/all.jpg",
+            videoUrl: "https://youtu.be/vno5Iq12l7E",
             galleryLayout: "mixed",
-            gallery: [
-                "/Image all projet/IKEA/lockers.jpg",
-                "/Image all projet/IKEA/Flag.jpg",
-                "/Image all projet/IKEA/camera1.jpg",
-                "/Image all projet/IKEA/roulette1.jpg",
-                "/Image all projet/IKEA/all.jpg",
-                "/Image all projet/IKEA/lock1.jpg",
-                "/Image all projet/IKEA/camionette.jpg",
-                "/Image all projet/IKEA/roulette.jpg",
-                "/Image all projet/IKEA/Flag1.jpg",
-                "/Image all projet/IKEA/lock.jpg"
+            photoGrid: [
+                "/Images_Projets/IKEA/all.jpg",
+                "/Images_Projets/IKEA/Flag1.jpg",
+                "/Images_Projets/IKEA/lockers.jpg",
+                "/Images_Projets/IKEA/camionette.jpg",
+                "/Images_Projets/IKEA/roulette.jpg",
+                "/Images_Projets/IKEA/screen.jpg",
+                "/Images_Projets/IKEA/lock.jpg",
+                "/Images_Projets/IKEA/lockers1.jpg",
+                "/Images_Projets/IKEA/camera.jpg",
+                "/Images_Projets/IKEA/Flag2.jpg"
             ],
+            gallery: [],
             category: "Design"
         },
         {
@@ -331,11 +331,11 @@ Software used:
 - Substance Painter (Textures)`,
             tags: ["Unity", "Blender", "Substance Painter"],
             creationDate: "June 2025",
-            thumbnailUrl: "/Image all projet/Visu_Champs/IMG_2169.png",
-            videoUrl: "/Image all projet/Visu_Champs/Rendu_final_Q2_VISU_4.mp4",
+            thumbnailUrl: "/Images_Projets/Visu_Champs/IMG_2169.jpg",
+            videoUrl: "https://youtu.be/Iw1NlIPODSU",
             galleryLayout: "landscape",
             gallery: [
-                "/Image all projet/Visu_Champs/IMG_2169.png"
+                "/Images_Projets/Visu_Champs/IMG_2169.jpg"
             ],
             category: "Environment"
         },
@@ -351,11 +351,11 @@ Software Used:
 - Blender (Rigging, Animation, Rendering)`,
             tags: ["Blender", "After Effects"],
             creationDate: "June 2025",
-            thumbnailUrl: "/Image all projet/Lamp PIX/Lampe_image.png",
+            thumbnailUrl: "/Images_Projets/Lamp_PIX/Lampe_image.png",
             videoUrl: "https://youtu.be/OyZ-2446xy8",
             galleryLayout: "landscape",
             gallery: [
-                "/Image all projet/Lamp PIX/Lampe_image.png"
+                "/Images_Projets/Lamp_PIX/Lampe_image.png"
             ],
             category: "Animation / VFX"
         },
@@ -372,23 +372,22 @@ Software used:
 - Reapper (SFX, Sound Design)`,
             tags: ["Blender", "After Effects", "Reaper"],
             creationDate: "June 2025",
-            thumbnailUrl: "/Image all projet/Mecha_VFX/B2A2_Copine_J_Mecha.jpg",
+            thumbnailUrl: "/Images_Projets/Mecha_VFX/B2A2_Copine_J_Mecha.jpg",
             thumbnailObjectPosition: "center top",
             heroObjectPosition: "center top",
             videoUrl: [
-                "/Image all projet/Mecha_VFX/robot_TFA.mp4",
-                "/Image all projet/Mecha_VFX/B2A2_Copine_J_Breakdown.mp4"
+                "https://youtu.be/osA_DOZgpCc",
+                "https://youtu.be/5Mjzo-s9jwY"
             ],
             moreVideos: {
                 title: "Rig / Modeling",
                 videos: [
-                    "/Image all projet/Mecha_VFX/B2A2_Copine_J_Rig.mp4",
-                    "/Image all projet/Mecha_VFX/B2A2_Copine_J_Turn_bis.mp4",
-                    "/Image all projet/Mecha_VFX/B2A2_Copine_J_Turn.mp4"
+                    "https://youtu.be/eERS8d7Y2ac",
+                    "https://youtu.be/iNzPuvzwZOo"
                 ]
             },
             gallery: [
-                "/Image all projet/Mecha_VFX/B2A2_Copine_J_Mecha.jpg"
+                "/Images_Projets/Mecha_VFX/B2A2_Copine_J_Mecha.jpg"
             ],
             category: "Animation / VFX"
         },
@@ -404,12 +403,12 @@ Software used:
 - Substance Painter (Textures)`,
             tags: ["Blender", "Substance Painter"],
             creationDate: "December 2024",
-            thumbnailUrl: "/Image all projet/Archi/rendu_archi_final1.jpg",
+            thumbnailUrl: "/Images_Projets/Archi/rendu_archi_final1.jpg",
             galleryLayout: "architecture",
             gallery: [
-                "/Image all projet/Archi/B2-A2_Copine_J_Archi_2024.jpg",
-                "/Image all projet/Archi/B2-A2_Copine_J_Archi_Clay_Wire_2024.jpg",
-                "/Image all projet/Archi/B2-A2_Copine_J_Archi_Comparatif_2024.jpg"
+                "/Images_Projets/Archi/B2-A2_Copine_J_Archi_2024.jpg",
+                "/Images_Projets/Archi/B2-A2_Copine_J_Archi_Clay_Wire_2024.jpg",
+                "/Images_Projets/Archi/B2-A2_Copine_J_Archi_Comparatif_2024.jpg"
             ],
             category: "ArchViz"
         },
@@ -425,13 +424,13 @@ Software used:
 - After Effect (Composition)`,
             tags: ["Blender", "After Effects"],
             creationDate: "December 2024",
-            thumbnailUrl: "/Image all projet/Retour vers le futur/Ai Ehance.png",
+            thumbnailUrl: "/Images_Projets/Retour_vers_le_futur/Ai Ehance.jpg",
             videoUrl: [
                 "https://youtu.be/smwLxu6IsNE",
                 "https://youtu.be/SR6lfI_yM84"
             ],
             gallery: [
-                "/Image all projet/Retour vers le futur/Ai Ehance.png"
+                "/Images_Projets/Retour_vers_le_futur/Ai Ehance.jpg"
             ],
             category: "Animation / VFX"
         },
@@ -447,10 +446,10 @@ Software used:
 - Bridge, Megascan (Import)`,
             tags: ["Unity", "Megascan"],
             creationDate: "December 2024",
-            thumbnailUrl: "/Image all projet/Enviro_Cabane/B2A2_Copine_J_Envi.jpg",
+            thumbnailUrl: "/Images_Projets/Enviro_Cabane/B2A2_Copine_J_Envi.jpg",
             galleryLayout: "landscape",
             gallery: [
-                "/Image all projet/Enviro_Cabane/B2A2_Copine_J_Envi.jpg"
+                "/Images_Projets/Enviro_Cabane/B2A2_Copine_J_Envi.jpg"
             ],
             category: "Environment"
         }
@@ -466,11 +465,12 @@ Software used:
             companyUrl: "https://www.miysis.be/fr/"
         },
         {
-            role: "BACHELOR’S DEGREE",
+            role: "BACHELOR'S DEGREE",
             company: "Haute École Albert Jacquard – Computer Graphics Campus",
-            period: "2023 – Present",
+            period: "2023 – 2026",
             description: [
-                "Specialization: Visual Effects (VFX)"
+                "Specialization: Visual Effects (VFX)",
+                "Graduated with High Honors (Grande Distinction) in June 2026"
             ]
         },
         {
@@ -494,8 +494,8 @@ Software used:
     contact: {
         email: "jonathan.copin3@gmail.com",
         phone: "+3247403103",
-        emailJsServiceId: "service_hy3ses8", // Placeholder
-        emailJsTemplateId: "template_mode1yp", // Placeholder
-        emailJsPublicKey: "ePyPbzLi4Z2nxxaPK" // Placeholder
+        emailJsServiceId: "service_hy3ses8",
+        emailJsTemplateId: "template_mode1yp",
+        emailJsPublicKey: "ePyPbzLi4Z2nxxaPK"
     }
 }

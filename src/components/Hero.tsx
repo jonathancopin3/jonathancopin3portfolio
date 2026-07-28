@@ -4,34 +4,13 @@ import { ChevronRight, Play } from 'lucide-react';
 import { content } from '../constants';
 
 const HERO_SLIDES = [
-    {
-        image: "/Image all projet/TFE/Liminal_jpeg.png",
-        title: "tfe_liminal"
-    },
-    {
-        image: "/Image all projet/Horman - Chassis/chassis_fenetre_sections_L_exploded_studio.png",
-        title: "Prenium Window Frame"
-    },
-    {
-        image: "/Image all projet/Mic/Mike_v2__03_argent.png",
-        title: "Prenium Microphone"
-    },
-    {
-        image: "/Image all projet/Nomad/Nomad_picture_upscale.png",
-        title: "Nomad Apple Watch Strap"
-    },
-    {
-        image: "/Image all projet/Devialet/Rendu_Devialet_Mania_1.jpeg",
-        title: "Devialet Mania"
-    },
-    {
-        image: "/Image all projet/Wilo/Wilo_boite_final.png",
-        title: "Technical Project : Component Modeling"
-    },
-    {
-        image: "/Image all projet/Retour vers le futur/Picture_retourverslefututr.png",
-        title: "VFX Animation"
-    }
+    { image: "/hero_optimized/magnific_pocLioXehw.jpg", title: "TFE - Liminal" },
+    { image: "/hero_optimized/Horman_Chassis.jpg", title: "Premium Window Frame" },
+    { image: "/hero_optimized/Mic_Argent.jpg", title: "Premium Microphone" },
+    { image: "/hero_optimized/Nomad.jpg", title: "Nomad Apple Watch Strap" },
+    { image: "/hero_optimized/Devialet.jpg", title: "Devialet Mania" },
+    { image: "/hero_optimized/Wilo.jpg", title: "Technical Project : Component Modeling" },
+    { image: "/hero_optimized/VFX_Ai_Enhance.jpg", title: "VFX Animation" }
 ];
 
 export const Hero = () => {
@@ -44,7 +23,7 @@ export const Hero = () => {
     useEffect(() => {
         const interval = setInterval(nextSlide, 3000);
         return () => clearInterval(interval);
-    }, [currentSlide]); // Reset interval when slide changes (auto or manual)
+    }, [currentSlide]);
 
     return (
         <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black pt-20">

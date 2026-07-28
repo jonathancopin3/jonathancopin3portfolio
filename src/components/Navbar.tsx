@@ -62,7 +62,7 @@ export const Navbar = () => {
                         className="flex items-center gap-2 relative z-50"
                     >
                         <img
-                            src="/Image all projet/Logo/Logo.png"
+                            src="/Images_Projets/Logo/Logo.png"
                             alt="Logo"
                             className="h-[22px] w-auto object-contain"
                         />

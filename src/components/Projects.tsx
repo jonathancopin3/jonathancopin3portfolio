@@ -137,9 +137,15 @@ export const Projects = () => {
                                             </h3>
                                         </div>
 
-                                        {/* Arrow Icon */}
+                                        {/* Arrow / Lock Icon */}
                                         <div className="absolute top-8 right-8 z-20 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0 text-white">
-                                            <ArrowUpRight size={20} />
+                                            {project.protected ? (
+                                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                                </svg>
+                                            ) : (
+                                                <ArrowUpRight size={20} />
+                                            )}
                                         </div>
 
                                         {/* Image */}
@@ -147,9 +153,20 @@ export const Projects = () => {
                                             <img
                                                 src={project.thumbnailUrl}
                                                 alt={project.title}
-                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                                className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 ${project.protected ? 'blur-md opacity-80' : ''}`}
                                                 style={{ objectPosition: project.thumbnailObjectPosition || 'center' }}
                                             />
+                                            {project.protected && (
+                                                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center backdrop-blur-sm z-10 gap-3">
+                                                    <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                                                        style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)', backdropFilter: 'blur(12px)' }}>
+                                                        <svg className="w-6 h-6 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                                                        </svg>
+                                                    </div>
+                                                    <span className="text-white/60 text-xs font-semibold tracking-[0.2em] uppercase">Access Restricted</span>
+                                                </div>
+                                            )}
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-70 transition-opacity" />
                                         </div>
                                     </Link>

@@ -11,6 +11,7 @@ export interface Project {
     videoUrl?: string | string[];
     heroUrl?: string;
     liveUrl?: string;
+    protected?: boolean;
     thumbnailObjectPosition?: string;
     heroObjectPosition?: string;
     galleryLayout?: 'mixed' | 'landscape' | 'architecture' | string;
@@ -31,6 +32,11 @@ export interface Project {
         after: string;
         title?: string;
     };
+    beforeAfters?: {
+        before: string;
+        after: string;
+        title?: string;
+    }[];
 }
 
 export interface Content {

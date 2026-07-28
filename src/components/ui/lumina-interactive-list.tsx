@@ -3,13 +3,14 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 
 const SLIDES_DATA = [
-    { title: "Premium Window Frame", description: "", media: "/Image all projet/Horman - Chassis/chassis_fenetre_sections_L_exploded_studio.png" },
-    { title: "Nomad Apple Watch Strap", description: "", media: "/Image all projet/Nomad/Nomad_picture_upscale.png" },
-    { title: "Premium Microphone", description: "", media: "/Image all projet/Mic/Mike_v2__03_argent.png" },
-    { title: "Devialet Mania", description: "", media: "/Image all projet/Devialet/Rendu_Devialet_Mania_1.jpeg" },
-    { title: "Truck Simulator", description: "", media: "/Image all projet/John Cokerill/Rendu_finale_uspcale_finale.png" },
-    { title: "Technical Project : Component Modeling", description: "", media: "/Image all projet/Wilo/Wilo_boite_final.png" },
-    { title: "VFX Animation", description: "", media: "/Image all projet/Retour vers le futur/Ai Ehance.png" }
+    { title: "TFE - Liminal", description: "", media: "/hero_optimized/magnific_pocLioXehw.jpg" },
+    { title: "Premium Window Frame", description: "", media: "/hero_optimized/Horman_Chassis.jpg" },
+    { title: "Nomad Apple Watch Strap", description: "", media: "/hero_optimized/Nomad.jpg" },
+    { title: "Premium Microphone", description: "", media: "/hero_optimized/Mic_Argent.jpg" },
+    { title: "Devialet Mania", description: "", media: "/hero_optimized/Devialet.jpg" },
+    { title: "Truck Simulator", description: "", media: "/hero_optimized/John_Cokerill.jpg" },
+    { title: "Technical Project : Component Modeling", description: "", media: "/hero_optimized/Wilo.jpg" },
+    { title: "VFX Animation", description: "", media: "/hero_optimized/VFX_Ai_Enhance.jpg" }
 ];
 
 export function Component() {

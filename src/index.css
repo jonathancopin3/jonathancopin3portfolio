@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: 'Cormorant Garamond', 'Satoshi', 'sans-serif';
+  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'Segoe UI', sans-serif;
   --color-primary: #ffffff;
   --color-primary-hover: #e5e5e5;
   --color-secondary: #a1a1a6;
@@ -10,8 +10,8 @@
 
 :root {
   --font-mono: "PPSupplyMono", monospace;
-  --font-sans: "PP Neue Montreal", -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", sans-serif;
-  --font-display: "Cormorant Garamond", serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Segoe UI", sans-serif;
   --color-bg: #0a0a0a;
   --color-text: #ffffff;
   --color-text-muted: rgba(255, 255, 255, 0.7);
@@ -19,7 +19,6 @@
   --color-accent: #d4af37;
   --font-size-mono: clamp(10px, 1.2vw, 12px);
   --spacing-sm: 0.75rem;
-  --spacing-md: 1rem;
   --spacing-md: 1rem;
 }
 
@@ -80,7 +79,28 @@ button,
   background: #555;
 }
 
+/* ====== ANIMATIONS ====== */
+@keyframes liquid {
+  0%   { transform: translate(0, 0)    scale(1); }
+  25%  { transform: translate(5%, 8%)  scale(1.05); }
+  50%  { transform: translate(-4%, 5%) scale(0.97); }
+  75%  { transform: translate(6%, -3%) scale(1.03); }
+  100% { transform: translate(0, 0)    scale(1); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.animate-liquid {
+  animation: liquid 14s ease-in-out infinite;
+}
+.animation-delay-2000 { animation-delay: 2s; }
+.animation-delay-4000 { animation-delay: 4s; }
+.animate-pulse        { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
 @layer utilities {
+
   .glass {
     @apply backdrop-blur-xl bg-black/40 border-b border-white/5;
   }

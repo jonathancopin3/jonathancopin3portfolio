@@ -1,36 +1,49 @@
 import { useEffect, useLayoutEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, useNavigationType } from 'react-router-dom';
 import { LiquidGlassCursor } from './components/LiquidGlassCursor';
 import { Home } from './pages/Home';
 import { ProjectDetails } from './pages/ProjectDetails';
+import { Preloader } from './components/Preloader';
 import { ThemeProvider } from './context/ThemeContext';
 import { Analytics } from "@vercel/analytics/react"
 
 // Scroll to top on route change
 // Scroll to top or hash on route change
 const ScrollToAnchor = () => {
-  const { pathname, hash } = useLocation();
+  const { pathname, hash, state } = useLocation() as ReturnType<typeof useLocation> & { state: any };
+  const navType = useNavigationType();
 
   useLayoutEffect(() => {
-    // Disable browser's default scroll restoration on initial load
-    if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = 'manual';
+    // If user clicked the browser's Back button, let the browser restore scroll
+    if (navType === 'POP') {
+      window.history.scrollRestoration = 'auto';
+      return;
     }
-
-    // Force immediate scroll to top
-    window.scrollTo(0, 0);
-
-    // Double check after a small delay to handle mobile browser oddities
-    const timeout = setTimeout(() => {
+    
+    window.history.scrollRestoration = 'manual';
+    
+    if (!(state as any)?.scrollTo && !hash) {
       window.scrollTo(0, 0);
-    }, 100);
-
-    return () => clearTimeout(timeout);
-  }, []);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
+  }, [pathname, state, hash, navType]);
 
   useEffect(() => {
+    // Do not override scroll if it's a Back/Forward navigation
+    if (navType === 'POP') return;
+
+    if ((state as any)?.scrollTo) {
+      const element = document.getElementById((state as any).scrollTo);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+      }
+      return;
+    }
+
     if (pathname === '/') {
-      // Allow hash scrolling
       if (hash) {
         const element = document.getElementById(hash.substring(1));
         if (element) {
@@ -38,32 +51,19 @@ const ScrollToAnchor = () => {
             element.scrollIntoView({ behavior: 'smooth' });
           }, 100);
         }
-      } else {
-        // Force top if on homepage without hash
-        window.scrollTo(0, 0);
       }
-    } else {
-      // For other routes, always top
-      window.scrollTo(0, 0);
     }
-  }, [pathname, hash]);
+  }, [pathname, hash, state, navType]);
 
   return null;
 }
 
 function AppContent() {
 
-  // Remove preloader
-  useEffect(() => {
-    const preloader = document.getElementById('preloader');
-    if (preloader) {
-      preloader.style.opacity = '0';
-      setTimeout(() => preloader.remove(), 500);
-    }
-  }, []);
-
   return (
     <main className="bg-black text-white min-h-screen transition-colors duration-300 relative">
+      <Preloader />
+      
       {/* Background Gradient Mesh */}
       <div className="fixed inset-0 pointer-events-none z-[-1] opacity-20">
         <div className="absolute top-[20%] left-[10%] w-[30vw] h-[30vw] bg-primary/20 rounded-full blur-[100px]" />

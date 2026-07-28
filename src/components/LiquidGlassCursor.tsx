@@ -20,7 +20,7 @@ export const LiquidGlassCursor = () => {
         const updatePosition = (e: MouseEvent) => {
             mouseX.set(e.clientX);
             mouseY.set(e.clientY);
-            if (!isVisible) setIsVisible(true);
+            setIsVisible(true);
         };
 
         const handleMouseDown = () => setIsClicked(true);
@@ -55,7 +55,7 @@ export const LiquidGlassCursor = () => {
             document.removeEventListener('mouseleave', handleMouseLeave);
             document.removeEventListener('mouseenter', handleMouseEnter);
         };
-    }, [mouseX, mouseY, isVisible]);
+    }, [mouseX, mouseY]);
 
     // Don't render on touch devices
     if (typeof navigator !== 'undefined' && typeof navigator.maxTouchPoints === 'number' && navigator.maxTouchPoints > 0) {

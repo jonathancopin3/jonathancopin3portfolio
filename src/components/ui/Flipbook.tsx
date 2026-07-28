@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { ChevronLeft, ChevronRight, Maximize2, X, Play, Pause } from 'lucide-react';
 
@@ -146,19 +146,36 @@ const FlyerFullscreenPortal: React.FC<{
 // ─────────────────────────────────────────────
 // FULLSCREEN PORTAL OVERLAY for ARTBOOK (N images)
 // ─────────────────────────────────────────────
+// FULLSCREEN PORTAL OVERLAY for ARTBOOK (N images)
+// ─────────────────────────────────────────────
+const useIsMobile = () => {
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768 && window.innerHeight > window.innerWidth);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+    return isMobile;
+};
+
 const ArtbookFullscreenPortal: React.FC<{
     title: string;
     pages: string[];
-    currentSpread: number;
-    totalSpreads: number;
+    currentIndex: number;
+    totalItems: number;
+    isMobile: boolean;
     onClose: () => void;
     onNext: () => void;
     onPrev: () => void;
-    onSetSpread: (n: number) => void;
+    onSetIndex: (n: number) => void;
     isFlipping: 'next' | 'prev' | null;
-}> = ({ title, pages, currentSpread, totalSpreads, onClose, onNext, onPrev, onSetSpread, isFlipping }) => {
-    const leftPageIndex = currentSpread * 2;
-    const rightPageIndex = currentSpread * 2 + 1;
+}> = ({ title, pages, currentIndex, totalItems, isMobile, onClose, onNext, onPrev, onSetIndex, isFlipping }) => {
+    const touchStartX = useRef<number>(0);
+    
+    const leftPageIndex = currentIndex * 2;
+    const rightPageIndex = currentIndex * 2 + 1;
+    const mobilePageIndex = currentIndex;
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -174,11 +191,9 @@ const ArtbookFullscreenPortal: React.FC<{
         };
     }, [onClose, onNext, onPrev]);
 
-    const pageLabel = currentSpread === 0
-        ? 'Couverture'
-        : currentSpread === totalSpreads - 1
-            ? 'Quatrième de couverture'
-            : `Pages ${leftPageIndex} – ${rightPageIndex}`;
+    const pageLabel = isMobile
+        ? (currentIndex === 0 ? 'Couverture' : currentIndex === totalItems - 1 ? 'Quatrième de couverture' : `Page ${currentIndex}`)
+        : (currentIndex === 0 ? 'Couverture' : currentIndex === totalItems - 1 ? 'Quatrième de couverture' : `Pages ${leftPageIndex} – ${rightPageIndex}`);
 
     // Shared style for overlaid icon buttons
     const iconBtn = (disabled: boolean): React.CSSProperties => ({
@@ -212,8 +227,17 @@ const ArtbookFullscreenPortal: React.FC<{
                 width: '100vw',
                 height: '100vh',
                 overflow: 'hidden',
-                // Force cursor visible — overrides global "cursor: none !important"
                 cursor: 'default',
+            }}
+            onTouchStart={(e) => {
+                touchStartX.current = e.touches[0].clientX;
+            }}
+            onTouchEnd={(e) => {
+                const swipeDistance = e.changedTouches[0].clientX - touchStartX.current;
+                if (Math.abs(swipeDistance) > 50) {
+                    if (swipeDistance < -50) onNext();
+                    else onPrev();
+                }
             }}
         >
             {/* ── BOOK: fills entire viewport, NO padding, pages glued ── */}
@@ -223,75 +247,112 @@ const ArtbookFullscreenPortal: React.FC<{
                 display: 'flex',
                 gap: 0,
             }}>
-                {/* Left page */}
-                <div style={{
-                    flex: 1,
-                    background: '#111',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    overflow: 'hidden',
-                    position: 'relative',
-                }}>
-                    {pages[leftPageIndex] ? (
-                        <img
-                            key={`fl-${leftPageIndex}`}
-                            src={pages[leftPageIndex]}
-                            alt={`Page ${leftPageIndex}`}
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                                objectPosition: 'right center',
-                                display: 'block',
-                            }}
-                        />
-                    ) : (
+                {isMobile ? (
+                    <div style={{
+                        flex: 1,
+                        background: '#111',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        overflow: 'hidden',
+                        position: 'relative',
+                    }}>
+                        {pages[mobilePageIndex] ? (
+                            <img
+                                key={`m-${mobilePageIndex}`}
+                                src={pages[mobilePageIndex]}
+                                alt={`Page ${mobilePageIndex}`}
+                                style={{
+                                    maxWidth: '100%',
+                                    maxHeight: '100%',
+                                    objectFit: 'contain',
+                                    display: 'block',
+                                }}
+                            />
+                        ) : (
+                            <div style={{
+                                color: 'rgba(255,255,255,0.05)',
+                                fontSize: '13px',
+                                fontFamily: 'monospace',
+                                userSelect: 'none',
+                            }}>
+                                Jonathan Copine
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <>
+                        {/* Left page */}
                         <div style={{
-                            color: 'rgba(255,255,255,0.05)',
-                            fontSize: '13px',
-                            fontFamily: 'monospace',
-                            userSelect: 'none',
+                            flex: 1,
+                            background: '#111',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'flex-end',
+                            overflow: 'hidden',
+                            position: 'relative',
                         }}>
-                            Jonathan Copine
+                            {pages[leftPageIndex] ? (
+                                <img
+                                    key={`fl-${leftPageIndex}`}
+                                    src={pages[leftPageIndex]}
+                                    alt={`Page ${leftPageIndex}`}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'contain',
+                                        objectPosition: 'right center',
+                                        display: 'block',
+                                    }}
+                                />
+                            ) : (
+                                <div style={{
+                                    color: 'rgba(255,255,255,0.05)',
+                                    fontSize: '13px',
+                                    fontFamily: 'monospace',
+                                    userSelect: 'none',
+                                }}>
+                                    Jonathan Copine
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
 
-                {/* Right page */}
-                <div style={{
-                    flex: 1,
-                    background: '#111',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-start',
-                    overflow: 'hidden',
-                    position: 'relative',
-                }}>
-                    {pages[rightPageIndex] ? (
-                        <img
-                            key={`fr-${rightPageIndex}`}
-                            src={pages[rightPageIndex]}
-                            alt={`Page ${rightPageIndex}`}
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                                objectPosition: 'left center',
-                                display: 'block',
-                            }}
-                        />
-                    ) : (
+                        {/* Right page */}
                         <div style={{
-                            color: 'rgba(255,255,255,0.05)',
-                            fontSize: '13px',
-                            fontFamily: 'monospace',
-                            userSelect: 'none',
+                            flex: 1,
+                            background: '#111',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'flex-start',
+                            overflow: 'hidden',
+                            position: 'relative',
                         }}>
-                            Jonathan Copine
+                            {pages[rightPageIndex] ? (
+                                <img
+                                    key={`fr-${rightPageIndex}`}
+                                    src={pages[rightPageIndex]}
+                                    alt={`Page ${rightPageIndex}`}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'contain',
+                                        objectPosition: 'left center',
+                                        display: 'block',
+                                    }}
+                                />
+                            ) : (
+                                <div style={{
+                                    color: 'rgba(255,255,255,0.05)',
+                                    fontSize: '13px',
+                                    fontFamily: 'monospace',
+                                    userSelect: 'none',
+                                }}>
+                                    Jonathan Copine
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
+                    </>
+                )}
             </div>
 
             {/* ── OVERLAY: top-left info pill ── */}
@@ -344,10 +405,10 @@ const ArtbookFullscreenPortal: React.FC<{
             {/* ── OVERLAY: left arrow (vertically centered, absolute) ── */}
             <button
                 onClick={onPrev}
-                disabled={currentSpread === 0 || isFlipping !== null}
+                disabled={currentIndex === 0 || isFlipping !== null}
                 title="Page précédente (←)"
                 style={{
-                    ...iconBtn(currentSpread === 0 || isFlipping !== null),
+                    ...iconBtn(currentIndex === 0 || isFlipping !== null),
                     left: '14px',
                 }}
             >
@@ -357,10 +418,10 @@ const ArtbookFullscreenPortal: React.FC<{
             {/* ── OVERLAY: right arrow (vertically centered, absolute) ── */}
             <button
                 onClick={onNext}
-                disabled={currentSpread === totalSpreads - 1 || isFlipping !== null}
+                disabled={currentIndex === totalItems - 1 || isFlipping !== null}
                 title="Page suivante (→)"
                 style={{
-                    ...iconBtn(currentSpread === totalSpreads - 1 || isFlipping !== null),
+                    ...iconBtn(currentIndex === totalItems - 1 || isFlipping !== null),
                     right: '14px',
                 }}
             >
@@ -386,10 +447,10 @@ const ArtbookFullscreenPortal: React.FC<{
                 <input
                     type="range"
                     min={0}
-                    max={totalSpreads - 1}
-                    value={currentSpread}
+                    max={totalItems - 1}
+                    value={currentIndex}
                     onChange={(e) => {
-                        if (!isFlipping) onSetSpread(Number(e.target.value));
+                        if (!isFlipping) onSetIndex(Number(e.target.value));
                     }}
                     style={{
                         width: '220px',
@@ -398,7 +459,7 @@ const ArtbookFullscreenPortal: React.FC<{
                         pointerEvents: 'all',
                     }}
                 />
-                <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '10px', fontFamily: 'monospace' }}>{totalSpreads}</span>
+                <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '10px', fontFamily: 'monospace' }}>{totalItems}</span>
                 <span style={{
                     color: 'rgba(255,255,255,0.55)',
                     fontSize: '11px',
@@ -406,7 +467,7 @@ const ArtbookFullscreenPortal: React.FC<{
                     marginLeft: '10px',
                     userSelect: 'none',
                 }}>
-                    {currentSpread + 1} / {totalSpreads}
+                    {currentIndex + 1} / {totalItems}
                 </span>
             </div>
         </div>
@@ -425,43 +486,50 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images }) => {
         return padded;
     }, [images]);
 
-    const [currentSpread, setCurrentSpread] = useState(0);
+    const isMobile = useIsMobile();
+    const [currentIndex, setCurrentIndex] = useState(0);
     const [isFlipping, setIsFlipping] = useState<'next' | 'prev' | null>(null);
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
 
-    const totalSpreads = Math.ceil(pages.length / 2);
+    const totalItems = isMobile ? pages.length : Math.ceil(pages.length / 2);
+
+    useEffect(() => {
+        if (currentIndex >= totalItems) {
+            setCurrentIndex(Math.max(0, totalItems - 1));
+        }
+    }, [totalItems, currentIndex]);
 
     const handleNext = useCallback(() => {
-        if (isFlipping || currentSpread >= totalSpreads - 1) return;
+        if (isFlipping || currentIndex >= totalItems - 1) return;
         setIsFlipping('next');
         setTimeout(() => {
-            setCurrentSpread(prev => prev + 1);
+            setCurrentIndex(prev => prev + 1);
             setIsFlipping(null);
         }, 400);
-    }, [isFlipping, currentSpread, totalSpreads]);
+    }, [isFlipping, currentIndex, totalItems]);
 
     const handlePrev = useCallback(() => {
-        if (isFlipping || currentSpread <= 0) return;
+        if (isFlipping || currentIndex <= 0) return;
         setIsFlipping('prev');
         setTimeout(() => {
-            setCurrentSpread(prev => prev - 1);
+            setCurrentIndex(prev => prev - 1);
             setIsFlipping(null);
         }, 400);
-    }, [isFlipping, currentSpread]);
+    }, [isFlipping, currentIndex]);
 
     // Auto-play
     useEffect(() => {
         if (!isPlaying) return;
         const id = setInterval(() => {
-            if (currentSpread < totalSpreads - 1) {
+            if (currentIndex < totalItems - 1) {
                 handleNext();
             } else {
                 setIsPlaying(false);
             }
         }, 3000);
         return () => clearInterval(id);
-    }, [isPlaying, currentSpread, totalSpreads, handleNext]);
+    }, [isPlaying, currentIndex, totalItems, handleNext]);
 
     // Keyboard navigation for inline view (fullscreen handles its own keys)
     useEffect(() => {
@@ -474,8 +542,9 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images }) => {
         return () => window.removeEventListener('keydown', handleKey);
     }, [isFullscreen, handleNext, handlePrev]);
 
-    const leftPageIndex = currentSpread * 2;
-    const rightPageIndex = currentSpread * 2 + 1;
+    const leftPageIndex = currentIndex * 2;
+    const rightPageIndex = currentIndex * 2 + 1;
+    const mobilePageIndex = currentIndex;
 
     // ── FLYER (2 images) ──────────────────────────────────────────────────
     if (images.length === 2) {
@@ -525,11 +594,9 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images }) => {
     }
 
     // ── ARTBOOK (N images) ────────────────────────────────────────────────
-    const pageLabel = currentSpread === 0
-        ? 'Couverture'
-        : currentSpread === totalSpreads - 1
-            ? 'Quatrième de couverture'
-            : `Pages ${leftPageIndex} – ${rightPageIndex}`;
+    const pageLabel = isMobile
+        ? (currentIndex === 0 ? 'Couverture' : currentIndex === totalItems - 1 ? 'Quatrième de couverture' : `Page ${currentIndex}`)
+        : (currentIndex === 0 ? 'Couverture' : currentIndex === totalItems - 1 ? 'Quatrième de couverture' : `Pages ${leftPageIndex} – ${rightPageIndex}`);
 
     return (
         <>
@@ -544,9 +611,9 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images }) => {
                 <div className="w-full max-w-4xl px-4 flex items-center justify-center gap-3">
                     <button
                         onClick={handlePrev}
-                        disabled={currentSpread === 0 || isFlipping !== null}
+                        disabled={currentIndex === 0 || isFlipping !== null}
                         className={`p-3 rounded-full border transition-all flex-shrink-0 ${
-                            currentSpread === 0
+                            currentIndex === 0
                                 ? 'border-white/5 text-white/20 cursor-not-allowed'
                                 : 'border-white/15 text-white/70 hover:bg-white/8 hover:text-white cursor-pointer'
                         }`}
@@ -554,53 +621,68 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images }) => {
                         <ChevronLeft size={22} />
                     </button>
 
-                    {/* Double-page spread preview */}
+                    {/* Preview Area (changes aspect ratio on mobile vs desktop) */}
                     <div
-                        className="flex-1 aspect-[2/1] rounded-lg overflow-hidden shadow-2xl cursor-pointer"
+                        className={`flex-1 rounded-lg overflow-hidden shadow-2xl cursor-pointer ${isMobile ? 'aspect-[1/1.414]' : 'aspect-[2/1]'}`}
                         onClick={() => setIsFullscreen(true)}
                         title="Cliquez pour ouvrir en plein écran"
-                        style={{ minWidth: 0 }}
+                        style={{ minWidth: 0, maxWidth: isMobile ? '80vw' : '100%' }}
                     >
-                        <div className="w-full h-full flex" style={{ gap: 0 }}>
-                            <div className="flex-1 bg-[#1a1a1a] overflow-hidden relative" style={{ borderRight: 'none' }}>
-                                {pages[leftPageIndex] ? (
+                        {isMobile ? (
+                            <div className="w-full h-full bg-[#1a1a1a] flex items-center justify-center overflow-hidden">
+                                {pages[mobilePageIndex] ? (
                                     <img
-                                        key={`il-${leftPageIndex}`}
-                                        src={pages[leftPageIndex]}
-                                        alt={`Page ${leftPageIndex}`}
+                                        key={`m-${mobilePageIndex}`}
+                                        src={pages[mobilePageIndex]}
+                                        alt={`Page ${mobilePageIndex}`}
                                         className="w-full h-full object-cover block"
-                                        style={{ objectPosition: 'right center' }}
                                     />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-[10px] text-white/10 font-mono">
-                                        Jonathan Copine
-                                    </div>
+                                    <div className="text-[10px] text-white/10 font-mono">Jonathan Copine</div>
                                 )}
                             </div>
+                        ) : (
+                            <div className="w-full h-full flex" style={{ gap: 0 }}>
+                                <div className="flex-1 bg-[#1a1a1a] overflow-hidden relative" style={{ borderRight: 'none' }}>
+                                    {pages[leftPageIndex] ? (
+                                        <img
+                                            key={`il-${leftPageIndex}`}
+                                            src={pages[leftPageIndex]}
+                                            alt={`Page ${leftPageIndex}`}
+                                            className="w-full h-full object-cover block"
+                                            style={{ objectPosition: 'right center' }}
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center text-[10px] text-white/10 font-mono">
+                                            Jonathan Copine
+                                        </div>
+                                    )}
+                                </div>
 
-                            <div className="flex-1 bg-[#1a1a1a] overflow-hidden relative">
-                                {pages[rightPageIndex] ? (
-                                    <img
-                                        key={`ir-${rightPageIndex}`}
-                                        src={pages[rightPageIndex]}
-                                        alt={`Page ${rightPageIndex}`}
-                                        className="w-full h-full object-cover block"
-                                        style={{ objectPosition: 'left center' }}
-                                    />
-                                ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-[10px] text-white/10 font-mono">
-                                        Jonathan Copine
-                                    </div>
-                                )}
+                                <div className="flex-1 bg-[#1a1a1a] overflow-hidden relative">
+                                    {pages[rightPageIndex] ? (
+                                        <img
+                                            key={`ir-${rightPageIndex}`}
+                                            src={pages[rightPageIndex]}
+                                            alt={`Page ${rightPageIndex}`}
+                                            className="w-full h-full object-cover block"
+                                            style={{ objectPosition: 'left center' }}
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center text-[10px] text-white/10 font-mono">
+                                            Jonathan Copine
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
 
                     <button
                         onClick={handleNext}
-                        disabled={currentSpread === totalSpreads - 1 || isFlipping !== null}
+                        disabled={currentIndex === totalItems - 1 || isFlipping !== null}
                         className={`p-3 rounded-full border transition-all flex-shrink-0 ${
-                            currentSpread === totalSpreads - 1
+                            currentIndex === totalItems - 1
                                 ? 'border-white/5 text-white/20 cursor-not-allowed'
                                 : 'border-white/15 text-white/70 hover:bg-white/8 hover:text-white cursor-pointer'
                         }`}
@@ -624,10 +706,10 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images }) => {
                         <input
                             type="range"
                             min={0}
-                            max={totalSpreads - 1}
-                            value={currentSpread}
+                            max={totalItems - 1}
+                            value={currentIndex}
                             onChange={(e) => {
-                                if (!isFlipping) setCurrentSpread(Number(e.target.value));
+                                if (!isFlipping) setCurrentIndex(Number(e.target.value));
                             }}
                             className="w-32 md:w-40 accent-white cursor-pointer"
                         />
@@ -653,12 +735,13 @@ export const Flipbook: React.FC<FlipbookProps> = ({ title, images }) => {
                 <ArtbookFullscreenPortal
                     title={title}
                     pages={pages}
-                    currentSpread={currentSpread}
-                    totalSpreads={totalSpreads}
+                    currentIndex={currentIndex}
+                    totalItems={totalItems}
+                    isMobile={isMobile}
                     onClose={() => setIsFullscreen(false)}
                     onNext={handleNext}
                     onPrev={handlePrev}
-                    onSetSpread={(n) => { if (!isFlipping) setCurrentSpread(n); }}
+                    onSetIndex={(n) => { if (!isFlipping) setCurrentIndex(n); }}
                     isFlipping={isFlipping}
                 />
             )}
